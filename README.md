@@ -1,15 +1,11 @@
 # Platformer
 
-Renderer:
-    RenderCmdBuffer
-        pushQuads, pushText etc..
+Platformer engine and editor. Currently only supports linux
 
-    IRenderDevice
-        render(RenderCmdBuffer)
+Uses SDL2, OpenGL core profile 3.3, FreeType, Dear ImGui, stb_rect.
 
-    // hidden to the rest of the program
-    OGLRenderDevice : IRenderDevice
+demo assets are either original or open licensed.
 
-    //maybe a factory function
+C++ 17 cmake project
 
-    font use pixel buffer and texture atlas
+![image](screenshots/screenshot_01.png)

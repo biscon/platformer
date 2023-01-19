@@ -381,7 +381,7 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame(SDLWindow);
         ImGui::NewFrame();
-        ImGui::ShowDemoWindow();
+        //ImGui::ShowDemoWindow();
 
 
         GLenum err;
