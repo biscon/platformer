@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <math.h>
 #include <float.h>
+#include <stddef.h>
 
 #if defined(_MSC_VER)
 #  ifdef CGLM_DLL

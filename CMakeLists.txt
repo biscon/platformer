@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(platformer)
 
 set(CMAKE_CXX_STANDARD 17)
+
 #set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG -Wall -fsanitize=undefined -fsanitize=address -fsanitize=leak -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fstack-protector")
 #set(CMAKE_C_FLAGS_DEBUG "-g -Wall -fsanitize=leak -fsanitize=integer-divide-by-zero -fsanitize=null -fsanitize=signed-integer-overflow -fsanitize=bounds -fstack-protector")
 #set(CMAKE_C_FLAGS_DEBUG "-g -Wall -fsanitize=leak")
@@ -9,11 +10,16 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall")
 #set(CMAKE_CXX_FLAGS_DEBUG "-O3 -Wall -funroll-loops -fomit-frame-pointer -ftree-loop-distribution -ftree-vectorize")
 # uncomment this to compile as gui app (doesnt open the console)
 #set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
-#set(CMAKE_EXE_LINKER_FLAGS "-lGL")
+
+if(APPLE)
+set(CMAKE_EXE_LINKER_FLAGS "-L/opt/homebrew/Cellar/sdl2/2.26.2/lib -lSDL2")
+#    set(CMAKE_CXX_FLAGS "-framework OpenGL")
+# -framework OpenGL -framework CoreVideo
+#    add_compile_definitions(GL_SILENCE_DEPRECATION)
+endif()
 
 # includes cmake/FindSDL2.cmake
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-
 
 #if(WIN32)
 #endif()
@@ -21,7 +27,6 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "../")
-
 find_package(ZLIB REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)

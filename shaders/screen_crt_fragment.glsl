@@ -85,7 +85,7 @@ void main(void)
         vec2 remappedUV = curveRemapUV(vec2(TexCoords.x, TexCoords.y));
 
         vec4 screen = texture(screenTexture, remappedUV);
-        vec4 baseColor = texture2D(screenTexture, remappedUV);
+        vec4 baseColor = texture(screenTexture, remappedUV);
 
         if(useLight == 1) {
             vec4 light = blur(lightTexture, remappedUV, blurAmount);

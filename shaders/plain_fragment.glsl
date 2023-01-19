@@ -154,8 +154,8 @@ vec4 lookup(vec4 textureColor, sampler2D lookupTable) {
     texPos2.y = 1.0-texPos2.y;
     #endif
 
-    lowp vec4 newColor1 = texture2D(lookupTable, texPos1);
-    lowp vec4 newColor2 = texture2D(lookupTable, texPos2);
+    lowp vec4 newColor1 = texture(lookupTable, texPos1);
+    lowp vec4 newColor2 = texture(lookupTable, texPos2);
 
     lowp vec4 newColor = mix(newColor1, newColor2, fract(blueColor));
     return newColor;
