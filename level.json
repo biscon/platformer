@@ -1,0 +1,631 @@
+{
+    "height": 2160.0,
+    "images": [
+        {
+            "alpha": 1.0,
+            "filename": "assets/objects/bus_stop.png",
+            "height": 43.0,
+            "layer": -1,
+            "pos": [
+                240.0,
+                1750.0
+            ],
+            "rotation": 0.0,
+            "scale": 6.0,
+            "width": 76.0
+        },
+        {
+            "alpha": 1.0,
+            "filename": "assets/objects/trashcan.png",
+            "height": 22.0,
+            "layer": 1,
+            "pos": [
+                900.0,
+                1880.0
+            ],
+            "rotation": 0.0,
+            "scale": 6.0,
+            "width": 27.0
+        },
+        {
+            "alpha": 1.0,
+            "filename": "assets/objects/tree.png",
+            "height": 67.0,
+            "layer": 1,
+            "pos": [
+                585.0,
+                1605.0
+            ],
+            "rotation": 0.0,
+            "scale": 6.0,
+            "width": 67.0
+        },
+        {
+            "alpha": 1.0,
+            "filename": "assets/objects/tree.png",
+            "height": 67.0,
+            "layer": 1,
+            "pos": [
+                1620.0,
+                285.0
+            ],
+            "rotation": 0.0,
+            "scale": 6.0,
+            "width": 67.0
+        }
+    ],
+    "ladders": [
+        {
+            "rect": [
+                2060.0,
+                1490.0,
+                2180.0,
+                2000.0
+            ]
+        },
+        {
+            "rect": [
+                5320.0,
+                1410.0,
+                5430.0,
+                1720.0
+            ]
+        },
+        {
+            "rect": [
+                6120.0,
+                1430.0,
+                6250.0,
+                2000.0
+            ]
+        },
+        {
+            "rect": [
+                7340.0,
+                1430.0,
+                7470.0,
+                2000.0
+            ]
+        }
+    ],
+    "platforms": [
+        {
+            "layer": 0,
+            "path": {
+                "reverse": true,
+                "waypoints": [
+                    330.0,
+                    1430.0,
+                    690.0,
+                    1660.0,
+                    980.0,
+                    1470.0,
+                    980.0,
+                    820.0
+                ]
+            },
+            "pos": [
+                977.4169921875,
+                1471.6922607421875
+            ],
+            "rotation": 0.0,
+            "scale": 1.0,
+            "size": [
+                210.0,
+                40.0
+            ],
+            "speed": 300.0
+        },
+        {
+            "layer": 0,
+            "path": {
+                "reverse": true,
+                "waypoints": [
+                    1540.0,
+                    1190.0,
+                    1540.0,
+                    1490.0
+                ]
+            },
+            "pos": [
+                1540.0,
+                1333.1314697265625
+            ],
+            "rotation": 0.0,
+            "scale": 1.0,
+            "size": [
+                120.0,
+                40.0
+            ],
+            "speed": 200.0
+        },
+        {
+            "layer": 0,
+            "path": {
+                "reverse": true,
+                "waypoints": [
+                    2910.0,
+                    1570.0,
+                    2910.0,
+                    2000.0
+                ]
+            },
+            "pos": [
+                2910.0,
+                2000.0
+            ],
+            "rotation": 0.0,
+            "scale": 1.0,
+            "size": [
+                210.0,
+                40.0
+            ],
+            "speed": 200.0
+        },
+        {
+            "layer": 0,
+            "path": {
+                "reverse": true,
+                "waypoints": [
+                    4110.0,
+                    1410.0,
+                    4920.0,
+                    1410.0
+                ]
+            },
+            "pos": [
+                4920.0,
+                1410.0
+            ],
+            "rotation": 0.0,
+            "scale": 1.0,
+            "size": [
+                230.0,
+                40.0
+            ],
+            "speed": 200.0
+        }
+    ],
+    "scroller": {
+        "layers": [
+            {
+                "filename": "assets/backgrounds/sky.png",
+                "foreground": false,
+                "height": 2160.0,
+                "offsetY": 0.0,
+                "speed": 0.2,
+                "width": 4800
+            },
+            {
+                "filename": "assets/backgrounds/city_layer.png",
+                "foreground": false,
+                "height": 210.0,
+                "offsetY": 1500.0,
+                "speed": 0.4,
+                "width": 2880
+            },
+            {
+                "filename": "assets/backgrounds/hills_far_layer.png",
+                "foreground": false,
+                "height": 192.0,
+                "offsetY": 1685.0,
+                "speed": 0.6,
+                "width": 2880
+            },
+            {
+                "filename": "assets/backgrounds/hills_layer.png",
+                "foreground": false,
+                "height": 600.0,
+                "offsetY": 1500.0,
+                "speed": 0.8,
+                "width": 2880
+            },
+            {
+                "filename": "assets/backgrounds/ground_layer.png",
+                "foreground": false,
+                "height": 270.0,
+                "offsetY": 2000.0,
+                "speed": 1.0,
+                "width": 2880
+            },
+            {
+                "filename": "assets/backgrounds/power_lines_layer.png",
+                "foreground": true,
+                "height": 810.0,
+                "offsetY": 1190.0,
+                "speed": 1.0,
+                "width": 1920.0
+            }
+        ]
+    },
+    "skyColor": [
+        0.12939999997615814,
+        0.42739999294281006,
+        0.6039000153541565,
+        0.0
+    ],
+    "terrain": [
+        {
+            "show": false,
+            "through": false,
+            "vertices": [
+                0.0,
+                2000.0,
+                7680.0,
+                2000.0,
+                7680.0,
+                2160.0,
+                0.0,
+                2160.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                1260.0,
+                1530.0,
+                1260.0,
+                1490.0,
+                2060.0,
+                1490.0,
+                2060.0,
+                1530.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                2180.0,
+                1490.0,
+                2480.0,
+                1490.0,
+                2480.0,
+                1530.0,
+                2180.0,
+                1530.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                2480.0,
+                870.0,
+                2540.0,
+                870.0,
+                2540.0,
+                1530.0,
+                2540.0,
+                1530.0,
+                2480.0,
+                1530.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                1180.0,
+                870.0,
+                1180.0,
+                820.0,
+                1480.0,
+                680.0,
+                2070.0,
+                680.0,
+                2070.0,
+                610.0,
+                2160.0,
+                610.0,
+                2160.0,
+                680.0,
+                2260.0,
+                680.0,
+                2560.0,
+                820.0,
+                2560.0,
+                870.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                1660.0,
+                1230.0,
+                1660.0,
+                1190.0,
+                2480.0,
+                1190.0,
+                2480.0,
+                1230.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                1260.0,
+                1230.0,
+                1260.0,
+                1190.0,
+                1540.0,
+                1190.0,
+                1540.0,
+                1230.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                3140.0,
+                1410.0,
+                3310.0,
+                1410.0,
+                3310.0,
+                1450.0,
+                3140.0,
+                1450.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                1200.0,
+                1190.0,
+                1260.0,
+                1190.0,
+                1260.0,
+                1530.0,
+                1260.0,
+                1530.0,
+                1200.0,
+                1530.0
+            ]
+        },
+        {
+            "show": true,
+            "through": true,
+            "vertices": [
+                280.0,
+                1780.0,
+                280.0,
+                1760.0,
+                670.0,
+                1760.0,
+                670.0,
+                1780.0
+            ]
+        },
+        {
+            "show": false,
+            "through": false,
+            "vertices": [
+                910.0,
+                1890.0,
+                1020.0,
+                1890.0,
+                1020.0,
+                2000.0,
+                910.0,
+                2000.0
+            ]
+        },
+        {
+            "show": true,
+            "through": true,
+            "vertices": [
+                650.0,
+                1270.0,
+                810.0,
+                1270.0,
+                810.0,
+                1310.0,
+                650.0,
+                1310.0
+            ]
+        },
+        {
+            "show": true,
+            "through": true,
+            "vertices": [
+                300.0,
+                1070.0,
+                460.0,
+                1070.0,
+                460.0,
+                1110.0,
+                300.0,
+                1110.0
+            ]
+        },
+        {
+            "show": true,
+            "through": true,
+            "vertices": [
+                610.0,
+                840.0,
+                770.0,
+                840.0,
+                770.0,
+                880.0,
+                610.0,
+                880.0
+            ]
+        },
+        {
+            "show": true,
+            "through": true,
+            "vertices": [
+                2580.0,
+                980.0,
+                2750.0,
+                980.0,
+                2750.0,
+                1020.0,
+                2580.0,
+                1020.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                4170.0,
+                2000.0,
+                4380.0,
+                1840.0,
+                4960.0,
+                1840.0,
+                5080.0,
+                1800.0,
+                5150.0,
+                1720.0,
+                5730.0,
+                1720.0,
+                6050.0,
+                2000.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                3540.0,
+                1410.0,
+                3710.0,
+                1410.0,
+                3710.0,
+                1450.0,
+                3540.0,
+                1450.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                3940.0,
+                1410.0,
+                4110.0,
+                1410.0,
+                4110.0,
+                1450.0,
+                3940.0,
+                1450.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                5150.0,
+                1410.0,
+                5320.0,
+                1410.0,
+                5320.0,
+                1450.0,
+                5150.0,
+                1450.0
+            ]
+        },
+        {
+            "show": true,
+            "through": true,
+            "vertices": [
+                2590.0,
+                1730.0,
+                2810.0,
+                1730.0,
+                2810.0,
+                1790.0,
+                2590.0,
+                1790.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                6460.0,
+                2000.0,
+                6650.0,
+                1420.0,
+                6910.0,
+                1420.0,
+                7190.0,
+                2000.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                6310.0,
+                1190.0,
+                6480.0,
+                1190.0,
+                6480.0,
+                1230.0,
+                6310.0,
+                1230.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                7090.0,
+                1190.0,
+                7260.0,
+                1190.0,
+                7260.0,
+                1230.0,
+                7090.0,
+                1230.0
+            ]
+        },
+        {
+            "show": false,
+            "through": true,
+            "vertices": [
+                1670.0,
+                400.0,
+                1780.0,
+                400.0,
+                1840.0,
+                430.0,
+                1970.0,
+                430.0,
+                1970.0,
+                450.0,
+                1840.0,
+                450.0,
+                1780.0,
+                420.0,
+                1670.0,
+                420.0
+            ]
+        },
+        {
+            "show": true,
+            "through": false,
+            "vertices": [
+                2830.0,
+                1170.0,
+                3000.0,
+                1170.0,
+                3000.0,
+                1210.0,
+                2830.0,
+                1210.0
+            ]
+        }
+    ],
+    "title": "test_level.json",
+    "width": 7680.0
+}

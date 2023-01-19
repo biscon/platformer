@@ -1,0 +1,743 @@
+{
+    "ambientColor": [
+        0.05,
+        0.05,
+        0.05,
+        1.0
+    ],
+    "entities": [
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/trashcan.png",
+                "height": 22.0,
+                "lightMap": false,
+                "width": 27.0
+            },
+            "transform": {
+                "layer": 1,
+                "pos": [
+                    1610.0,
+                    720.0
+                ],
+                "rotation": 0.0,
+                "scale": 4.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/tree.png",
+                "height": 67.0,
+                "lightMap": false,
+                "width": 67.0
+            },
+            "transform": {
+                "layer": 2,
+                "pos": [
+                    2759.0,
+                    403.0
+                ],
+                "rotation": 0.0,
+                "scale": 6.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    0.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "terrain": {
+                "show": true,
+                "through": false,
+                "light": false,
+                "vertices": [
+                    -0.0,
+                    760.0,
+                    410.0,
+                    760.0,
+                    710.0,
+                    860.0,
+                    970.0,
+                    860.0,
+                    1200.0,
+                    800.0,
+                    1900.0,
+                    800.0,
+                    1920.0,
+                    1080.0,
+                    -0.0,
+                    1080.0
+                ]
+            },
+            "transform": {
+                "layer": -5,
+                "pos": [
+                    0.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "terrain": {
+                "show": true,
+                "through": false,
+                "light": false,
+                "vertices": [
+                    0.0,
+                    -180.0,
+                    1920.0,
+                    -180.0,
+                    3840.0,
+                    -90.0,
+                    3840.0,
+                    200.0,
+                    2650.0,
+                    150.0,
+                    1450.0,
+                    170.0,
+                    1200.0,
+                    160.0,
+                    830.0,
+                    170.0,
+                    470.0,
+                    120.0,
+                    170.0,
+                    140.0,
+                    0.0,
+                    170.0
+                ]
+            },
+            "transform": {
+                "layer": -5,
+                "pos": [
+                    0.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/lights/pendel_4x.png",
+                "height": 189.0,
+                "lightMap": true,
+                "width": 210.0
+            },
+            "transform": {
+                "layer": 1,
+                "pos": [
+                    890.3598022460938,
+                    548.2288818359375
+                ],
+                "rotation": 0.0,
+                "scale": 4.0
+            },
+            "verletMesh": {
+                "attachOffset": [
+                    0.0,
+                    -50.0
+                ],
+                "gravity": 1000.0,
+                "points": [
+                    {
+                        "locked": true,
+                        "position": [
+                            1000.0,
+                            100.0
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            996.0724487304688,
+                            120.76974487304688
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            991.872314453125,
+                            142.5647735595703
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            988.058837890625,
+                            162.19786071777344
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            983.9327392578125,
+                            182.84786987304688
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            979.6129150390625,
+                            203.39627075195313
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            974.5083618164063,
+                            224.42445373535156
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            968.643310546875,
+                            244.2112579345703
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            961.70751953125,
+                            262.9701232910156
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            953.37939453125,
+                            281.85308837890625
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            908.0601196289063,
+                            283.55078125
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            979.6392211914063,
+                            319.2708740234375
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            818.678466796875,
+                            462.7145690917969
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            890.3598022460938,
+                            498.2288818359375
+                        ]
+                    }
+                ],
+                "solveIterations": 5,
+                "sticks": [
+                    {
+                        "indexA": 0,
+                        "indexB": 1,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 1,
+                        "indexB": 2,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 2,
+                        "indexB": 3,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 3,
+                        "indexB": 4,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 4,
+                        "indexB": 5,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 5,
+                        "indexB": 6,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 6,
+                        "indexB": 7,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 7,
+                        "indexB": 8,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 8,
+                        "indexB": 9,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 9,
+                        "indexB": 10,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 9,
+                        "indexB": 11,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 10,
+                        "indexB": 11,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 10,
+                        "indexB": 12,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 11,
+                        "indexB": 13,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 12,
+                        "indexB": 13,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 10,
+                        "indexB": 13,
+                        "lockLength": true
+                    }
+                ]
+            }
+        },
+        {
+            "flickerEffect": {
+                "minDuration": 0.01,
+                "maxDuration": 0.25
+            },
+            "pointLight": {
+                "innerColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "innerRadius": 101.0,
+                "middleColor": [
+                    0.75,
+                    0.75,
+                    0.75,
+                    0.75
+                ],
+                "outerColor": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "outerRadius": 343.0,
+                "segments": 64
+            },
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    1580.0,
+                    670.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "terrain": {
+                "show": true,
+                "through": false,
+                "light": false,
+                "vertices": [
+                    2230.0,
+                    800.0,
+                    3840.0,
+                    800.0,
+                    3840.0,
+                    1080.0,
+                    2220.0,
+                    1080.0
+                ]
+            },
+            "transform": {
+                "layer": -5,
+                "pos": [
+                    0.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "pointLight": {
+                "innerColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "innerRadius": 268.0,
+                "middleColor": [
+                    0.75,
+                    0.75,
+                    0.75,
+                    0.75
+                ],
+                "outerColor": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "outerRadius": 721.0,
+                "segments": 64
+            },
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    2460.0,
+                    640.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "glowEffect": {
+                "duration": 5.0
+            },
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/tree.png",
+                "height": 67.0,
+                "lightMap": false,
+                "width": 67.0
+            },
+            "transform": {
+                "layer": -1,
+                "pos": [
+                    2280.0,
+                    404.0
+                ],
+                "rotation": 0.0,
+                "scale": 6.0
+            }
+        },
+        {
+            "collision": true,
+            "path": {
+                "reverse": true,
+                "waypoints": [
+                    1920.0,
+                    1080.0,
+                    1920.0,
+                    540.0,
+                    480.0,
+                    540.0
+                ]
+            },
+            "platform": {
+                "easeAmount": 1.0,
+                "size": [
+                    300.0,
+                    40.0
+                ],
+                "speed": 200.0,
+                "waitTime": 1.0
+            },
+            "terrain": {
+                "show": true,
+                "through": false,
+                "light": true,
+                "color": [0.03, 0.23, 0.13, 1.0],
+                "vertices": [
+                    1920.0,
+                    564.418212890625,
+                    2220.0,
+                    564.418212890625,
+                    2220.0,
+                    604.418212890625,
+                    1920.0,
+                    604.418212890625
+                ]
+            },
+            "transform": {
+                "layer": 1,
+                "pos": [
+                    1920.0,
+                    564.418212890625
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            },
+            "pointLight": {
+                "innerColor": [
+                    1.0,
+                    0.3,
+                    0.3,
+                    1.0
+                ],
+                "innerRadius": 50.0,
+                "middleColor": [
+                    1.0,
+                    0.3,
+                    0.3,
+                    0.75
+                ],
+                "outerColor": [
+                    1.0,
+                    0.3,
+                    0.3,
+                    0.0
+                ],
+                "outerRadius": 150.0,
+                "segments": 32
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    0.0,
+                    510.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    510.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    510.0,
+                    510.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    1020.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    1020.0,
+                    510.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    1530.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    1530.0,
+                    510.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    2040.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    2040.0,
+                    510.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    2550.0,
+                    510.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/cave_stone_wall.png",
+                "height": 512.0,
+                "lightMap": false,
+                "width": 512.0
+            },
+            "transform": {
+                "layer": -10,
+                "pos": [
+                    2550.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        }
+    ],
+    "height": 1080.0,
+    "skyColor": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "title": "test_level.json",
+    "width": 3840.0
+}
