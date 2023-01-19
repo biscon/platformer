@@ -80,6 +80,7 @@ private:
     LevelConfig config;
     std::string filenameToLoad;
     bool loading = false;
+    Vector2 camTarget;
 
     void freeLutTextures();
     void createPlayer();

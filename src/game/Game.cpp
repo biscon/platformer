@@ -56,8 +56,8 @@ bool Game::update(double frameDelta) {
             level->setDebug(showFps);
         }
         if(action.id == INPUT_ACTION_TOGGLE_EDIT) {
-            //editMode = !editMode;
-            //level->setEditMode(editMode);
+            editMode = !editMode;
+            level->setEditMode(editMode);
         }
         if(action.id == INPUT_ACTION_ESCAPE) {
             SDL_Log("Shutting down");
@@ -67,20 +67,18 @@ bool Game::update(double frameDelta) {
             level->save("desert_level.json");
         }
         if(action.id == INPUT_ACTION_LOAD) {
+            editor->reset();
             level->transitionToLevel("desert_level.json");
         }
-    }
-
-    if(editMode) {
-        processEditModeInput(static_cast<float>(frameDelta));
     }
 
     //SDL_Log("New frame ----------------------------");
     level->update(static_cast<float>(frameDelta));
 
-    auto pos = level->getCamera().focusArea.center;
-    pos.x -= level->getCamera().scrollX;
-    pos.y -= level->getCamera().scrollY;
+    if(editMode) {
+        processEditModeInput(static_cast<float>(frameDelta));
+        editor->update(static_cast<float>(frameDelta));
+    }
 
     if(showFps) {
         double fps = 1.0 / frameDelta;

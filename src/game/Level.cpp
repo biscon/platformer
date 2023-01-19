@@ -206,7 +206,7 @@ void Level::update(float deltaTime) {
     //renderBuffers.lit.pushClear(TRANSPARENT);
 
     if(editMode) {
-        //camera->update(editor->camTarget, deltaTime);
+        camera->update(camTarget, deltaTime);
     } else {
         // update camera
         FloatRect bounds;
@@ -219,10 +219,6 @@ void Level::update(float deltaTime) {
     }
 
     world->tick(deltaTime);
-
-    if(editMode) {
-        //editor->update(deltaTime);
-    }
 
     if(loading) {
         if(transition->isDone && transition->state == TransitionState::Out) {
@@ -242,7 +238,7 @@ void Level::update(float deltaTime) {
 
 
 void Level::translateEditCam(Vector2& offset) {
-    //editor->camTarget += offset;
+    camTarget += offset;
 }
 
 void Level::setDebug(bool debug) {
@@ -260,8 +256,8 @@ void Level::setEditMode(bool editMode) {
         bounds.zero();
         getBounds(player, bounds);
 
-        //editor->camTarget = Vector2(bounds.left + (bounds.width()*0.5f),
-        //                            bounds.top + (bounds.height()*0.5f));
+        camTarget = Vector2(bounds.left + (bounds.width()*0.5f),
+                            bounds.top + (bounds.height()*0.5f));
 
         world->disableSystem(actorSystem);
         world->disableSystem(collisionSystem);
