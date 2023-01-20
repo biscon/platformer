@@ -375,14 +375,10 @@ int main()
         oldTime = GetTime();
         UpdateInput(*inputDevice, *renderDevice);
 
-
-
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame(SDLWindow);
         ImGui::NewFrame();
-        //ImGui::ShowDemoWindow();
-
 
         GLenum err;
         while ((err = glGetError()) != GL_NO_ERROR) {

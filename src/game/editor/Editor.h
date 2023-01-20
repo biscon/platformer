@@ -57,6 +57,8 @@ private:
     void onLeftDown(float x, float y);
     void onLeftUp(float x, float y);
     void cycleGridSize();
+
+    void renderToolButtons();
 };
 
 
