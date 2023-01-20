@@ -19,8 +19,11 @@ set(CMAKE_EXE_LINKER_FLAGS "-L/opt/homebrew/Cellar/sdl2/2.26.2/lib -lSDL2")
 endif()
 
 # includes cmake/FindSDL2.cmake
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+#set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
+if(UNIX AND NOT APPLE)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+endif()
 #if(WIN32)
 #endif()
 
@@ -28,6 +31,7 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "../")
 find_package(ZLIB REQUIRED)
+set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
@@ -58,7 +62,8 @@ set(IM_GUI_SOURCE_FILES
         src/imgui/imgui.cpp
         src/imgui/imgui_demo.cpp
         src/imgui/imgui_draw.cpp
-        src/imgui/imgui_widgets.cpp)
+        src/imgui/imgui_widgets.cpp
+        src/imgui/imgui_tables.cpp)
 
 set(UTIL_SOURCE_FILES
         src/util/string_util.cpp
@@ -189,7 +194,7 @@ set(GAME_SOURCE_FILES
         src/game/editor/ImageTool.cpp
         src/game/editor/ImageTool.h
         src/game/editor/LightTool.cpp
-        src/game/editor/LightTool.h src/game/imeditor/Editor.cpp src/game/imeditor/Editor.h)
+        src/game/editor/LightTool.h)
 
 add_executable(game ${GAME_SOURCE_FILES} ${ENGINE_SOURCE_FILES} ${UTIL_SOURCE_FILES} ${IM_GUI_SOURCE_FILES} ${CGLM_SOURCE_FILES})
 
