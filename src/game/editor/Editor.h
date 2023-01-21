@@ -25,6 +25,44 @@ struct ToolbarItem {
     MappedId inputId = 0;
 };
 
+
+class ComponentType
+{
+public:
+    enum Value
+    {
+        Transform,
+        Terrain,
+    };
+
+    ComponentType() = default;
+    constexpr explicit ComponentType(Value aComponentType) : value(aComponentType) { }
+    // Allow switch and comparisons.
+    constexpr explicit operator Value() const { return value; }
+    constexpr bool operator==(ComponentType a) const { return value == a.value; }
+    constexpr bool operator!=(ComponentType a) const { return value != a.value; }
+    
+    //constexpr bool IsYellow() const { return value == Transform; }
+
+    std::string name() {
+        switch(value) {
+            case Transform: return "Transform";
+            case Terrain: return "Terrain";
+
+        }
+        return "Unknown";
+    }
+
+private:
+    Value value;
+};
+
+struct EntityMetaData {
+    Entity *entity;
+    std::string name;
+    std::vector<ComponentType> componentTypes;
+};
+
 class Editor {
 public:
     Vector2 camTarget;
