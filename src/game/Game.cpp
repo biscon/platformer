@@ -63,9 +63,11 @@ bool Game::update(double frameDelta) {
         if(action.id == INPUT_ACTION_SAVE) {
             level->save("desert_level.json");
         }
+
         if(action.id == INPUT_ACTION_LOAD) {
-            editor->reset();
-            level->transitionToLevel("desert_level.json");
+            level->transitionToLevel("desert_level.json", [this](){
+                editor->reset();
+            });
         }
     }
 

@@ -228,6 +228,9 @@ void Level::update(float deltaTime) {
             getBounds(player, bounds);
             Vector2 focus = Vector2(bounds.centerX() - camera->scrollX, bounds.centerY() - camera->scrollY);
             transition->start(TransitionState::In, focus);
+            if(onTransitionDone != nullptr) {
+                onTransitionDone();
+            }
         } else if(transition->isDone && transition->state == TransitionState::In) {
             loading = false;
         }
@@ -434,7 +437,8 @@ void Level::load(std::string filename) {
     createPlayer();
 }
 
-void Level::transitionToLevel(std::string filename) {
+void Level::transitionToLevel(std::string filename, std::function<void()> callback) {
+    onTransitionDone = std::move(callback);
     filenameToLoad = std::move(filename);
     loading = true;
     FloatRect bounds;

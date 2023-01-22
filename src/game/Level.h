@@ -8,6 +8,7 @@
 #define GAME_LEVEL_H
 
 #include <memory>
+#include <functional>
 #include <ECS.h>
 #include <RenderBuffers.h>
 #include <LevelConfig.h>
@@ -52,7 +53,7 @@ public:
     void save(std::string filename);
     void load(std::string filename);
 
-    void transitionToLevel(std::string filename);
+    void transitionToLevel(std::string filename, std::function<void()> callback);
 
 private:
     IRenderDevice& renderDevice;
@@ -81,6 +82,8 @@ private:
     std::string filenameToLoad;
     bool loading = false;
     Vector2 camTarget;
+
+    std::function<void()> onTransitionDone;
 
     void freeLutTextures();
     void createPlayer();

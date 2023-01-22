@@ -55,7 +55,7 @@ Editor::Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBu
     inputContext->registerAction(INPUT_ACTION_DOWN);
 
     propertyEditorMap[ComponentType::Transform] = std::make_unique<TransformPropertyEditor>();
-    propertyEditorMap[ComponentType::Terrain] = std::make_unique<TerrainPropertyEditor>();
+    propertyEditorMap[ComponentType::Terrain] = std::make_unique<TerrainPropertyEditor>(inputDevice, buffers, font, camera, world);
 }
 
 void Editor::update(float deltaTime) {
@@ -246,32 +246,6 @@ void Editor::onLeftUp(float x, float y) {
     SDL_Log("onLeftUp %.2f,%.2f", pos.x, pos.y);
 }
 
-void Editor::showDeleteComponentPrompt() {
-    // Always center this window when appearing
-    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-
-    if (ImGui::BeginPopupModal("Delete?", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-    {
-        ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
-        ImGui::Separator();
-
-        //static int unused_i = 0;
-        //ImGui::Combo("Combo", &unused_i, "Delete\0Delete harder\0");
-
-        static bool dont_ask_me_next_time = false;
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
-        ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
-        ImGui::PopStyleVar();
-
-        if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
-        ImGui::SetItemDefaultFocus();
-        ImGui::SameLine();
-        if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
-        ImGui::EndPopup();
-    }
-}
-
 void Editor::showEntityComponentSelector() {
     ImGui::SetNextWindowPos(ImVec2(10,10), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
@@ -335,16 +309,7 @@ void Editor::showComponentProperties() {
     }
     if(propertyEditorMap.count(selectedComponent) > 0) {
         propertyEditorMap[selectedComponent]->setSelected(selectedEntity);
-        ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
-
-        ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
-
-        std::string title = getComponentName(selectedComponent) + " Properties";
-        ImGui::Begin(title.c_str(), nullptr);
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
-            propertyEditorMap[selectedComponent]->show();
-            ImGui::PopStyleVar();
-        ImGui::End();
+        propertyEditorMap[selectedComponent]->show();
     }
 }
 

@@ -9,6 +9,11 @@
 
 void TransformPropertyEditor::show() {
     auto transform = selected->get<TransformComponent>();
+    ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
+    ImGui::Begin("Transform Properties", nullptr);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
+
     static float pos[2];
     pos[0] = transform->pos.x;
     pos[1] = transform->pos.y;
@@ -22,6 +27,9 @@ void TransformPropertyEditor::show() {
     //ImGui::InputFloat("Rotation", &transform->rotation, 0.0f, 360.0f);
     //ImGui::SliderAngle("Rotation", &transform->rotation);
     ImGui::SliderFloat("Rotation", &transform->rotation, 0.0f, 360.0f, "%.2f");
+
+    ImGui::PopStyleVar();
+    ImGui::End();
 }
 
 void TransformPropertyEditor::setSelected(Entity *ent) {
