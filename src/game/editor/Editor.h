@@ -8,6 +8,8 @@
 #include <memory>
 #include <ECS.h>
 #include <RenderBuffers.h>
+#include <unordered_set>
+#include <map>
 #include "../../renderer/RenderCmdBuffer.h"
 #include "../../renderer/Gui.h"
 #include "../Camera.h"
@@ -25,42 +27,26 @@ struct ToolbarItem {
     MappedId inputId = 0;
 };
 
-
-class ComponentType
+enum class ComponentType
 {
-public:
-    enum Value
-    {
-        Transform,
-        Terrain,
-    };
-
-    ComponentType() = default;
-    constexpr explicit ComponentType(Value aComponentType) : value(aComponentType) { }
-    // Allow switch and comparisons.
-    constexpr explicit operator Value() const { return value; }
-    constexpr bool operator==(ComponentType a) const { return value == a.value; }
-    constexpr bool operator!=(ComponentType a) const { return value != a.value; }
-    
-    //constexpr bool IsYellow() const { return value == Transform; }
-
-    std::string name() {
-        switch(value) {
-            case Transform: return "Transform";
-            case Terrain: return "Terrain";
-
-        }
-        return "Unknown";
-    }
-
-private:
-    Value value;
+    None,
+    Transform,
+    Terrain,
+    Ladder,
+    Image,
+    Platform,
+    Path,
+    Collision,
+    PointLight,
+    FlickerEffect,
+    GlowEffect,
 };
 
 struct EntityMetaData {
     Entity *entity;
     std::string name;
-    std::vector<ComponentType> componentTypes;
+    std::map<ComponentType, bool> componentTypes;
+    //std::vector<ComponentType> componentTypes;
 };
 
 class Editor {
@@ -86,6 +72,10 @@ private:
     Entity* selected = nullptr;
     i32 currentGridSize = 2;
 
+    std::unordered_map<size_t, EntityMetaData> metaData;
+    Entity* selectedEntity = nullptr;
+    ComponentType selectedComponent = ComponentType::None;
+
 
     void selectToolByInputId(MappedId inputId);
     void resetTools();
@@ -96,8 +86,15 @@ private:
     void onLeftUp(float x, float y);
     void cycleGridSize();
 
-    void renderToolButtons();
+    void showEntityComponentSelector();
+
+    void updateMetaData();
+
+    void showDeleteComponentPrompt();
+
+    void showComponentProperties();
 };
 
+std::string getComponentName(ComponentType type);
 
 #endif //PLATFORMER_EDITOR_H

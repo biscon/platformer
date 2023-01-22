@@ -25,6 +25,8 @@
 #include "../components/PathComponent.h"
 #include "../components/LadderComponent.h"
 #include "imgui.h"
+#include "../components/FlickerEffectComponent.h"
+#include "../components/GlowEffectComponent.h"
 
 
 Editor::Editor(std::unique_ptr<Gui> &gui, IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font) :
@@ -225,7 +227,10 @@ void Editor::update(float deltaTime) {
 
     ui->render(deltaTime);
 
-    renderToolButtons();
+
+    updateMetaData();
+    showEntityComponentSelector();
+    showComponentProperties();
 }
 
 
@@ -364,7 +369,33 @@ void Editor::onLeftUp(float x, float y) {
     toolbar[selectedTool]->tool->onLeftUp(pos);
 }
 
-void Editor::renderToolButtons() {
+void Editor::showDeleteComponentPrompt() {
+    // Always center this window when appearing
+    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+    if (ImGui::BeginPopupModal("Delete?", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
+        ImGui::Separator();
+
+        //static int unused_i = 0;
+        //ImGui::Combo("Combo", &unused_i, "Delete\0Delete harder\0");
+
+        static bool dont_ask_me_next_time = false;
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+        ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
+        ImGui::PopStyleVar();
+
+        if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+        ImGui::SetItemDefaultFocus();
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+        ImGui::EndPopup();
+    }
+}
+
+void Editor::showEntityComponentSelector() {
     ImGui::SetNextWindowSize(ImVec2(200,450), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Entities"))
     {
@@ -375,48 +406,41 @@ void Editor::renderToolButtons() {
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
     ImGui::Columns(1);
     //ImGui::Separator();
-    static std::map<i32, bool> selection;
 
-    struct funcs
-    {
-        static void showEntityNode(const char* prefix, int uid)
+    for (Entity *entity : world->all(false)) {
+        auto entityId = entity->getEntityId();
+        ImGui::PushID((i32) entityId);                      // Use object uid as identifier. Most commonly you could also use the object pointer as a base ID.
+        ImGui::AlignTextToFramePadding();  // Text and Tree nodes are less high than regular widgets, here we add vertical spacing to make the tree lines equal high.
+
+        bool node_open = ImGui::TreeNode(metaData[entityId].name.c_str());
+        if (node_open)
         {
-            ImGui::PushID(uid);                      // Use object uid as identifier. Most commonly you could also use the object pointer as a base ID.
-            ImGui::AlignTextToFramePadding();  // Text and Tree nodes are less high than regular widgets, here we add vertical spacing to make the tree lines equal high.
-            bool node_open = ImGui::TreeNode("Object", "%s %u", prefix, uid);
-            //ImGui::NextColumn();
-            //ImGui::AlignTextToFramePadding();
-            //ImGui::Text("my sailor is rich");
-            //ImGui::NextColumn();
-            if (node_open)
-            {
-                for (i32 i = 0; i < 2; i++)
-                {
-                    ImGui::PushID(i); // Use field index as identifier.
-                    // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
-                    ImGui::AlignTextToFramePadding();
-
-                    i32 id = (uid * 100) + i;
-                    if(selection.count(id) == 0) {
-                        selection[id] = false;
-                    }
-                    ImGui::Selectable("Component", &selection[id]);
-                    /*
-                    bool field_open = ImGui::TreeNodeEx("Field", ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet, "Component %d", i);
-                    if(field_open) {
-                        SDL_Log("Field open");
-                    }
-                     */
-                    ImGui::PopID();
+            for(auto& pair : metaData[entityId].componentTypes) {
+                auto type = pair.first;
+                ImGui::PushID(&pair.first); // Use field index as identifier.
+                // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
+                ImGui::AlignTextToFramePadding();
+                bool isSelected = false;
+                if(selectedEntity == entity && selectedComponent == type) {
+                    isSelected = true;
                 }
-                ImGui::TreePop();
-            }
-            ImGui::PopID();
-        }
-    };
+                if(ImGui::Selectable(getComponentName(type).c_str(), isSelected)) {
+                    selectedEntity = entity;
+                    selectedComponent = type;
+                }
+                if (ImGui::BeginPopupContextItem("componentContextMenu"))
+                {
+                    if (ImGui::Selectable("Delete")) {
+                        SDL_Log("Clicked delete");
+                    }
+                    ImGui::EndPopup();
+                }
 
-    for (Entity *ent : world->all(false)) {
-        funcs::showEntityNode("Entity", ent->getEntityId());
+                ImGui::PopID();
+            }
+            ImGui::TreePop();
+        }
+        ImGui::PopID();
     }
 
     ImGui::Columns(1);
@@ -426,4 +450,61 @@ void Editor::renderToolButtons() {
 
     ImGui::ShowDemoWindow();
 }
+
+void Editor::showComponentProperties() {
+    if(selectedComponent == ComponentType::None) {
+        return;
+    }
+    //std::string title = getComponentName(selectedComponent) + " properties";
+    ImGui::Begin("Properties", nullptr);
+
+    ImGui::End();
+}
+
+static void insertComponentIfNotExist(std::map<ComponentType, bool> &componentTypes, ComponentType type) {
+    if(componentTypes.count(type) == 0) {
+        componentTypes[type] = false;
+    }
+}
+
+void Editor::updateMetaData() {
+    //metaData.clear();
+    for (Entity *ent : world->all(false)) {
+
+        if(metaData.count(ent->getEntityId()) == 0) {
+            EntityMetaData entityMetaData;
+            entityMetaData.entity = ent;
+            entityMetaData.name = string_format("Entity %zu", ent->getEntityId());
+            metaData[ent->getEntityId()] = entityMetaData;
+        }
+        EntityMetaData& entityMetaData = metaData[ent->getEntityId()];
+        if(ent->has<TransformComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Transform);
+        if(ent->has<TerrainComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Terrain);
+        if(ent->has<LadderComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Ladder);
+        if(ent->has<ImageComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Image);
+        if(ent->has<PlatformComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Platform);
+        if(ent->has<PathComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Path);
+        if(ent->has<CollisionComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Collision);
+        if(ent->has<PointLightComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::PointLight);
+        if(ent->has<FlickerEffectComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::FlickerEffect);
+        if(ent->has<GlowEffectComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::GlowEffect);
+    }
+}
+
+std::string getComponentName(ComponentType type) {
+    switch(type) {
+        case ComponentType::Transform: return "Transform";
+        case ComponentType::Terrain: return "Terrain";
+        case ComponentType::Ladder: return "Ladder";
+        case ComponentType::Image: return "Image";
+        case ComponentType::Platform: return "Platform";
+        case ComponentType::Path: return "Path";
+        case ComponentType::Collision: return "Collision";
+        case ComponentType::PointLight: return "PointLight";
+        case ComponentType::FlickerEffect: return "FlickerEffect";
+        case ComponentType::GlowEffect: return "GlowEffect";
+    }
+    return "Unknown";
+}
+
 

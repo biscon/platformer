@@ -299,8 +299,6 @@ void TerrainTool::renderInfo() {
         renderTextRight("Delete last vertex [DEL]", 3);
         renderTextRight("Finish terrain [ENTER]", 4);
     }
-
-
 }
 
 
