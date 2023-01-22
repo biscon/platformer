@@ -27,10 +27,12 @@
 #include "imgui.h"
 #include "../components/FlickerEffectComponent.h"
 #include "../components/GlowEffectComponent.h"
+#include "TransformPropertyEditor.h"
+#include "TerrainPropertyEditor.h"
 
 
-Editor::Editor(std::unique_ptr<Gui> &gui, IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font) :
-        ui(std::move(gui)), inputDevice(inputDevice), world(world), camera(camera), buffers(buffers), font(font) {
+Editor::Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font) :
+        inputDevice(inputDevice), world(world), camera(camera), buffers(buffers), font(font) {
     inputContext = std::make_shared<Input::InputContext>();
     inputDevice.registerContext(inputContext);
     inputContext->registerAction(INPUT_ACTION_LMB_DOWN);
@@ -52,111 +54,12 @@ Editor::Editor(std::unique_ptr<Gui> &gui, IInputDevice &inputDevice, World* worl
     inputContext->registerAction(INPUT_ACTION_UP);
     inputContext->registerAction(INPUT_ACTION_DOWN);
 
-    float margin = 4;
-    float width = 150;
-    float height = 50;
-    float top = 1080 - margin - height;
-    
-
-    auto move = std::make_unique<ToolbarItem>(std::unique_ptr<ITool>(new MoveTool(inputDevice, buffers.unlit, font, camera, world)));
-    move->name = "move";
-    move->button.bounds = FloatRect(margin, top, margin+width, top + height);
-    move->button.text = "1. Move";
-    move->button.toggled = false;
-    ui->add(&move->button);
-    move->inputId = INPUT_ACTION_TOOL_1;
-    margin += move->button.bounds.width() + 4;
-    toolbar.emplace_back(std::move(move));
-
-
-    auto terrain = std::make_unique<ToolbarItem>(std::unique_ptr<ITool>(new TerrainTool(inputDevice, buffers.unlit, font, camera, world)));
-    terrain->name = "terrain";
-    terrain->button.bounds = FloatRect(margin, top, margin+width, top + height);
-    terrain->button.text = "2. Terrain";
-    terrain->button.toggled = false;
-    ui->add(&terrain->button);
-    terrain->inputId = INPUT_ACTION_TOOL_2;
-    margin += terrain->button.bounds.width() + 4;
-    toolbar.emplace_back(std::move(terrain));
-
-    auto ladder = std::make_unique<ToolbarItem>(std::unique_ptr<ITool>(new LadderTool(inputDevice, buffers.unlit, font, camera, world)));
-    ladder->name = "Ladder";
-    ladder->button.bounds = FloatRect(margin, top, margin+width, top + height);
-    ladder->button.text = "3. Ladder";
-    ladder->button.toggled = false;
-    ui->add(&ladder->button);
-    ladder->inputId = INPUT_ACTION_TOOL_3;
-    margin += ladder->button.bounds.width() + 4;
-    toolbar.emplace_back(std::move(ladder));
-
-    auto image = std::make_unique<ToolbarItem>(std::unique_ptr<ITool>(new ImageTool(inputDevice, buffers.unlit, font, camera, world)));
-    image->name = "Image";
-    image->button.bounds = FloatRect(margin, top, margin+width, top + height);
-    image->button.text = "4. Image";
-    image->button.toggled = false;
-    ui->add(&image->button);
-    image->inputId = INPUT_ACTION_TOOL_4;
-    margin += image->button.bounds.width() + 4;
-    toolbar.emplace_back(std::move(image));
-
-    auto platform = std::make_unique<ToolbarItem>(std::unique_ptr<ITool>(new PlatformTool(inputDevice, buffers.unlit, font, camera, world)));
-    platform->name = "platform";
-    platform->button.bounds = FloatRect(margin, top, margin+width, top + height);
-    platform->button.text = "5. Platform";
-    platform->button.toggled = false;
-    ui->add(&platform->button);
-    platform->inputId = INPUT_ACTION_TOOL_5;
-    margin += platform->button.bounds.width() + 4;
-    toolbar.emplace_back(std::move(platform));
-
-    auto path = std::make_unique<ToolbarItem>(std::unique_ptr<ITool>(new PathTool(inputDevice, buffers.unlit, font, camera, world)));
-    path->name = "path";
-    path->button.bounds = FloatRect(margin, top, margin+width, top + height);
-    path->button.text = "6. Path";
-    path->button.toggled = false;
-    ui->add(&path->button);
-    path->inputId = INPUT_ACTION_TOOL_6;
-    margin += path->button.bounds.width() + 4;
-    toolbar.emplace_back(std::move(path));
-
-    auto light = std::make_unique<ToolbarItem>(std::unique_ptr<ITool>(new LightTool(inputDevice, buffers, font, camera, world)));
-    light->name = "light";
-    light->button.bounds = FloatRect(margin, top, margin+width, top + height);
-    light->button.text = "7. Light";
-    light->button.toggled = false;
-    ui->add(&light->button);
-    light->inputId = 0;
-    margin += light->button.bounds.width() + 4;
-    toolbar.emplace_back(std::move(light));
-}
-
-void Editor::selectToolByInputId(MappedId inputId) {
-    for(i32 i = 0; i < toolbar.size(); ++i) {
-        auto& item = toolbar[i];
-        if(item->inputId == inputId && selectedTool != i) {
-            selectedTool = i;
-            resetTools();
-        }
-        item->button.toggled = i == selectedTool;
-    }
+    propertyEditorMap[ComponentType::Transform] = std::make_unique<TransformPropertyEditor>();
+    propertyEditorMap[ComponentType::Terrain] = std::make_unique<TerrainPropertyEditor>();
 }
 
 void Editor::update(float deltaTime) {
     bool ignoreClick = false;
-
-    ui->processInput();
-
-    for(i32 i = 0; i < toolbar.size(); ++i) {
-        auto& item = toolbar[i];
-        if(ui->wasClicked(&item->button)) {
-            ignoreClick = true;
-            if(i != selectedTool) {
-                selectedTool = i;
-                resetTools();
-            }
-        }
-        item->button.toggled = i == selectedTool;
-    }
 
     // dispatch input
     Input::Action action = {};
@@ -182,33 +85,13 @@ void Editor::update(float deltaTime) {
             case INPUT_ACTION_TOOL_4:
             case INPUT_ACTION_TOOL_5:
             case INPUT_ACTION_TOOL_6:{
-                selectToolByInputId(action.id);
                 break;
             }
             default: {
-                if(!toolbar[selectedTool]->tool->onKeyboard(action.id)) {
-                    if(action.id == INPUT_ACTION_DEL) {
-                        onDelete();
-                    }
-
-                    if(action.id == INPUT_ACTION_DUPLICATE && selected) {
-                        duplicate(selected);
-                    }
-                    if(action.id == INPUT_ACTION_GRID) {
-                        cycleGridSize();
-                    }
-                }
                 break;
             }
         }
     }
-
-    auto newSelected = toolbar[selectedTool]->tool->getNewSelected();
-    if(newSelected) {
-        setSelected(newSelected);
-    }
-
-    toolbar[selectedTool]->tool->onUpdate();
 
     float margin = 8.0f;
     FloatRect levelRect(-camera.scrollX, -camera.scrollY, -camera.scrollX + camera.levelWidth, -camera.scrollY + camera.levelHeight);
@@ -224,9 +107,6 @@ void Editor::update(float deltaTime) {
 
     text = string_format("GridSize: %d", getGridSizes()[currentGridSize]);
     buffers.unlit.pushText(text, &font, 1920.0f - font.measureTextWidth(text) - margin, 1080.0f - margin, WHITE);
-
-    ui->render(deltaTime);
-
 
     updateMetaData();
     showEntityComponentSelector();
@@ -246,20 +126,21 @@ void Editor::cycleGridSize() {
 void Editor::reset() {
     setSelected(nullptr);
     selectedTool = 0;
-    resetTools();
+
+    selectedComponent = ComponentType::None;
+    selectedEntity = nullptr;
+    resetEditors();
+    metaData.clear();
 }
 
-void Editor::resetTools() {
-   for(auto& item : toolbar) {
-       item->tool->reset();
-   }
+void Editor::resetEditors() {
+    for(auto& pair : propertyEditorMap) {
+        pair.second->setSelected(nullptr);
+    }
 }
 
 void Editor::setSelected(Entity *ent) {
     selected = ent;
-    for(auto& item : toolbar) {
-        item->tool->setSelected(ent);
-    }
 }
 
 void Editor::duplicate(Entity *ent) {
@@ -305,68 +186,64 @@ void Editor::onLeftDown(float x, float y) {
     Vector2 pos(x + camera.scrollX, y + camera.scrollY);
     SDL_Log("onLeftDown %.2f,%.2f", pos.x, pos.y);
 
-    if(!toolbar[selectedTool]->tool->onLeftDown(pos)) {
-        bool clickedNothing = true;
-        for (Entity *ent : world->all(false)) {
-            auto terrain = ent->get<TerrainComponent>();
-            auto ladder = ent->get<LadderComponent>();
-            auto image = ent->get<ImageComponent>();
-            auto transform = ent->get<TransformComponent>();
-            auto light = ent->get<PointLightComponent>();
-            if(image.isValid() && transform.isValid()) {
-                FloatRect imageRect;
-                imageRect.left = transform->pos.x;
-                imageRect.top = transform->pos.y;
-                imageRect.right = transform->pos.x + (transform->scale * image->width);
-                imageRect.bottom = transform->pos.y + (transform->scale * image->height);
-                if(imageRect.containsPoint(pos.x, pos.y)) {
-                    clickedNothing = false;
-                    if(ent != selected) {
-                        setSelected(ent);
-                        break;
-                    }
-                }
-            }
-            if(terrain.isValid()) {
-                if(pointInPolygon(pos, terrain->polygon)) {
-                    clickedNothing = false;
-                    if(ent != selected) {
-                        setSelected(ent);
-                        break;
-                    }
-                }
-            }
-            if(ladder.isValid()) {
-                if(ladder->rect.containsPoint(pos.x, pos.y)) {
-                    clickedNothing = false;
-                    if(ent != selected) {
-                        setSelected(ent);
-                        break;
-                    }
-                }
-            }
-            if(light.isValid() && transform.isValid()) {
-                if(pointInCircle(pos, transform->pos, light->outerRadius)) {
-                    clickedNothing = false;
-                    if(ent != selected) {
-                        setSelected(ent);
-                        break;
-                    }
+    bool clickedNothing = true;
+    for (Entity *ent : world->all(false)) {
+        auto terrain = ent->get<TerrainComponent>();
+        auto ladder = ent->get<LadderComponent>();
+        auto image = ent->get<ImageComponent>();
+        auto transform = ent->get<TransformComponent>();
+        auto light = ent->get<PointLightComponent>();
+        if(image.isValid() && transform.isValid()) {
+            FloatRect imageRect;
+            imageRect.left = transform->pos.x;
+            imageRect.top = transform->pos.y;
+            imageRect.right = transform->pos.x + (transform->scale * image->width);
+            imageRect.bottom = transform->pos.y + (transform->scale * image->height);
+            if(imageRect.containsPoint(pos.x, pos.y)) {
+                clickedNothing = false;
+                if(ent != selected) {
+                    setSelected(ent);
+                    break;
                 }
             }
         }
-        if(clickedNothing) {
-            SDL_Log("clicked nothing");
-            setSelected(nullptr);
+        if(terrain.isValid()) {
+            if(pointInPolygon(pos, terrain->polygon)) {
+                clickedNothing = false;
+                if(ent != selected) {
+                    setSelected(ent);
+                    break;
+                }
+            }
         }
+        if(ladder.isValid()) {
+            if(ladder->rect.containsPoint(pos.x, pos.y)) {
+                clickedNothing = false;
+                if(ent != selected) {
+                    setSelected(ent);
+                    break;
+                }
+            }
+        }
+        if(light.isValid() && transform.isValid()) {
+            if(pointInCircle(pos, transform->pos, light->outerRadius)) {
+                clickedNothing = false;
+                if(ent != selected) {
+                    setSelected(ent);
+                    break;
+                }
+            }
+        }
+    }
+    if(clickedNothing) {
+        SDL_Log("clicked nothing");
+        setSelected(nullptr);
     }
 }
 
 void Editor::onLeftUp(float x, float y) {
     Vector2 pos(x + camera.scrollX, y + camera.scrollY);
     SDL_Log("onLeftUp %.2f,%.2f", pos.x, pos.y);
-
-    toolbar[selectedTool]->tool->onLeftUp(pos);
 }
 
 void Editor::showDeleteComponentPrompt() {
@@ -396,7 +273,8 @@ void Editor::showDeleteComponentPrompt() {
 }
 
 void Editor::showEntityComponentSelector() {
-    ImGui::SetNextWindowSize(ImVec2(200,450), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(10,10), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Entities"))
     {
         ImGui::End();
@@ -452,13 +330,22 @@ void Editor::showEntityComponentSelector() {
 }
 
 void Editor::showComponentProperties() {
-    if(selectedComponent == ComponentType::None) {
+    if(selectedComponent == ComponentType::None || selectedEntity == nullptr) {
         return;
     }
-    //std::string title = getComponentName(selectedComponent) + " properties";
-    ImGui::Begin("Properties", nullptr);
+    if(propertyEditorMap.count(selectedComponent) > 0) {
+        propertyEditorMap[selectedComponent]->setSelected(selectedEntity);
+        ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
 
-    ImGui::End();
+        ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
+
+        std::string title = getComponentName(selectedComponent) + " Properties";
+        ImGui::Begin(title.c_str(), nullptr);
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
+            propertyEditorMap[selectedComponent]->show();
+            ImGui::PopStyleVar();
+        ImGui::End();
+    }
 }
 
 static void insertComponentIfNotExist(std::map<ComponentType, bool> &componentTypes, ComponentType type) {

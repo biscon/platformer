@@ -31,10 +31,7 @@ Game::Game(Input::IInputDevice& inputDevice, IRenderDevice& renderDevice, Render
 
     level = std::make_shared<Level>(renderDevice, renderBuffers, inputDevice, *debugFont);
 
-
-    auto gui = std::make_unique<Gui>(renderBuffers.unlit, *font, inputDevice);
-    editor = std::make_unique<Editor>(gui, inputDevice, level->getWorld(), level->getCamera(), renderBuffers, *font);
-
+    editor = std::make_unique<Editor>(inputDevice, level->getWorld(), level->getCamera(), renderBuffers, *font);
 
     level->createTestLevel();
 

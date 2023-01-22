@@ -11,21 +11,12 @@
 #include <unordered_set>
 #include <map>
 #include "../../renderer/RenderCmdBuffer.h"
-#include "../../renderer/Gui.h"
 #include "../Camera.h"
 #include "ITool.h"
+#include "IComponentPropertyEditor.h"
 
 using namespace ECS;
 using namespace Renderer;
-
-struct ToolbarItem {
-    explicit ToolbarItem(std::unique_ptr<ITool> tool) : tool(std::move(tool)) {}
-
-    std::unique_ptr<ITool> tool;
-    std::string name = "";
-    ToggleButton button;
-    MappedId inputId = 0;
-};
 
 enum class ComponentType
 {
@@ -53,13 +44,12 @@ class Editor {
 public:
     Vector2 camTarget;
 
-    explicit Editor(std::unique_ptr<Gui> &gui, IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers renderBuffers, Font &font);
+    explicit Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers renderBuffers, Font &font);
 
     void update(float deltaTime);
     void reset();
 
 private:
-    std::unique_ptr<Gui> ui;
     IInputDevice &inputDevice;
     World *world;
     Camera& camera;
@@ -67,7 +57,6 @@ private:
     Font &font;
     std::shared_ptr<Input::InputContext> inputContext;
 
-    std::vector<std::unique_ptr<ToolbarItem>> toolbar;
     i32 selectedTool = 0;
     Entity* selected = nullptr;
     i32 currentGridSize = 2;
@@ -76,9 +65,9 @@ private:
     Entity* selectedEntity = nullptr;
     ComponentType selectedComponent = ComponentType::None;
 
+    std::unordered_map<ComponentType, std::unique_ptr<IComponentPropertyEditor>> propertyEditorMap;
 
-    void selectToolByInputId(MappedId inputId);
-    void resetTools();
+    void resetEditors();
     void setSelected(Entity* ent);
     void duplicate(Entity* ent);
     void onDelete();
