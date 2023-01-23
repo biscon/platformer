@@ -160,6 +160,7 @@ void Level::createPlayer() {
 
     auto atlas = std::make_shared<TextureAtlas>(renderDevice, 1024, 1024, PixelFormat::RGBA);
     player = world->create();
+    player->setName("Player");
     Vector2 pos = Vector2(120.0f, 150.0f);
 
     if(!config.spawns.empty()) {
@@ -307,6 +308,7 @@ void Level::save(std::string filename) {
             continue;
         }
         json jsonEnt;
+        jsonEnt["name"] = ent->getName();
         auto transform = ent->get<TransformComponent>();
         auto terrain = ent->get<TerrainComponent>();
         auto ladder = ent->get<LadderComponent>();
@@ -380,6 +382,9 @@ void Level::load(std::string filename) {
 
     for(auto& e : j["entities"]) {
         auto ent = world->create();
+        if(e.contains("name")) {
+            ent->setName(e["name"]);
+        }
         if(e.contains("transform")) {
             ent->assign<TransformComponent>(e["transform"]);
         }

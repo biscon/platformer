@@ -7,6 +7,7 @@
     ],
     "entities": [
         {
+            "name": "Ground",
             "terrain": {
                 "color": [
                     0.12999999523162842,
@@ -47,6 +48,7 @@
             }
         },
         {
+            "name": "Ground Image",
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/backgrounds/desert/ground.png",
@@ -65,6 +67,7 @@
             }
         },
         {
+            "name": "Ground Image",
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/backgrounds/desert/ground.png",
@@ -83,6 +86,7 @@
             }
         },
         {
+            "name": "Ground Image",
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/backgrounds/desert/ground.png",
@@ -101,6 +105,7 @@
             }
         },
         {
+            "name": "Gas Station",
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/backgrounds/desert/gas_station.png",
@@ -119,6 +124,7 @@
             }
         },
         {
+            "name": "Shop",
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/backgrounds/desert/shop.png",
@@ -137,6 +143,7 @@
             }
         },
         {
+            "name": "Pillar",
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/backgrounds/desert/pillar.png",
@@ -155,6 +162,7 @@
             }
         },
         {
+            "name": "Pillar",
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/backgrounds/desert/pillar.png",
@@ -173,6 +181,7 @@
             }
         },
         {
+            "name": "Pillar",
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/backgrounds/desert/pillar.png",
@@ -191,6 +200,7 @@
             }
         },
         {
+            "name": "Shop Roof",
             "terrain": {
                 "color": [
                     0.12999999523162842,

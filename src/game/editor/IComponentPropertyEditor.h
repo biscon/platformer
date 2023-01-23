@@ -7,6 +7,7 @@
 
 #include <Vector2.h>
 #include <ECS.h>
+#include "../../input/Input.h"
 
 using namespace ECS;
 
@@ -15,6 +16,9 @@ public:
     virtual ~IComponentPropertyEditor() = default;
     virtual void show() = 0;
     virtual void setSelected(Entity* ent) = 0;
+    virtual bool onLeftDown(Vector2 pos) = 0;
+    virtual bool onLeftUp(Vector2 pos) = 0;
+    virtual bool onAction(const Input::Action& action) = 0;
 };
 
 

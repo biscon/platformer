@@ -11,7 +11,7 @@ void TransformPropertyEditor::show() {
     auto transform = selected->get<TransformComponent>();
     ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
-    ImGui::Begin("Transform Properties", nullptr);
+    ImGui::Begin("Transform Properties", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
 
     static float pos[2];
@@ -34,4 +34,16 @@ void TransformPropertyEditor::show() {
 
 void TransformPropertyEditor::setSelected(Entity *ent) {
     selected = ent;
+}
+
+bool TransformPropertyEditor::onLeftDown(Vector2 pos) {
+    return false;
+}
+
+bool TransformPropertyEditor::onLeftUp(Vector2 pos) {
+    return false;
+}
+
+bool TransformPropertyEditor::onAction(const Input::Action &action) {
+    return false;
 }

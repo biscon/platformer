@@ -59,35 +59,21 @@ Editor::Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBu
 }
 
 void Editor::update(float deltaTime) {
-    bool ignoreClick = false;
-
     // dispatch input
     Input::Action action = {};
     auto &mouse = inputDevice.getMouseState();
     while(inputContext->pollAction(action)) {
-
         switch(action.id) {
             case INPUT_ACTION_LMB_DOWN: {
-                if(!ignoreClick) {
-                    onLeftDown(mouse.x, mouse.y);
-                }
+                onLeftDown(mouse.x, mouse.y);
                 break;
             }
             case INPUT_ACTION_LMB_UP: {
-                if(!ignoreClick) {
-                    onLeftUp(mouse.x, mouse.y);
-                }
-                break;
-            }
-            case INPUT_ACTION_TOOL_1:
-            case INPUT_ACTION_TOOL_2:
-            case INPUT_ACTION_TOOL_3:
-            case INPUT_ACTION_TOOL_4:
-            case INPUT_ACTION_TOOL_5:
-            case INPUT_ACTION_TOOL_6:{
+                onLeftUp(mouse.x, mouse.y);
                 break;
             }
             default: {
+
                 break;
             }
         }
@@ -109,8 +95,11 @@ void Editor::update(float deltaTime) {
     buffers.unlit.pushText(text, &font, 1920.0f - font.measureTextWidth(text) - margin, 1080.0f - margin, WHITE);
 
     updateMetaData();
+    mainMenu();
     showEntityComponentSelector();
     showComponentProperties();
+    if(showCreateEntityModal)
+        createEntityModal();
 }
 
 
@@ -185,7 +174,14 @@ void Editor::onDelete() {
 void Editor::onLeftDown(float x, float y) {
     Vector2 pos(x + camera.scrollX, y + camera.scrollY);
     SDL_Log("onLeftDown %.2f,%.2f", pos.x, pos.y);
+    if(selectedComponent == ComponentType::None || selectedEntity == nullptr) {
+        return;
+    }
+    if(propertyEditorMap.count(selectedComponent) > 0) {
+        propertyEditorMap[selectedComponent]->onLeftDown(pos);
+    }
 
+    /*
     bool clickedNothing = true;
     for (Entity *ent : world->all(false)) {
         auto terrain = ent->get<TerrainComponent>();
@@ -239,11 +235,89 @@ void Editor::onLeftDown(float x, float y) {
         SDL_Log("clicked nothing");
         setSelected(nullptr);
     }
+     */
 }
 
 void Editor::onLeftUp(float x, float y) {
     Vector2 pos(x + camera.scrollX, y + camera.scrollY);
     SDL_Log("onLeftUp %.2f,%.2f", pos.x, pos.y);
+    if(selectedComponent == ComponentType::None || selectedEntity == nullptr) {
+        return;
+    }
+    if(propertyEditorMap.count(selectedComponent) > 0) {
+        propertyEditorMap[selectedComponent]->onLeftUp(pos);
+    }
+}
+
+void Editor::onAction(const Input::Action& action) {
+    if(selectedComponent == ComponentType::None || selectedEntity == nullptr) {
+        return;
+    }
+    if(propertyEditorMap.count(selectedComponent) > 0) {
+        propertyEditorMap[selectedComponent]->onAction(action);
+    }
+}
+
+void Editor::mainMenu() {
+    if (ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("Entity")) {
+            if (ImGui::MenuItem("Create", "CTRL+N")) {
+                SDL_Log("Clicked create");
+                showCreateEntityModal = true;
+            }
+            if (ImGui::BeginMenu("Assign Component")) {
+                assignComponentMenu();
+                ImGui::EndMenu();
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("Delete")) {}
+            if (ImGui::MenuItem("Quit", "ALT+F4")) {}
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+}
+
+void Editor::assignComponentMenu() {
+    if(ImGui::MenuItem("Transform") && selectedEntity) {
+        selectedEntity->assign<TransformComponent>(Vector2(0,0), 1.0f, 0, 0);
+    }
+    ImGui::MenuItem("Terrain");
+}
+
+void Editor::createEntityModal() {
+    static char nameBuf[128] = {0};
+
+    ImGui::OpenPopup("Create Entity");
+    // Always center this window when appearing
+    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    if (ImGui::BeginPopupModal("Create Entity", &showCreateEntityModal, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
+        ImGui::Text("Creates a new entity with the given name.\nUse Entity->Assign Component menu to assign components\n\n");
+        ImGui::Spacing();
+        ImGui::InputText("Name", nameBuf, IM_ARRAYSIZE(nameBuf));
+        ImGui::Separator();
+        ImGui::Spacing();
+        if (ImGui::Button("OK", ImVec2(120, 0))) {
+            std::string name(nameBuf);
+            if(!name.empty()) {
+                Entity* ent = world->create();
+                ent->setName(name);
+                showCreateEntityModal = false;
+                ImGui::CloseCurrentPopup();
+            }
+        }
+        ImGui::SetItemDefaultFocus();
+        //ImGui::SameLine();
+        ImGui::SameLine(ImGui::GetWindowWidth()-130);
+        if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+            showCreateEntityModal = false;
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::PopStyleVar();
+        ImGui::EndPopup();
+    }
 }
 
 void Editor::showEntityComponentSelector() {
@@ -264,7 +338,7 @@ void Editor::showEntityComponentSelector() {
         ImGui::PushID((i32) entityId);                      // Use object uid as identifier. Most commonly you could also use the object pointer as a base ID.
         ImGui::AlignTextToFramePadding();  // Text and Tree nodes are less high than regular widgets, here we add vertical spacing to make the tree lines equal high.
 
-        bool node_open = ImGui::TreeNode(metaData[entityId].name.c_str());
+        bool node_open = ImGui::TreeNode(entity->getName().c_str());
         if (node_open)
         {
             for(auto& pair : metaData[entityId].componentTypes) {
@@ -280,8 +354,7 @@ void Editor::showEntityComponentSelector() {
                     selectedEntity = entity;
                     selectedComponent = type;
                 }
-                if (ImGui::BeginPopupContextItem("componentContextMenu"))
-                {
+                if (ImGui::BeginPopupContextItem("componentContextMenu")) {
                     if (ImGui::Selectable("Delete")) {
                         SDL_Log("Clicked delete");
                     }
@@ -289,6 +362,16 @@ void Editor::showEntityComponentSelector() {
                 }
 
                 ImGui::PopID();
+            }
+            if(metaData[entityId].componentTypes.empty()) {
+                bool isSelected = false;
+                if(selectedEntity == entity) {
+                    isSelected = true;
+                }
+                if(ImGui::Selectable("empty", isSelected)) {
+                    selectedEntity = entity;
+                    selectedComponent = ComponentType::None;
+                }
             }
             ImGui::TreePop();
         }
@@ -326,7 +409,6 @@ void Editor::updateMetaData() {
         if(metaData.count(ent->getEntityId()) == 0) {
             EntityMetaData entityMetaData;
             entityMetaData.entity = ent;
-            entityMetaData.name = string_format("Entity %zu", ent->getEntityId());
             metaData[ent->getEntityId()] = entityMetaData;
         }
         EntityMetaData& entityMetaData = metaData[ent->getEntityId()];

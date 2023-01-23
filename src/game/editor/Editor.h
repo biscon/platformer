@@ -35,7 +35,6 @@ enum class ComponentType
 
 struct EntityMetaData {
     Entity *entity;
-    std::string name;
     std::map<ComponentType, bool> componentTypes;
     //std::vector<ComponentType> componentTypes;
 };
@@ -64,8 +63,8 @@ private:
     std::unordered_map<size_t, EntityMetaData> metaData;
     Entity* selectedEntity = nullptr;
     ComponentType selectedComponent = ComponentType::None;
-
     std::unordered_map<ComponentType, std::unique_ptr<IComponentPropertyEditor>> propertyEditorMap;
+    bool showCreateEntityModal = false;
 
     void resetEditors();
     void setSelected(Entity* ent);
@@ -76,12 +75,13 @@ private:
     void cycleGridSize();
 
     void showEntityComponentSelector();
-
     void updateMetaData();
-
-    void showDeleteComponentPrompt();
-
     void showComponentProperties();
+    void mainMenu();
+    void createEntityModal();
+    void assignComponentMenu();
+
+    void onAction(const Action &action);
 };
 
 std::string getComponentName(ComponentType type);

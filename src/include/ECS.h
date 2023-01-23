@@ -63,6 +63,9 @@ SOFTWARE.
 
 #include <typeindex>
 #include <typeinfo>
+#include <string>
+#include "../util/string_util.h"
+
 #define ECS_TYPE_IMPLEMENTATION
 
 #else
@@ -515,12 +518,24 @@ namespace ECS
 			return bPendingDestroy;
 		}
 
+        std::string getName() const {
+            if(name.empty()) {
+                return string_format("Entity %zu", id);
+            }
+            return name;
+        }
+
+        void setName(const std::string& n) {
+            name = n;
+        }
+
 	private:
 		std::unordered_map<TypeIndex, Internal::BaseComponentContainer*> components;
 		World* world;
 
 		size_t id;
 		bool bPendingDestroy = false;
+        std::string name;
 	};
 
 	/**

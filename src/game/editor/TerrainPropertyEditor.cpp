@@ -21,7 +21,7 @@ void TerrainPropertyEditor::propertyWindow() {
     auto terrain = selected->get<TerrainComponent>();
     ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
-    ImGui::Begin("Terrain Properties", nullptr);
+    ImGui::Begin("Terrain Properties", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
 
     ImGui::Checkbox("Show", &terrain->show);
@@ -56,7 +56,7 @@ void TerrainPropertyEditor::editWindow() {
     auto terrain = selected->get<TerrainComponent>();
     ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
-    ImGui::Begin("Edit Terrain", &editing);
+    ImGui::Begin("Edit Terrain", &editing, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
 
     if(ImGui::Button("Insert vertex", ImVec2(120.0f, 0))) {
@@ -118,4 +118,19 @@ void TerrainPropertyEditor::renderSelection() {
         }
         buffers.unlit.pushLine(lineStart, lineEnd, WHITE);
     }
+}
+
+bool TerrainPropertyEditor::onLeftDown(Vector2 pos) {
+    if(editing) {
+
+    }
+    return false;
+}
+
+bool TerrainPropertyEditor::onLeftUp(Vector2 pos) {
+    return false;
+}
+
+bool TerrainPropertyEditor::onAction(const Action &action) {
+    return false;
 }
