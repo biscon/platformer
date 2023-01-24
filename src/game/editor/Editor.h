@@ -14,6 +14,7 @@
 #include "../Camera.h"
 #include "ITool.h"
 #include "IComponentPropertyEditor.h"
+#include "../Level.h"
 
 using namespace ECS;
 using namespace Renderer;
@@ -36,14 +37,11 @@ enum class ComponentType
 struct EntityMetaData {
     Entity *entity;
     std::map<ComponentType, bool> componentTypes;
-    //std::vector<ComponentType> componentTypes;
 };
 
 class Editor {
 public:
-    Vector2 camTarget;
-
-    explicit Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers renderBuffers, Font &font);
+    explicit Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers renderBuffers, Font &font, Level &level);
 
     void update(float deltaTime);
     void reset();
@@ -55,6 +53,7 @@ private:
     RenderBuffers buffers;
     Font &font;
     std::shared_ptr<Input::InputContext> inputContext;
+    Level& level;
 
     i32 selectedTool = 0;
     Entity* selected = nullptr;
@@ -65,6 +64,7 @@ private:
     ComponentType selectedComponent = ComponentType::None;
     std::unordered_map<ComponentType, std::unique_ptr<IComponentPropertyEditor>> propertyEditorMap;
     bool showCreateEntityModal = false;
+    bool stealFocusNextFrame = false;
 
     void resetEditors();
     void setSelected(Entity* ent);
@@ -80,6 +80,7 @@ private:
     void mainMenu();
     void createEntityModal();
     void assignComponentMenu();
+    void openLevelDialog();
 
     void onAction(const Action &action);
 };

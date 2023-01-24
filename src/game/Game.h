@@ -13,6 +13,7 @@
 #include "../input/Input.h"
 #include "systems/RenderDebugSystem.h"
 #include "Level.h"
+#include "editor/Editor.h"
 
 using namespace ECS;
 

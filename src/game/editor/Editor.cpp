@@ -2,7 +2,15 @@
 // Created by bison on 20-12-22.
 //
 
+#ifdef _WIN32
+    #include <direct.h>
+    #define getcwd _getcwd // stupid MSFT "deprecation" warning
+#else
+    #include <unistd.h>
+#endif
+
 #include <SDL_log.h>
+#include <cstring>
 #include "Editor.h"
 #include "../components/TerrainComponent.h"
 #include "../PolyUtil.h"
@@ -29,10 +37,11 @@
 #include "../components/GlowEffectComponent.h"
 #include "TransformPropertyEditor.h"
 #include "TerrainPropertyEditor.h"
+#include "../../util/ImGuiFileDialog.h"
 
 
-Editor::Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font) :
-        inputDevice(inputDevice), world(world), camera(camera), buffers(buffers), font(font) {
+Editor::Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font, Level& level) :
+        inputDevice(inputDevice), world(world), camera(camera), buffers(buffers), font(font), level(level) {
     inputContext = std::make_shared<Input::InputContext>();
     inputDevice.registerContext(inputContext);
     inputContext->registerAction(INPUT_ACTION_LMB_DOWN);
@@ -100,6 +109,7 @@ void Editor::update(float deltaTime) {
     showComponentProperties();
     if(showCreateEntityModal)
         createEntityModal();
+    openLevelDialog();
 }
 
 
@@ -260,26 +270,72 @@ void Editor::onAction(const Input::Action& action) {
 
 void Editor::mainMenu() {
     if (ImGui::BeginMainMenuBar()) {
-        if (ImGui::BeginMenu("Entity")) {
+        if(ImGui::BeginMenu("Level")) {
+            if (ImGui::MenuItem("New")) {
+                //stealFocusNextFrame = true;
+            }
+            if (ImGui::MenuItem("Load")) {
+                ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", ".", 1,
+                                                        nullptr, ImGuiFileDialogFlags_Modal);
+                //stealFocusNextFrame = true;
+            }
+            if (ImGui::MenuItem("Save")) {
+                //stealFocusNextFrame = true;
+            }
+            if (ImGui::MenuItem("Properties")) {
+                //stealFocusNextFrame = true;
+            }
+            if (ImGui::MenuItem("Exit")) {
+                //stealFocusNextFrame = true;
+            }
+            ImGui::EndMenu();
+        }
+        if(ImGui::BeginMenu("Entity")) {
             if (ImGui::MenuItem("Create", "CTRL+N")) {
                 SDL_Log("Clicked create");
+                stealFocusNextFrame = true;
                 showCreateEntityModal = true;
             }
-            if (ImGui::BeginMenu("Assign Component")) {
+            if (ImGui::BeginMenu("Assign Component", selectedEntity != nullptr)) {
                 assignComponentMenu();
                 ImGui::EndMenu();
             }
             ImGui::Separator();
-            if (ImGui::MenuItem("Delete")) {}
-            if (ImGui::MenuItem("Quit", "ALT+F4")) {}
+            if (ImGui::MenuItem("Delete", nullptr, false, selectedEntity != nullptr)) {}
+            ImGui::EndMenu();
+        }
+        if(ImGui::BeginMenu("Options")) {
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
 }
 
+void Editor::openLevelDialog() {
+    // display
+    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450)))
+    {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+            std::string curPath(getcwd(nullptr,0));
+
+            filePathName = filePathName.substr(curPath.size()+1);
+            filePath = filePath.substr(curPath.size()+1);
+
+            SDL_Log("filePathName: %s, filePath: %s, getCwd: %s", filePathName.c_str(), filePath.c_str(), curPath.c_str());
+            // action
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
+}
+
 void Editor::assignComponentMenu() {
-    if(ImGui::MenuItem("Transform") && selectedEntity) {
+    if(ImGui::MenuItem("Transform", nullptr, false, !selectedEntity->has<TransformComponent>())) {
         selectedEntity->assign<TransformComponent>(Vector2(0,0), 1.0f, 0, 0);
     }
     ImGui::MenuItem("Terrain");
@@ -296,6 +352,11 @@ void Editor::createEntityModal() {
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
         ImGui::Text("Creates a new entity with the given name.\nUse Entity->Assign Component menu to assign components\n\n");
         ImGui::Spacing();
+        if(stealFocusNextFrame) {
+            ImGui::SetKeyboardFocusHere();
+            stealFocusNextFrame = false;
+        }
+
         ImGui::InputText("Name", nameBuf, IM_ARRAYSIZE(nameBuf));
         ImGui::Separator();
         ImGui::Spacing();
@@ -305,6 +366,9 @@ void Editor::createEntityModal() {
                 Entity* ent = world->create();
                 ent->setName(name);
                 showCreateEntityModal = false;
+                selectedEntity = ent;
+                selectedComponent = ComponentType::None;
+                std::memset(nameBuf, 0, sizeof(nameBuf));
                 ImGui::CloseCurrentPopup();
             }
         }

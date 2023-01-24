@@ -76,7 +76,9 @@ set(UTIL_SOURCE_FILES
         src/util/lodepng.h
         src/util/lodepng.c
         src/util/math_util.c
-        src/util/math_util.h)
+        src/util/math_util.h
+        src/util/ImGuiFileDialog.h
+        src/util/ImGuiFileDialog.cpp)
 
 set(ENGINE_SOURCE_FILES
         src/include/defs.h
@@ -194,7 +196,13 @@ set(GAME_SOURCE_FILES
         src/game/editor/ImageTool.cpp
         src/game/editor/ImageTool.h
         src/game/editor/LightTool.cpp
-        src/game/editor/LightTool.h src/game/editor/IComponentPropertyEditor.h src/game/editor/TransformPropertyEditor.cpp src/game/editor/TransformPropertyEditor.h src/game/editor/TerrainPropertyEditor.cpp src/game/editor/TerrainPropertyEditor.h)
+        src/game/editor/LightTool.h
+
+        src/game/editor/IComponentPropertyEditor.h
+        src/game/editor/TransformPropertyEditor.cpp
+        src/game/editor/TransformPropertyEditor.h
+        src/game/editor/TerrainPropertyEditor.cpp
+        src/game/editor/TerrainPropertyEditor.h)
 
 add_executable(game ${GAME_SOURCE_FILES} ${ENGINE_SOURCE_FILES} ${UTIL_SOURCE_FILES} ${IM_GUI_SOURCE_FILES} ${CGLM_SOURCE_FILES})
 

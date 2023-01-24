@@ -19,7 +19,6 @@
 #include "systems/RenderDebugSystem.h"
 #include "systems/CollisionSystem.h"
 #include "systems/ActorSystem.h"
-#include "editor/Editor.h"
 #include "systems/RenderLevelSystem.h"
 #include "Camera.h"
 #include "ParallaxScroller.h"
