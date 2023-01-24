@@ -6,15 +6,22 @@
 #include <SDL_log.h>
 #include "TerrainPropertyEditor.h"
 #include "../components/TerrainComponent.h"
+#include "ToolUtil.h"
 
 void TerrainPropertyEditor::show() {
     propertyWindow();
     if(selected) {
-        renderSelection();
+        if(editing) {
+            renderEditTerrain();
+            editWindow();
+            if(movingVertex) {
+                moveVertex();
+            }
+        } else {
+            renderSelection();
+        }
     }
-    if(editing) {
-        editWindow();
-    }
+
 }
 
 void TerrainPropertyEditor::propertyWindow() {
@@ -120,17 +127,134 @@ void TerrainPropertyEditor::renderSelection() {
     }
 }
 
+void TerrainPropertyEditor::renderEditTerrain() {
+    Vector2 camOffset(-camera.scrollX, -camera.scrollY);
+    auto terrain = selected->get<TerrainComponent>();
+    if(terrain.isValid()) {
+        Vector2 lineStart, lineEnd;
+        for(i32 i = 0; i < terrain->polygon.size(); ++i) {
+            lineStart = terrain->polygon[i];
+            lineStart += camOffset;
+            if (i == terrain->polygon.size() - 1) {
+                lineEnd = terrain->polygon[0];
+                lineEnd += camOffset;
+
+                if(false) {
+                    buffers.unlit.pushLine(lineStart, lineEnd, LAST_SEGMENT_COLOR);
+                    renderVertex(lineStart, GREEN);
+                } else {
+                    buffers.unlit.pushLine(lineStart, lineEnd, WHITE);
+                    renderVertex(lineStart, selectedVertex == i ? GREEN : YELLOW);
+                }
+                break;
+            } else {
+                lineEnd = terrain->polygon[i + 1];
+                lineEnd += camOffset;
+            }
+            buffers.unlit.pushLine(lineStart, lineEnd, WHITE);
+            renderVertex(lineStart, selectedVertex == i ? GREEN : YELLOW);
+        }
+    }
+}
+
+void TerrainPropertyEditor::renderVertex(Vector2& vertex, const Color& color) {
+    auto rect = FloatRect(vertex.x - vertexHandleSize, vertex.y - vertexHandleSize,
+                          vertex.x + vertexHandleSize, vertex.y + vertexHandleSize);
+    rect.round();
+    buffers.unlit.pushRect(rect, color);
+}
+
+
 bool TerrainPropertyEditor::onLeftDown(Vector2 pos) {
     if(editing) {
-
+        if(selectedVertex == -1) {
+            selectedVertex = selectVertex(pos);
+            if (selectedVertex != -1) {
+                SDL_Log("Selected terrain vertex index = %d", selectedVertex);
+            }
+        }
+        if(selectedVertex != -1) {
+            auto terrain = selected->get<TerrainComponent>();
+            auto vertex = terrain->polygon[selectedVertex];
+            auto rect = FloatRect(vertex.x - 5, vertex.y - 5,
+                                  vertex.x + 5, vertex.y + 5);
+            rect.round();
+            if(rect.containsPoint(pos.x, pos.y)) {
+                startMovingVertex(pos, vertex, terrain.get());
+                return true;
+            } else {
+                selectedVertex = selectVertex(pos);
+                if(selectedVertex != -1) {
+                    startMovingVertex(pos, terrain->polygon[selectedVertex], terrain.get());
+                    return true;
+                }
+            }
+        }
     }
     return false;
 }
 
 bool TerrainPropertyEditor::onLeftUp(Vector2 pos) {
+    if(movingVertex) {
+        movingVertex = false;
+        auto terrain = selected->get<TerrainComponent>();
+        if(terrain.isValid()) {
+            SDL_Log("stop moving vertex");
+            terrain->rebuildMesh();
+        }
+        return true;
+    }
     return false;
 }
 
 bool TerrainPropertyEditor::onAction(const Action &action) {
     return false;
 }
+
+void TerrainPropertyEditor::startMovingVertex(Vector2& pos, Vector2 vertex, TerrainComponent& terrain) {
+    SDL_Log("start move vertex");
+    movingVertex = true;
+    moveStartVertex = pos;
+    snapToGrid(moveStartVertex);
+    snapToGrid(vertex);
+    orgVertex = vertex;
+    terrain.polygon[selectedVertex] = vertex;
+    terrain.rebuildMesh();
+}
+
+void TerrainPropertyEditor::moveVertex() {
+    auto &mouse = inputDevice.getMouseState();
+    auto terrain = selected->get<TerrainComponent>();
+    if(terrain.isValid()) {
+        Vector2 mouseDelta(mouse.x + camera.scrollX, mouse.y + camera.scrollY);
+        snapToGrid(mouseDelta);
+        mouseDelta -= moveStartVertex;
+        if(mouseDelta.x != 0 || mouseDelta.y != 0) {
+            terrain->polygon[selectedVertex] = orgVertex;
+            //SDL_Log("Moving dx,dy = %.2f,%.2f", mouseDelta.x, mouseDelta.y);
+            terrain->polygon[selectedVertex] += mouseDelta;
+            terrain->rebuildMesh();
+        }
+        auto v = terrain->polygon[selectedVertex];
+        buffers.unlit.pushText(string_format("%.2f,%.2f", v.x, v.y), &font, roundf(mouse.x + 10), roundf(mouse.y), WHITE);
+    }
+}
+
+
+i32 TerrainPropertyEditor::selectVertex(Vector2& pos) {
+    auto terrain = selected->get<TerrainComponent>();
+    if(terrain.isValid()) {
+        Vector2 vertex;
+        for(i32 i = 0; i < terrain->polygon.size(); ++i) {
+            vertex = terrain->polygon[i];
+            auto rect = FloatRect(vertex.x - 5, vertex.y - 5,
+                                  vertex.x + 5, vertex.y + 5);
+            rect.round();
+            if(rect.containsPoint(pos.x, pos.y)) {
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+

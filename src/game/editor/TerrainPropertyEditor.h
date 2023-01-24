@@ -50,6 +50,16 @@ private:
     void editWindow();
     void deletePrompt();
     void renderSelection();
+
+    void renderVertex(Vector2 &vertex, const Color &color);
+
+    void renderEditTerrain();
+
+    void startMovingVertex(Vector2 &pos, Vector2 vertex, TerrainComponent &terrain);
+
+    void moveVertex();
+
+    int32_t selectVertex(Vector2 &pos);
 };
 
 
