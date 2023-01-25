@@ -4,10 +4,8 @@
 
 #include "ToolUtil.h"
 
-INTERNAL i32 gridCellWidth  = 10;
-INTERNAL i32 gridCellHeight = 10;
-
-std::vector<i32> gridSizes = {1,5,10,20};
+INTERNAL float gridCellWidth  = 10;
+INTERNAL float gridCellHeight = 10;
 
 void snapToGrid(Vector2& pos) {
     snapToGrid(pos.x, pos.y);
@@ -23,11 +21,7 @@ void snapToGrid(FloatRect& rect) {
     snapToGrid(rect.right, rect.bottom);
 }
 
-const std::vector<i32>& getGridSizes() {
-    return gridSizes;
-}
-
-void setGridSize(i32 i) {
-    gridCellWidth = gridSizes[i];
-    gridCellHeight = gridSizes[i];
+void setGridSize(float w, float h) {
+    gridCellWidth = w;
+    gridCellHeight = h;
 }

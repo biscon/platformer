@@ -289,7 +289,7 @@ void Level::save(std::string filename) {
     // read in existing file first if any as to not discard any elements save can't handle
 
     if(levelFile) {
-        std::ifstream file(filename);
+        std::ifstream file(levelFile->filename);
         file >> j;
     }
 
@@ -360,8 +360,8 @@ void Level::load(std::string filename) {
     config.height = j["height"];
     camera->setLevelDimensions(config.width, config.height);
 
+    scroller->reset();
     if (j.contains("scroller")) {
-        scroller->reset();
         for (auto &l : j["scroller"]["layers"]) {
             scroller->createLayerFromPNG(l["filename"], l["width"], l["height"], l["offsetY"],
                                          l["speed"], l["foreground"]);

@@ -57,7 +57,7 @@ private:
 
     i32 selectedTool = 0;
     Entity* selected = nullptr;
-    i32 currentGridSize = 2;
+    i32 currentGridSize = 10;
 
     std::unordered_map<size_t, EntityMetaData> metaData;
     Entity* selectedEntity = nullptr;
@@ -65,6 +65,8 @@ private:
     std::unordered_map<ComponentType, std::unique_ptr<IComponentPropertyEditor>> propertyEditorMap;
     bool showCreateEntityModal = false;
     bool stealFocusNextFrame = false;
+    bool showDemo = false;
+    bool showProperties = false;
 
     void resetEditors();
     void setSelected(Entity* ent);
@@ -80,9 +82,17 @@ private:
     void mainMenu();
     void createEntityModal();
     void assignComponentMenu();
-    void openLevelDialog();
+    void fileDialogs();
 
     void onAction(const Action &action);
+
+    void clearSelection();
+
+    void removeComponent(Entity *ent, ComponentType type);
+
+    void properties();
+
+    void backgroundEditor();
 };
 
 std::string getComponentName(ComponentType type);

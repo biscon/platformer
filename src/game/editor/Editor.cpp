@@ -100,7 +100,7 @@ void Editor::update(float deltaTime) {
     text = string_format("%.2f,%.2f", camera.levelWidth, camera.levelHeight);
     buffers.unlit.pushText(text, &font, levelRect.right - font.measureTextWidth(text), levelRect.bottom + margin + font.getSize(), WHITE);
 
-    text = string_format("GridSize: %d", getGridSizes()[currentGridSize]);
+    text = string_format("GridSize: %d", currentGridSize);
     buffers.unlit.pushText(text, &font, 1920.0f - font.measureTextWidth(text) - margin, 1080.0f - margin, WHITE);
 
     updateMetaData();
@@ -109,17 +109,13 @@ void Editor::update(float deltaTime) {
     showComponentProperties();
     if(showCreateEntityModal)
         createEntityModal();
-    openLevelDialog();
-}
-
-
-void Editor::cycleGridSize() {
-    currentGridSize++;
-    auto &gridSizes = getGridSizes();
-    if(currentGridSize > gridSizes.size() - 1) {
-        currentGridSize = 0;
+    fileDialogs();
+    if(showDemo) {
+        ImGui::ShowDemoWindow();
     }
-    setGridSize(currentGridSize);
+    if(showProperties) {
+        properties();
+    }
 }
 
 void Editor::reset() {
@@ -190,62 +186,6 @@ void Editor::onLeftDown(float x, float y) {
     if(propertyEditorMap.count(selectedComponent) > 0) {
         propertyEditorMap[selectedComponent]->onLeftDown(pos);
     }
-
-    /*
-    bool clickedNothing = true;
-    for (Entity *ent : world->all(false)) {
-        auto terrain = ent->get<TerrainComponent>();
-        auto ladder = ent->get<LadderComponent>();
-        auto image = ent->get<ImageComponent>();
-        auto transform = ent->get<TransformComponent>();
-        auto light = ent->get<PointLightComponent>();
-        if(image.isValid() && transform.isValid()) {
-            FloatRect imageRect;
-            imageRect.left = transform->pos.x;
-            imageRect.top = transform->pos.y;
-            imageRect.right = transform->pos.x + (transform->scale * image->width);
-            imageRect.bottom = transform->pos.y + (transform->scale * image->height);
-            if(imageRect.containsPoint(pos.x, pos.y)) {
-                clickedNothing = false;
-                if(ent != selected) {
-                    setSelected(ent);
-                    break;
-                }
-            }
-        }
-        if(terrain.isValid()) {
-            if(pointInPolygon(pos, terrain->polygon)) {
-                clickedNothing = false;
-                if(ent != selected) {
-                    setSelected(ent);
-                    break;
-                }
-            }
-        }
-        if(ladder.isValid()) {
-            if(ladder->rect.containsPoint(pos.x, pos.y)) {
-                clickedNothing = false;
-                if(ent != selected) {
-                    setSelected(ent);
-                    break;
-                }
-            }
-        }
-        if(light.isValid() && transform.isValid()) {
-            if(pointInCircle(pos, transform->pos, light->outerRadius)) {
-                clickedNothing = false;
-                if(ent != selected) {
-                    setSelected(ent);
-                    break;
-                }
-            }
-        }
-    }
-    if(clickedNothing) {
-        SDL_Log("clicked nothing");
-        setSelected(nullptr);
-    }
-     */
 }
 
 void Editor::onLeftUp(float x, float y) {
@@ -277,13 +217,13 @@ void Editor::mainMenu() {
             if (ImGui::MenuItem("Load")) {
                 ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", ".", 1,
                                                         nullptr, ImGuiFileDialogFlags_Modal);
-                //stealFocusNextFrame = true;
             }
             if (ImGui::MenuItem("Save")) {
-                //stealFocusNextFrame = true;
+                ImGuiFileDialog::Instance()->OpenDialog("SaveFileDlgKey", "Save File", ".json", ".", 1,
+                                                        nullptr, ImGuiFileDialogFlags_Modal);
             }
             if (ImGui::MenuItem("Properties")) {
-                //stealFocusNextFrame = true;
+                showProperties = true;
             }
             if (ImGui::MenuItem("Exit")) {
                 //stealFocusNextFrame = true;
@@ -296,22 +236,44 @@ void Editor::mainMenu() {
                 stealFocusNextFrame = true;
                 showCreateEntityModal = true;
             }
-            if (ImGui::BeginMenu("Assign Component", selectedEntity != nullptr)) {
+            ImGui::Separator();
+            if (ImGui::MenuItem("Delete", nullptr, false, selectedEntity != nullptr)) {
+                SDL_Log("Delete entity");
+                world->destroy(selectedEntity, true);
+                clearSelection();
+                metaData.clear();
+            }
+            ImGui::EndMenu();
+        }
+        if(ImGui::BeginMenu("Component")) {
+            if (ImGui::BeginMenu("Create", selectedEntity != nullptr)) {
                 assignComponentMenu();
                 ImGui::EndMenu();
             }
             ImGui::Separator();
-            if (ImGui::MenuItem("Delete", nullptr, false, selectedEntity != nullptr)) {}
+            if (ImGui::MenuItem("Delete", nullptr, false, selectedEntity != nullptr && selectedComponent != ComponentType::None)) {
+                SDL_Log("Delete component");
+                removeComponent(selectedEntity, selectedComponent);
+                clearSelection();
+                metaData.clear();
+            }
             ImGui::EndMenu();
         }
         if(ImGui::BeginMenu("Options")) {
+            if(ImGui::BeginMenu("Grid")) {
+                ImGui::SetNextItemWidth(150);
+                ImGui::InputInt("Size", &currentGridSize);
+                setGridSize((float) currentGridSize, (float) currentGridSize);
+                ImGui::EndMenu();
+            }
+            ImGui::MenuItem("Show UI Demo", nullptr, &showDemo);
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
 }
 
-void Editor::openLevelDialog() {
+void Editor::fileDialogs() {
     // display
     if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450)))
     {
@@ -319,14 +281,27 @@ void Editor::openLevelDialog() {
         if (ImGuiFileDialog::Instance()->IsOk())
         {
             std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-            std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
             std::string curPath(getcwd(nullptr,0));
-
             filePathName = filePathName.substr(curPath.size()+1);
-            filePath = filePath.substr(curPath.size()+1);
+            //SDL_Log("filePathName: %s, filePath: %s, getCwd: %s", filePathName.c_str(), filePath.c_str(), curPath.c_str());
+            level.transitionToLevel(filePathName, [this](){
+                reset();
+            });
+        }
 
-            SDL_Log("filePathName: %s, filePath: %s, getCwd: %s", filePathName.c_str(), filePath.c_str(), curPath.c_str());
-            // action
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
+    if (ImGuiFileDialog::Instance()->Display("SaveFileDlgKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450)))
+    {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string curPath(getcwd(nullptr,0));
+            filePathName = filePathName.substr(curPath.size()+1);
+            //SDL_Log("filePathName: %s, filePath: %s, getCwd: %s", filePathName.c_str(), filePath.c_str(), curPath.c_str());
+            level.save(filePathName);
         }
 
         // close
@@ -338,7 +313,12 @@ void Editor::assignComponentMenu() {
     if(ImGui::MenuItem("Transform", nullptr, false, !selectedEntity->has<TransformComponent>())) {
         selectedEntity->assign<TransformComponent>(Vector2(0,0), 1.0f, 0, 0);
     }
-    ImGui::MenuItem("Terrain");
+    if(ImGui::MenuItem("Terrain", nullptr, false, !selectedEntity->has<TerrainComponent>())) {
+        selectedEntity->assign<TerrainComponent>(std::vector<Vector2> {
+            {300 + camera.scrollX,500 + camera.scrollY},{500 + camera.scrollX,500 + camera.scrollY},
+            {500 + camera.scrollX,550 + camera.scrollY},{300 + camera.scrollX,550 + camera.scrollY}},true);
+    }
+    //ImGui::MenuItem("Terrain");
 }
 
 void Editor::createEntityModal() {
@@ -446,8 +426,6 @@ void Editor::showEntityComponentSelector() {
     //ImGui::Separator();
     ImGui::PopStyleVar();
     ImGui::End();
-
-    ImGui::ShowDemoWindow();
 }
 
 void Editor::showComponentProperties() {
@@ -460,9 +438,86 @@ void Editor::showComponentProperties() {
     }
 }
 
+void Editor::properties() {
+    ImGui::SetNextWindowSize(ImVec2(750,450), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
+    ImGui::Begin("Level Properties", &showProperties);
+    ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
+    if (ImGui::BeginTabBar("PropertiesTabBar", tab_bar_flags))
+    {
+        if (ImGui::BeginTabItem("Level"))
+        {
+            ImGui::Text("Skycolor, height width and stuff");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Background"))
+        {
+            backgroundEditor();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Spawnpoints"))
+        {
+            ImGui::Text("spawnpoint editor");
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
+    }
+    ImGui::End();
+}
+
+void Editor::backgroundEditor() {
+    static int selected = 0;
+    ImGui::BeginGroup();
+    ImGui::BeginChild("left pane", ImVec2(120, -ImGui::GetFrameHeightWithSpacing()), true);
+        for (int i = 0; i < 10; i++) {
+            if (ImGui::Selectable(string_format("Layer %d", i).c_str(), selected == i))
+                selected = i;
+
+        }
+    ImGui::EndChild();
+    if (ImGui::Button("+", ImVec2(25, 0))) {}
+    ImGui::SameLine();
+    if (ImGui::Button("-", ImVec2(25, 0))) {}
+    ImGui::EndGroup();
+
+    ImGui::SameLine();
+    ImGui::BeginGroup();
+    ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+        ImGui::Text("MyObject: %d", selected);
+        ImGui::Separator();
+        ImGui::Text("background scroller editor");
+    ImGui::EndChild();
+    if (ImGui::Button("Move Up")) {}
+    ImGui::SameLine();
+    if (ImGui::Button("Move Down")) {}
+    ImGui::EndGroup();
+}
+
+void Editor::clearSelection() {
+    selectedEntity = nullptr;
+    selectedComponent = ComponentType::None;
+    resetEditors();
+}
+
 static void insertComponentIfNotExist(std::map<ComponentType, bool> &componentTypes, ComponentType type) {
     if(componentTypes.count(type) == 0) {
         componentTypes[type] = false;
+    }
+}
+
+void Editor::removeComponent(Entity* ent, ComponentType type) {
+    switch(type) {
+        case ComponentType::None: break;
+        case ComponentType::Transform: ent->remove<TransformComponent>(); break;
+        case ComponentType::Terrain: ent->remove<TerrainComponent>(); break;
+        case ComponentType::Ladder: ent->remove<LadderComponent>(); break;
+        case ComponentType::Image: ent->remove<ImageComponent>(); break;
+        case ComponentType::Platform: ent->remove<PlatformComponent>(); break;
+        case ComponentType::Path: ent->remove<PathComponent>(); break;
+        case ComponentType::Collision: ent->remove<CollisionComponent>(); break;
+        case ComponentType::PointLight: ent->remove<PointLightComponent>(); break;
+        case ComponentType::FlickerEffect: ent->remove<FlickerEffectComponent>(); break;
+        case ComponentType::GlowEffect: ent->remove<GlowEffectComponent>(); break;
     }
 }
 
@@ -505,4 +560,58 @@ std::string getComponentName(ComponentType type) {
     return "Unknown";
 }
 
-
+/*
+bool clickedNothing = true;
+for (Entity *ent : world->all(false)) {
+    auto terrain = ent->get<TerrainComponent>();
+    auto ladder = ent->get<LadderComponent>();
+    auto image = ent->get<ImageComponent>();
+    auto transform = ent->get<TransformComponent>();
+    auto light = ent->get<PointLightComponent>();
+    if(image.isValid() && transform.isValid()) {
+        FloatRect imageRect;
+        imageRect.left = transform->pos.x;
+        imageRect.top = transform->pos.y;
+        imageRect.right = transform->pos.x + (transform->scale * image->width);
+        imageRect.bottom = transform->pos.y + (transform->scale * image->height);
+        if(imageRect.containsPoint(pos.x, pos.y)) {
+            clickedNothing = false;
+            if(ent != selected) {
+                setSelected(ent);
+                break;
+            }
+        }
+    }
+    if(terrain.isValid()) {
+        if(pointInPolygon(pos, terrain->polygon)) {
+            clickedNothing = false;
+            if(ent != selected) {
+                setSelected(ent);
+                break;
+            }
+        }
+    }
+    if(ladder.isValid()) {
+        if(ladder->rect.containsPoint(pos.x, pos.y)) {
+            clickedNothing = false;
+            if(ent != selected) {
+                setSelected(ent);
+                break;
+            }
+        }
+    }
+    if(light.isValid() && transform.isValid()) {
+        if(pointInCircle(pos, transform->pos, light->outerRadius)) {
+            clickedNothing = false;
+            if(ent != selected) {
+                setSelected(ent);
+                break;
+            }
+        }
+    }
+}
+if(clickedNothing) {
+    SDL_Log("clicked nothing");
+    setSelected(nullptr);
+}
+ */

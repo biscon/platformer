@@ -40,6 +40,9 @@ private:
     bool editing = false;
 
     i32 selectedVertex = -1;
+    bool moving = false;
+    Vector2 moveStart;
+    std::vector<Vector2> orgPoly;
     bool movingVertex = false;
     Vector2 moveStartVertex;
     Vector2 orgVertex;
@@ -60,6 +63,12 @@ private:
     void moveVertex();
 
     int32_t selectVertex(Vector2 &pos);
+
+    void insertVertex();
+
+    void deleteVertex();
+
+    void move();
 };
 
 

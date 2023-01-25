@@ -7,6 +7,7 @@
 #include "TerrainPropertyEditor.h"
 #include "../components/TerrainComponent.h"
 #include "ToolUtil.h"
+#include "../PolyUtil.h"
 
 void TerrainPropertyEditor::show() {
     propertyWindow();
@@ -18,6 +19,9 @@ void TerrainPropertyEditor::show() {
                 moveVertex();
             }
         } else {
+            if(moving) {
+                move();
+            }
             renderSelection();
         }
     }
@@ -67,12 +71,39 @@ void TerrainPropertyEditor::editWindow() {
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
 
     if(ImGui::Button("Insert vertex", ImVec2(120.0f, 0))) {
+        insertVertex();
     }
     if(ImGui::Button("Delete vertex", ImVec2(120.0f, 0))) {
+        deleteVertex();
     }
 
     ImGui::PopStyleVar();
     ImGui::End();
+}
+
+void TerrainPropertyEditor::insertVertex() {
+    if(selected && selectedVertex != -1) {
+        auto terrain = selected->get<TerrainComponent>();
+        Vector2 vertex = terrain->polygon[selectedVertex];
+        if(selectedVertex > 0) {
+            Vector2 edgeStart = terrain->polygon[selectedVertex-1];
+            Vector2 edgeEnd = terrain->polygon[selectedVertex];
+            vertex.x = (edgeStart.x + edgeEnd.x) / 2.0f;
+            vertex.y = (edgeStart.y + edgeEnd.y) / 2.0f;
+        }
+        auto it = terrain->polygon.begin() + selectedVertex;
+        terrain->polygon.insert(it, vertex);
+        terrain->rebuildMesh();
+    }
+}
+
+void TerrainPropertyEditor::deleteVertex() {
+    if(selectedVertex != -1) {
+        auto terrain = selected->get<TerrainComponent>();
+        auto it = terrain->polygon.begin() + selectedVertex;
+        terrain->polygon.erase(it);
+        terrain->rebuildMesh();
+    }
 }
 
 void TerrainPropertyEditor::deletePrompt() {
@@ -164,7 +195,6 @@ void TerrainPropertyEditor::renderVertex(Vector2& vertex, const Color& color) {
     buffers.unlit.pushRect(rect, color);
 }
 
-
 bool TerrainPropertyEditor::onLeftDown(Vector2 pos) {
     if(editing) {
         if(selectedVertex == -1) {
@@ -190,6 +220,26 @@ bool TerrainPropertyEditor::onLeftDown(Vector2 pos) {
                 }
             }
         }
+    } else {
+        auto terrain = selected->get<TerrainComponent>();
+        if(terrain.isValid()) {
+            if(pointInPolygon(pos, terrain->polygon)) {
+                if(!moving) {
+                    moving = true;
+                    moveStart = pos;
+                    snapToGrid(moveStart);
+
+                    for (Vector2 &vertex : terrain->polygon) {
+                        snapToGrid(vertex);
+                    }
+                    terrain->rebuildMesh();
+
+                    orgPoly = terrain->polygon;
+                    SDL_Log("Start moving terrain");
+                    return true;
+                }
+            }
+        }
     }
     return false;
 }
@@ -204,11 +254,35 @@ bool TerrainPropertyEditor::onLeftUp(Vector2 pos) {
         }
         return true;
     }
+    if(moving) {
+        moving = false;
+        auto terrain = selected->get<TerrainComponent>();
+        SDL_Log("stop moving terrain");
+        terrain->rebuildMesh();
+        return true;
+    }
     return false;
 }
 
 bool TerrainPropertyEditor::onAction(const Action &action) {
     return false;
+}
+
+void TerrainPropertyEditor::move() {
+    auto &mouse = inputDevice.getMouseState();
+    Vector2 mouseDelta(mouse.x + camera.scrollX, mouse.y + camera.scrollY);
+    snapToGrid(mouseDelta);
+    mouseDelta -= moveStart;
+    auto terrain = selected->get<TerrainComponent>();
+
+    if(mouseDelta.x != 0 || mouseDelta.y != 0) {
+        terrain->polygon = orgPoly;
+        for (Vector2 &vertex : terrain->polygon) {
+            vertex += mouseDelta;
+        }
+        terrain->rebuildMesh();
+    }
+    buffers.unlit.pushText(string_format("+ %.2f,%.2f", mouseDelta.x, mouseDelta.y), &font, roundf(mouse.x + 10), roundf(mouse.y), WHITE);
 }
 
 void TerrainPropertyEditor::startMovingVertex(Vector2& pos, Vector2 vertex, TerrainComponent& terrain) {
