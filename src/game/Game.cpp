@@ -33,7 +33,7 @@ Game::Game(Input::IInputDevice& inputDevice, IRenderDevice& renderDevice, Render
 
     editor = std::make_unique<Editor>(inputDevice, level->getWorld(), level->getCamera(), renderBuffers, *font, *level);
 
-    level->createTestLevel();
+    level->newLevel();
 
     //level->setDebug(true);
 }

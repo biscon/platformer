@@ -47,11 +47,15 @@ public:
     Camera& getCamera() { return *camera; }
     ParallaxScroller& getScroller() { return *scroller; }
     World* getWorld() { return world; }
+    LevelConfig& getConfig() {
+        return config;
+    }
     void translateEditCam(Vector2& offset);
 
     void clear();
     void save(std::string filename);
     void load(std::string filename);
+    void newLevel();
 
     void transitionToLevel(std::string filename, std::function<void()> callback);
 

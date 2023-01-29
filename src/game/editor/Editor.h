@@ -74,7 +74,6 @@ private:
     void onDelete();
     void onLeftDown(float x, float y);
     void onLeftUp(float x, float y);
-    void cycleGridSize();
 
     void showEntityComponentSelector();
     void updateMetaData();
@@ -85,14 +84,12 @@ private:
     void fileDialogs();
 
     void onAction(const Action &action);
-
     void clearSelection();
-
     void removeComponent(Entity *ent, ComponentType type);
-
     void properties();
 
-    void backgroundEditor();
+    void levelProperties();
+    void backgroundProperties();
 };
 
 std::string getComponentName(ComponentType type);

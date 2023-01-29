@@ -213,6 +213,7 @@ void Editor::mainMenu() {
     if (ImGui::BeginMainMenuBar()) {
         if(ImGui::BeginMenu("Level")) {
             if (ImGui::MenuItem("New")) {
+                level.newLevel();
                 //stealFocusNextFrame = true;
             }
             if (ImGui::MenuItem("Load")) {
@@ -452,12 +453,12 @@ void Editor::properties() {
     {
         if (ImGui::BeginTabItem("Level"))
         {
-            ImGui::Text("Skycolor, height width and stuff");
+            levelProperties();
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Background"))
         {
-            backgroundEditor();
+            backgroundProperties();
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Spawnpoints"))
@@ -470,7 +471,24 @@ void Editor::properties() {
     ImGui::End();
 }
 
-void Editor::backgroundEditor() {
+void Editor::levelProperties() {
+    bool dimChanged = false;
+    auto& config = level.getConfig();
+
+    if(ImGui::InputFloat("Width", &config.width, 0, 0, "%.0f")) {
+        dimChanged = true;
+    }
+    if(ImGui::InputFloat("Height", &config.height, 0, 0, "%.0f")) {
+        dimChanged = true;
+    }
+    ImGui::ColorEdit4("SkyColor", (float*) &config.skyColor);
+    ImGui::ColorEdit4("AmbientColor", (float*) &config.ambientColor);
+    if(dimChanged) {
+        camera.setLevelDimensions(config.width, config.height);
+    }
+}
+
+void Editor::backgroundProperties() {
     auto& scroller = level.getScroller();
     static u32 selected = 0;
     ImGui::BeginGroup();

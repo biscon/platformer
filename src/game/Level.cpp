@@ -283,6 +283,20 @@ void Level::clear() {
     world->reset();
 }
 
+void Level::newLevel() {
+    clear();
+    config = LevelConfig();
+    camera->setLevelDimensions(config.width, config.height);
+    scroller->reset();
+
+    // build terrain
+    auto ground = world->create();
+    ground->assign<TerrainComponent>(std::vector<Vector2> {{0, 900}, {1920, 900}, {1920, 1080}, {0, 1080}}, true);
+    ground->assign<TransformComponent>(Vector2(0, 0), 1.0f, 0, 0);
+    ground->setName("Ground");
+
+    createPlayer();
+}
 
 void Level::save(std::string filename) {
     json j;
