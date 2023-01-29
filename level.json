@@ -1,631 +1,458 @@
 {
+    "ambientColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "entities": [
+        {
+            "name": "Entity 1",
+            "terrain": {
+                "color": [
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    1.0
+                ],
+                "light": true,
+                "show": true,
+                "through": false,
+                "vertices": [
+                    0.0,
+                    800.0,
+                    300.0,
+                    800.0,
+                    500.0,
+                    900.0,
+                    700.0,
+                    900.0,
+                    1000.0,
+                    800.0,
+                    1200.0,
+                    600.0,
+                    1500.0,
+                    600.0,
+                    1500.0,
+                    500.0,
+                    1920.0,
+                    500.0,
+                    2500.0,
+                    1000.0,
+                    2500.0,
+                    1050.0,
+                    1500.0,
+                    1050.0,
+                    1500.0,
+                    1300.0,
+                    2500.0,
+                    1300.0,
+                    3840.0,
+                    2000.0,
+                    3840.0,
+                    2160.0,
+                    0.0,
+                    2160.0
+                ]
+            },
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    0.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "name": "Entity 2",
+            "terrain": {
+                "color": [
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    1.0
+                ],
+                "light": true,
+                "show": true,
+                "through": false,
+                "vertices": [
+                    300.0,
+                    500.0,
+                    500.0,
+                    500.0,
+                    500.0,
+                    520.0,
+                    300.0,
+                    520.0
+                ]
+            },
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    0.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "name": "Entity 3",
+            "terrain": {
+                "color": [
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    1.0
+                ],
+                "light": true,
+                "show": true,
+                "through": false,
+                "vertices": [
+                    600.0,
+                    500.0,
+                    800.0,
+                    500.0,
+                    800.0,
+                    520.0,
+                    600.0,
+                    520.0
+                ]
+            },
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    0.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "ladder": {
+                "rect": [
+                    500.0,
+                    500.0,
+                    600.0,
+                    900.0
+                ]
+            },
+            "name": "Entity 4"
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/bus_stop.png",
+                "height": 43.0,
+                "lightMap": false,
+                "width": 76.0
+            },
+            "name": "Entity 5",
+            "transform": {
+                "layer": -1,
+                "pos": [
+                    500.0,
+                    300.0
+                ],
+                "rotation": 0.0,
+                "scale": 4.0
+            }
+        },
+        {
+            "glowEffect": {
+                "duration": 5.0
+            },
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/lights/pendel_4x.png",
+                "height": 189.0,
+                "lightMap": false,
+                "width": 210.0
+            },
+            "name": "Entity 6",
+            "transform": {
+                "layer": 1,
+                "pos": [
+                    1076.8641357421875,
+                    549.55078125
+                ],
+                "rotation": 0.0,
+                "scale": 4.0
+            },
+            "verletMesh": {
+                "attachOffset": [
+                    0.0,
+                    -50.0
+                ],
+                "gravity": 1000.0,
+                "points": [
+                    {
+                        "locked": true,
+                        "position": [
+                            1000.0,
+                            100.0
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            999.7298583984375,
+                            121.38184356689453
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            999.4539794921875,
+                            143.38356018066406
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            999.2147216796875,
+                            164.02000427246094
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            999.008056640625,
+                            185.66635131835938
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            998.8901977539063,
+                            206.21604919433594
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            998.8973999023438,
+                            227.77450561523438
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            999.0919799804688,
+                            247.77346801757813
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            999.5650024414063,
+                            268.8804626464844
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            1000.3475952148438,
+                            288.8651428222656
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            964.5812377929688,
+                            315.75054931640625
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            1043.45361328125,
+                            302.3578186035156
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            997.9920043945313,
+                            512.9435424804688
+                        ]
+                    },
+                    {
+                        "locked": false,
+                        "position": [
+                            1076.8641357421875,
+                            499.55078125
+                        ]
+                    }
+                ],
+                "solveIterations": 5,
+                "sticks": [
+                    {
+                        "indexA": 0,
+                        "indexB": 1,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 1,
+                        "indexB": 2,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 2,
+                        "indexB": 3,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 3,
+                        "indexB": 4,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 4,
+                        "indexB": 5,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 5,
+                        "indexB": 6,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 6,
+                        "indexB": 7,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 7,
+                        "indexB": 8,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 8,
+                        "indexB": 9,
+                        "lockLength": false
+                    },
+                    {
+                        "indexA": 9,
+                        "indexB": 10,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 9,
+                        "indexB": 11,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 10,
+                        "indexB": 11,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 10,
+                        "indexB": 12,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 11,
+                        "indexB": 13,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 12,
+                        "indexB": 13,
+                        "lockLength": true
+                    },
+                    {
+                        "indexA": 10,
+                        "indexB": 13,
+                        "lockLength": true
+                    }
+                ]
+            }
+        },
+        {
+            "collision": true,
+            "name": "Entity 7",
+            "platform": {
+                "easeAmount": 1.0,
+                "size": [
+                    100.0,
+                    50.0
+                ],
+                "speed": 200.0,
+                "waitTime": 1.0
+            },
+            "terrain": {
+                "color": [
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    1.0
+                ],
+                "light": true,
+                "show": true,
+                "through": false,
+                "vertices": [
+                    100.0,
+                    300.0,
+                    200.0,
+                    300.0,
+                    200.0,
+                    350.0,
+                    100.0,
+                    350.0
+                ]
+            },
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    100.0,
+                    300.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        }
+    ],
     "height": 2160.0,
-    "images": [
-        {
-            "alpha": 1.0,
-            "filename": "assets/objects/bus_stop.png",
-            "height": 43.0,
-            "layer": -1,
-            "pos": [
-                240.0,
-                1750.0
-            ],
-            "rotation": 0.0,
-            "scale": 6.0,
-            "width": 76.0
-        },
-        {
-            "alpha": 1.0,
-            "filename": "assets/objects/trashcan.png",
-            "height": 22.0,
-            "layer": 1,
-            "pos": [
-                900.0,
-                1880.0
-            ],
-            "rotation": 0.0,
-            "scale": 6.0,
-            "width": 27.0
-        },
-        {
-            "alpha": 1.0,
-            "filename": "assets/objects/tree.png",
-            "height": 67.0,
-            "layer": 1,
-            "pos": [
-                585.0,
-                1605.0
-            ],
-            "rotation": 0.0,
-            "scale": 6.0,
-            "width": 67.0
-        },
-        {
-            "alpha": 1.0,
-            "filename": "assets/objects/tree.png",
-            "height": 67.0,
-            "layer": 1,
-            "pos": [
-                1620.0,
-                285.0
-            ],
-            "rotation": 0.0,
-            "scale": 6.0,
-            "width": 67.0
-        }
-    ],
-    "ladders": [
-        {
-            "rect": [
-                2060.0,
-                1490.0,
-                2180.0,
-                2000.0
-            ]
-        },
-        {
-            "rect": [
-                5320.0,
-                1410.0,
-                5430.0,
-                1720.0
-            ]
-        },
-        {
-            "rect": [
-                6120.0,
-                1430.0,
-                6250.0,
-                2000.0
-            ]
-        },
-        {
-            "rect": [
-                7340.0,
-                1430.0,
-                7470.0,
-                2000.0
-            ]
-        }
-    ],
-    "platforms": [
-        {
-            "layer": 0,
-            "path": {
-                "reverse": true,
-                "waypoints": [
-                    330.0,
-                    1430.0,
-                    690.0,
-                    1660.0,
-                    980.0,
-                    1470.0,
-                    980.0,
-                    820.0
-                ]
-            },
-            "pos": [
-                977.4169921875,
-                1471.6922607421875
-            ],
-            "rotation": 0.0,
-            "scale": 1.0,
-            "size": [
-                210.0,
-                40.0
-            ],
-            "speed": 300.0
-        },
-        {
-            "layer": 0,
-            "path": {
-                "reverse": true,
-                "waypoints": [
-                    1540.0,
-                    1190.0,
-                    1540.0,
-                    1490.0
-                ]
-            },
-            "pos": [
-                1540.0,
-                1333.1314697265625
-            ],
-            "rotation": 0.0,
-            "scale": 1.0,
-            "size": [
-                120.0,
-                40.0
-            ],
-            "speed": 200.0
-        },
-        {
-            "layer": 0,
-            "path": {
-                "reverse": true,
-                "waypoints": [
-                    2910.0,
-                    1570.0,
-                    2910.0,
-                    2000.0
-                ]
-            },
-            "pos": [
-                2910.0,
-                2000.0
-            ],
-            "rotation": 0.0,
-            "scale": 1.0,
-            "size": [
-                210.0,
-                40.0
-            ],
-            "speed": 200.0
-        },
-        {
-            "layer": 0,
-            "path": {
-                "reverse": true,
-                "waypoints": [
-                    4110.0,
-                    1410.0,
-                    4920.0,
-                    1410.0
-                ]
-            },
-            "pos": [
-                4920.0,
-                1410.0
-            ],
-            "rotation": 0.0,
-            "scale": 1.0,
-            "size": [
-                230.0,
-                40.0
-            ],
-            "speed": 200.0
-        }
-    ],
     "scroller": {
         "layers": [
             {
-                "filename": "assets/backgrounds/sky.png",
+                "filename": "assets/backgrounds/desert/sky.png",
                 "foreground": false,
-                "height": 2160.0,
+                "height": 1080.0,
                 "offsetY": 0.0,
-                "speed": 0.2,
-                "width": 4800
+                "speed": 0.0,
+                "width": 1920.0
             },
             {
-                "filename": "assets/backgrounds/city_layer.png",
+                "filename": "assets/backgrounds/desert/back.png",
                 "foreground": false,
-                "height": 210.0,
-                "offsetY": 1500.0,
-                "speed": 0.4,
-                "width": 2880
+                "height": 1080.0,
+                "offsetY": 50.0,
+                "speed": 0.25,
+                "width": 1920.0
             },
             {
-                "filename": "assets/backgrounds/hills_far_layer.png",
+                "filename": "assets/backgrounds/desert/mid.png",
                 "foreground": false,
-                "height": 192.0,
-                "offsetY": 1685.0,
-                "speed": 0.6,
-                "width": 2880
-            },
-            {
-                "filename": "assets/backgrounds/hills_layer.png",
-                "foreground": false,
-                "height": 600.0,
-                "offsetY": 1500.0,
-                "speed": 0.8,
-                "width": 2880
-            },
-            {
-                "filename": "assets/backgrounds/ground_layer.png",
-                "foreground": false,
-                "height": 270.0,
-                "offsetY": 2000.0,
-                "speed": 1.0,
-                "width": 2880
-            },
-            {
-                "filename": "assets/backgrounds/power_lines_layer.png",
-                "foreground": true,
-                "height": 810.0,
-                "offsetY": 1190.0,
-                "speed": 1.0,
+                "height": 1080.0,
+                "offsetY": 0.0,
+                "speed": 0.5,
                 "width": 1920.0
             }
         ]
     },
     "skyColor": [
-        0.12939999997615814,
-        0.42739999294281006,
-        0.6039000153541565,
+        0.12941177189350128,
+        0.4274509847164154,
+        0.6039215922355652,
         0.0
     ],
-    "terrain": [
-        {
-            "show": false,
-            "through": false,
-            "vertices": [
-                0.0,
-                2000.0,
-                7680.0,
-                2000.0,
-                7680.0,
-                2160.0,
-                0.0,
-                2160.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                1260.0,
-                1530.0,
-                1260.0,
-                1490.0,
-                2060.0,
-                1490.0,
-                2060.0,
-                1530.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                2180.0,
-                1490.0,
-                2480.0,
-                1490.0,
-                2480.0,
-                1530.0,
-                2180.0,
-                1530.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                2480.0,
-                870.0,
-                2540.0,
-                870.0,
-                2540.0,
-                1530.0,
-                2540.0,
-                1530.0,
-                2480.0,
-                1530.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                1180.0,
-                870.0,
-                1180.0,
-                820.0,
-                1480.0,
-                680.0,
-                2070.0,
-                680.0,
-                2070.0,
-                610.0,
-                2160.0,
-                610.0,
-                2160.0,
-                680.0,
-                2260.0,
-                680.0,
-                2560.0,
-                820.0,
-                2560.0,
-                870.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                1660.0,
-                1230.0,
-                1660.0,
-                1190.0,
-                2480.0,
-                1190.0,
-                2480.0,
-                1230.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                1260.0,
-                1230.0,
-                1260.0,
-                1190.0,
-                1540.0,
-                1190.0,
-                1540.0,
-                1230.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                3140.0,
-                1410.0,
-                3310.0,
-                1410.0,
-                3310.0,
-                1450.0,
-                3140.0,
-                1450.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                1200.0,
-                1190.0,
-                1260.0,
-                1190.0,
-                1260.0,
-                1530.0,
-                1260.0,
-                1530.0,
-                1200.0,
-                1530.0
-            ]
-        },
-        {
-            "show": true,
-            "through": true,
-            "vertices": [
-                280.0,
-                1780.0,
-                280.0,
-                1760.0,
-                670.0,
-                1760.0,
-                670.0,
-                1780.0
-            ]
-        },
-        {
-            "show": false,
-            "through": false,
-            "vertices": [
-                910.0,
-                1890.0,
-                1020.0,
-                1890.0,
-                1020.0,
-                2000.0,
-                910.0,
-                2000.0
-            ]
-        },
-        {
-            "show": true,
-            "through": true,
-            "vertices": [
-                650.0,
-                1270.0,
-                810.0,
-                1270.0,
-                810.0,
-                1310.0,
-                650.0,
-                1310.0
-            ]
-        },
-        {
-            "show": true,
-            "through": true,
-            "vertices": [
-                300.0,
-                1070.0,
-                460.0,
-                1070.0,
-                460.0,
-                1110.0,
-                300.0,
-                1110.0
-            ]
-        },
-        {
-            "show": true,
-            "through": true,
-            "vertices": [
-                610.0,
-                840.0,
-                770.0,
-                840.0,
-                770.0,
-                880.0,
-                610.0,
-                880.0
-            ]
-        },
-        {
-            "show": true,
-            "through": true,
-            "vertices": [
-                2580.0,
-                980.0,
-                2750.0,
-                980.0,
-                2750.0,
-                1020.0,
-                2580.0,
-                1020.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                4170.0,
-                2000.0,
-                4380.0,
-                1840.0,
-                4960.0,
-                1840.0,
-                5080.0,
-                1800.0,
-                5150.0,
-                1720.0,
-                5730.0,
-                1720.0,
-                6050.0,
-                2000.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                3540.0,
-                1410.0,
-                3710.0,
-                1410.0,
-                3710.0,
-                1450.0,
-                3540.0,
-                1450.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                3940.0,
-                1410.0,
-                4110.0,
-                1410.0,
-                4110.0,
-                1450.0,
-                3940.0,
-                1450.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                5150.0,
-                1410.0,
-                5320.0,
-                1410.0,
-                5320.0,
-                1450.0,
-                5150.0,
-                1450.0
-            ]
-        },
-        {
-            "show": true,
-            "through": true,
-            "vertices": [
-                2590.0,
-                1730.0,
-                2810.0,
-                1730.0,
-                2810.0,
-                1790.0,
-                2590.0,
-                1790.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                6460.0,
-                2000.0,
-                6650.0,
-                1420.0,
-                6910.0,
-                1420.0,
-                7190.0,
-                2000.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                6310.0,
-                1190.0,
-                6480.0,
-                1190.0,
-                6480.0,
-                1230.0,
-                6310.0,
-                1230.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                7090.0,
-                1190.0,
-                7260.0,
-                1190.0,
-                7260.0,
-                1230.0,
-                7090.0,
-                1230.0
-            ]
-        },
-        {
-            "show": false,
-            "through": true,
-            "vertices": [
-                1670.0,
-                400.0,
-                1780.0,
-                400.0,
-                1840.0,
-                430.0,
-                1970.0,
-                430.0,
-                1970.0,
-                450.0,
-                1840.0,
-                450.0,
-                1780.0,
-                420.0,
-                1670.0,
-                420.0
-            ]
-        },
-        {
-            "show": true,
-            "through": false,
-            "vertices": [
-                2830.0,
-                1170.0,
-                3000.0,
-                1170.0,
-                3000.0,
-                1210.0,
-                2830.0,
-                1210.0
-            ]
-        }
-    ],
-    "title": "test_level.json",
-    "width": 7680.0
+    "spawns": null,
+    "title": "level.json",
+    "width": 3840.0
 }

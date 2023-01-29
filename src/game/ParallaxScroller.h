@@ -21,6 +21,8 @@ struct ScrollLayer {
     u32 atlasId;
     u32 quadIndexes[3];
     bool foreground;
+    std::string filename;
+    bool built = false;
 };
 
 
@@ -32,11 +34,16 @@ public:
     void update(float targetX, float targetY);
     void render(RenderCmdBuffer &buffer, bool foreground);
     void reset();
+    void rebuild();
+    bool moveLayerUp(u32 i);
+    bool moveLayerDown(u32 i);
+    bool addLayer(u32 i);
+    bool deleteLayer(u32 i);
+    std::vector<ScrollLayer> layers;
 
 private:
     IRenderDevice& renderDevice;
 
-    std::vector<ScrollLayer> layers;
     std::vector<AtlasQuad> quads;
     std::shared_ptr<TextureAtlas> atlas;
     float directionX = 1;

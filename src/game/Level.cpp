@@ -302,6 +302,26 @@ void Level::save(std::string filename) {
     j["ambientColor"].clear();
     pushColor(j["ambientColor"], config.ambientColor);
 
+    if(!scroller->layers.empty()) {
+        if(j.contains("scroller")) {
+            if(j["scroller"].contains("layers"))
+                j["scroller"]["layers"].clear();
+        }
+
+        json layers;
+        for(auto& layer : scroller->layers) {
+            json jsonLayer;
+            jsonLayer["filename"] = layer.filename;
+            jsonLayer["width"] = layer.width;
+            jsonLayer["height"] = layer.height;
+            jsonLayer["offsetY"] = layer.posY;
+            jsonLayer["speed"] = layer.speedFac;
+            jsonLayer["foreground"] = layer.foreground;
+            layers.push_back(jsonLayer);
+        }
+        j["scroller"]["layers"] = layers;
+    }
+
     j["entities"].clear();
     for (Entity* ent : world->all(false)) {
         if(ent == player) {

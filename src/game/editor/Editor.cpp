@@ -33,6 +33,7 @@
 #include "../components/PathComponent.h"
 #include "../components/LadderComponent.h"
 #include "imgui.h"
+#include "imgui_stdlib.h"
 #include "../components/FlickerEffectComponent.h"
 #include "../components/GlowEffectComponent.h"
 #include "TransformPropertyEditor.h"
@@ -231,10 +232,14 @@ void Editor::mainMenu() {
             ImGui::EndMenu();
         }
         if(ImGui::BeginMenu("Entity")) {
-            if (ImGui::MenuItem("Create", "CTRL+N")) {
-                SDL_Log("Clicked create");
+            if (ImGui::MenuItem("Create")) {
                 stealFocusNextFrame = true;
                 showCreateEntityModal = true;
+            }
+            if(ImGui::BeginMenu("Rename", selectedEntity != nullptr)) {
+                //ImGui::SetNextItemWidth(150);
+                ImGui::InputText("Name", &selectedEntity->name);
+                ImGui::EndMenu();
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Delete", nullptr, false, selectedEntity != nullptr)) {
@@ -466,30 +471,80 @@ void Editor::properties() {
 }
 
 void Editor::backgroundEditor() {
-    static int selected = 0;
+    auto& scroller = level.getScroller();
+    static u32 selected = 0;
     ImGui::BeginGroup();
     ImGui::BeginChild("left pane", ImVec2(120, -ImGui::GetFrameHeightWithSpacing()), true);
-        for (int i = 0; i < 10; i++) {
+        for (u32 i = 0; i < scroller.layers.size(); i++) {
             if (ImGui::Selectable(string_format("Layer %d", i).c_str(), selected == i))
                 selected = i;
 
         }
     ImGui::EndChild();
-    if (ImGui::Button("+", ImVec2(25, 0))) {}
+    if (ImGui::Button("+", ImVec2(25, 0))) {
+        scroller.addLayer(selected);
+    }
     ImGui::SameLine();
-    if (ImGui::Button("-", ImVec2(25, 0))) {}
+    if (ImGui::Button("-", ImVec2(25, 0))) {
+        scroller.deleteLayer(selected);
+    }
     ImGui::EndGroup();
 
     ImGui::SameLine();
     ImGui::BeginGroup();
-    ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
-        ImGui::Text("MyObject: %d", selected);
-        ImGui::Separator();
-        ImGui::Text("background scroller editor");
-    ImGui::EndChild();
-    if (ImGui::Button("Move Up")) {}
-    ImGui::SameLine();
-    if (ImGui::Button("Move Down")) {}
+    if(!scroller.layers.empty()) {
+        ImGui::BeginChild("item view", ImVec2(0,
+                                              -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+        auto &layer = scroller.layers[selected];
+        ImGui::InputText("Filename", &layer.filename);
+        ImGui::SameLine();
+        if (ImGui::Button("Browse")) {
+            ImGuiFileDialog::Instance()->OpenDialog("ChooseLayerImageKey", "Choose Image", ".png",
+                                                    ".", 1,
+                                                    nullptr, ImGuiFileDialogFlags_Modal);
+        }
+        ImGui::InputFloat("Width", &layer.width, 0, 0, "%.0f");
+        ImGui::InputFloat("Height", &layer.height, 0, 0, "%.0f");
+        ImGui::InputFloat("PositionY", &layer.posY, 0, 0, "%.0f");
+        ImGui::InputFloat("SpeedFactor", &layer.speedFac, 0, 0, "%.02f");
+        ImGui::Checkbox("Foreground", &layer.foreground);
+        ImGui::Spacing();
+        if (ImGui::Button("Move Up")) {
+            if (scroller.moveLayerUp(selected)) {
+                selected--;
+            }
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Move Down")) {
+            if (scroller.moveLayerDown(selected)) {
+                selected++;
+            }
+        }
+        if (!layer.built) {
+            ImGui::Spacing();
+            ImGui::Text("This layer needs to be rebuild.");
+        }
+        ImGui::EndChild();
+
+        //ImGui::SameLine();
+        if (ImGui::Button("Rebuild")) {
+            scroller.rebuild();
+        }
+        if (ImGuiFileDialog::Instance()->Display("ChooseLayerImageKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450))) {
+            // action if OK
+            if (ImGuiFileDialog::Instance()->IsOk())
+            {
+                std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+                std::string curPath(getcwd(nullptr,0));
+                filePathName = filePathName.substr(curPath.size()+1);
+                layer.filename = filePathName;
+                //SDL_Log("filePathName: %s, filePath: %s, getCwd: %s", filePathName.c_str(), filePath.c_str(), curPath.c_str());
+            }
+
+            // close
+            ImGuiFileDialog::Instance()->Close();
+        }
+    }
     ImGui::EndGroup();
 }
 

@@ -528,6 +528,7 @@ namespace ECS
         void setName(const std::string& n) {
             name = n;
         }
+		std::string name;
 
 	private:
 		std::unordered_map<TypeIndex, Internal::BaseComponentContainer*> components;
@@ -535,7 +536,6 @@ namespace ECS
 
 		size_t id;
 		bool bPendingDestroy = false;
-        std::string name;
 	};
 
 	/**

@@ -63,7 +63,8 @@ set(IM_GUI_SOURCE_FILES
         src/imgui/imgui_demo.cpp
         src/imgui/imgui_draw.cpp
         src/imgui/imgui_widgets.cpp
-        src/imgui/imgui_tables.cpp)
+        src/imgui/imgui_tables.cpp
+        src/imgui/imgui_stdlib.cpp)
 
 set(UTIL_SOURCE_FILES
         src/util/string_util.cpp

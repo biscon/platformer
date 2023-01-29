@@ -45,6 +45,7 @@ public:
     void setDebug(bool debug);
     void setEditMode(bool editMode);
     Camera& getCamera() { return *camera; }
+    ParallaxScroller& getScroller() { return *scroller; }
     World* getWorld() { return world; }
     void translateEditCam(Vector2& offset);
 
