@@ -1,21 +1,21 @@
 //
-// Created by bison on 22-01-23.
+// Created by bison on 29-01-23.
 //
 
-#ifndef PLATFORMER_TRANSFORMPROPERTYEDITOR_H
-#define PLATFORMER_TRANSFORMPROPERTYEDITOR_H
+#ifndef PLATFORMER_IMAGEPROPERTYEDITOR_H
+#define PLATFORMER_IMAGEPROPERTYEDITOR_H
 
 #include "IComponentPropertyEditor.h"
 #include "../../input/Input.h"
 
-class TransformPropertyEditor: public IComponentPropertyEditor {
+
+
+class ImagePropertyEditor: public IComponentPropertyEditor {
 public:
     void show() override;
     void setSelected(Entity *ent) override;
-
     bool onLeftDown(Vector2 pos) override;
     bool onLeftUp(Vector2 pos) override;
-
     bool onAction(const Input::Action &action) override;
 
 private:
@@ -23,4 +23,4 @@ private:
 };
 
 
-#endif //PLATFORMER_TRANSFORMPROPERTYEDITOR_H
+#endif //PLATFORMER_IMAGEPROPERTYEDITOR_H

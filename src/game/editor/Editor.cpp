@@ -39,6 +39,7 @@
 #include "TransformPropertyEditor.h"
 #include "TerrainPropertyEditor.h"
 #include "../../util/ImGuiFileDialog.h"
+#include "ImagePropertyEditor.h"
 
 
 Editor::Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font, Level& level) :
@@ -66,6 +67,7 @@ Editor::Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBu
 
     propertyEditorMap[ComponentType::Transform] = std::make_unique<TransformPropertyEditor>();
     propertyEditorMap[ComponentType::Terrain] = std::make_unique<TerrainPropertyEditor>(inputDevice, buffers, font, camera, world);
+    propertyEditorMap[ComponentType::Image] = std::make_unique<ImagePropertyEditor>();
 }
 
 void Editor::update(float deltaTime) {
@@ -324,7 +326,26 @@ void Editor::assignComponentMenu() {
             {300 + camera.scrollX,500 + camera.scrollY},{500 + camera.scrollX,500 + camera.scrollY},
             {500 + camera.scrollX,550 + camera.scrollY},{300 + camera.scrollX,550 + camera.scrollY}},true);
     }
-    //ImGui::MenuItem("Terrain");
+    if(ImGui::MenuItem("Image", nullptr, false, !selectedEntity->has<ImageComponent>())) {
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseImageComponentKey", "Choose Image", ".png",
+                                                ".", 1,
+                                                nullptr, ImGuiFileDialogFlags_Modal);
+    }
+    if (ImGuiFileDialog::Instance()->Display("ChooseImageComponentKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450))) {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string curPath(getcwd(nullptr,0));
+            filePathName = filePathName.substr(curPath.size()+1);
+
+            //selectedEntity->assign<ImageComponent>(filePathName, atlas);
+            //SDL_Log("filePathName: %s, filePath: %s, getCwd: %s", filePathName.c_str(), filePath.c_str(), curPath.c_str());
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
 }
 
 void Editor::createEntityModal() {

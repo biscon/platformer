@@ -203,7 +203,7 @@ set(GAME_SOURCE_FILES
         src/game/editor/TransformPropertyEditor.cpp
         src/game/editor/TransformPropertyEditor.h
         src/game/editor/TerrainPropertyEditor.cpp
-        src/game/editor/TerrainPropertyEditor.h)
+        src/game/editor/TerrainPropertyEditor.h src/game/editor/ImagePropertyEditor.cpp src/game/editor/ImagePropertyEditor.h)
 
 add_executable(game ${GAME_SOURCE_FILES} ${ENGINE_SOURCE_FILES} ${UTIL_SOURCE_FILES} ${IM_GUI_SOURCE_FILES} ${CGLM_SOURCE_FILES})
 
