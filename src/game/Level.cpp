@@ -113,11 +113,11 @@ void Level::createTestLevel() {
 
     auto image1 = world->create();
     image1->assign<TransformComponent>(Vector2(500, 300), 4.0f, 0, -1);
-    image1->assign<ImageComponent>("assets/objects/bus_stop.png", atlas);
+    image1->assign<ImageComponent>("assets/objects/bus_stop.png", renderDevice);
 
     auto image2 = world->create();
     image2->assign<TransformComponent>(Vector2(900, 300), 4.0f, 0, 1);
-    image2->assign<ImageComponent>("assets/lights/pendel_4x.png", atlas);
+    image2->assign<ImageComponent>("assets/lights/pendel_4x.png", renderDevice);
     image2->assign<VerletMeshComponent>();
     image2->assign<GlowEffectComponent>();
     image2->get<VerletMeshComponent>()->buildRope(Vector2(1000,100));
@@ -412,7 +412,6 @@ void Level::load(std::string filename) {
     }
 
     std::unordered_map<std::string, ImageComponent*> imagesCache;
-    auto atlas = std::make_shared<TextureAtlas>(renderDevice, 2048, 2048, PixelFormat::RGBA);
 
     for(auto& e : j["entities"]) {
         auto ent = world->create();
@@ -433,7 +432,7 @@ void Level::load(std::string filename) {
             if(imagesCache.count(fn) > 0) {
                 ent->assign<ImageComponent>(*imagesCache[fn]);
             } else {
-                ent->assign<ImageComponent>(fn, atlas);
+                ent->assign<ImageComponent>(fn, renderDevice);
                 auto image = ent->get<ImageComponent>();
                 imagesCache[image->filename] = &image.get();
             }
@@ -470,8 +469,7 @@ void Level::load(std::string filename) {
     }
 
     levelFile = std::make_unique<LevelFile>(filename);
-    atlas->packAndUpload(renderDevice);
-    SDL_Log("Uploaded %d images", atlas->getNoImages());
+    SDL_Log("Uploaded %d images", (i32) imagesCache.size());
 
     createPlayer();
 }

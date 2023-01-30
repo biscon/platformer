@@ -5,20 +5,25 @@
 #include "ImageComponent.h"
 
 ImageComponent::ImageComponent(const std::string &filename,
-                               const std::shared_ptr<TextureAtlas> &textureAtlas): filename(filename), textureAtlas(textureAtlas) {
+                               IRenderDevice &renderDevice): filename(filename) {
     auto pb = std::make_unique<PixelBuffer>(filename, false);
     width = pb->width;
     height = pb->height;
-    atlasId = textureAtlas->addImage(std::move(pb));
+    //pb->upscaleNPOT();
+    uvCoords.left = 0;
+    uvCoords.top = 0;
+    uvCoords.right = width / (float) pb->width;
+    uvCoords.bottom = height / (float) pb->height;
+    textureId = renderDevice.uploadTexture(pb.get(), false);
 }
 
 ImageComponent::ImageComponent(const ImageComponent &old) {
-    textureAtlas = old.textureAtlas;
     width = old.width;
     height = old.height;
     alpha = old.alpha;
-    atlasId = old.atlasId;
+    textureId = old.textureId;
     filename = old.filename;
+    uvCoords = old.uvCoords;
 }
 
 void ImageComponent::save(json &e) {
@@ -28,6 +33,7 @@ void ImageComponent::save(json &e) {
     t["width"] = width;
     t["height"] = height;
     t["lightMap"] = lightMap;
+    //t["uvCoords"] = {uvCoords.left, uvCoords.top, uvCoords.right, uvCoords.bottom};
     e["image"] = t;
 }
 
@@ -39,5 +45,7 @@ void ImageComponent::load(const json& e) {
         lightMap = e["lightMap"];
     else
         lightMap = false;
+    //auto coords = e["uvCoords"];
+    //uvCoords = FloatRect(coords[0], coords[1], coords[2], coords[3]);
     filename = e["filename"];
 }

@@ -206,7 +206,7 @@ void RenderLevelSystem::renderImage(Entity* ent, RenderCmdBuffer& buffer) {
         alpha = glowEffect->fraction;
     }
 
-    AtlasQuad quad = {.color = {alpha, alpha, alpha, alpha}, .atlasId = image.atlasId,
+    Quad quad = {.color = {alpha, alpha, alpha, alpha},
             .left = transform.pos.x,
             .top = transform.pos.y,
             .right = transform.pos.x + image.width,
@@ -234,7 +234,7 @@ void RenderLevelSystem::renderImage(Entity* ent, RenderCmdBuffer& buffer) {
 
 
     buffer.pushTransform(&trans);
-    buffer.pushAtlasQuad(quad, image.textureAtlas.get());
+    buffer.pushTexturedQuad(quad, image.textureId);
     glm_mat4_identity(trans);
     buffer.pushTransform(&trans);
 }
@@ -352,7 +352,7 @@ void RenderLevelSystem::renderVerletImage(Entity *ent, RenderCmdBuffer& buffer) 
     if(glow.isValid()) {
         c = { glow->fraction, glow->fraction, glow->fraction, glow->fraction};
     }
-    buffer.pushQuadMappedImage(rect, image->textureAtlas.get(), image->atlasId, c);
+    buffer.pushQuadMappedImage(rect, image->textureId, c);
 
 
     glm_mat4_identity(trans);

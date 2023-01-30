@@ -201,25 +201,56 @@ namespace Renderer {
         for(auto& q : quads) {
             float verts[] = {
                     // positions            // colors                     // texture coords
-                    q.right, q.top, q.color.r, q.color.g, q.color.b, q.color.a, 1.0f,
-                    1.0f,   // top right
-                    q.right, q.bottom, q.color.r, q.color.g, q.color.b, q.color.a, 1.0f,
-                    0.0f,   // bottom right
-                    q.left, q.top, q.color.r, q.color.g, q.color.b, q.color.a, 0.0f,
-                    1.0f,   // top left
+                    q.right, q.top, q.color.r, q.color.g, q.color.b, q.color.a, 1.0f,0.0f,   // top right
+                    q.right, q.bottom, q.color.r, q.color.g, q.color.b, q.color.a, 1.0f,1.0f,   // bottom right
+                    q.left, q.top, q.color.r, q.color.g, q.color.b, q.color.a, 0.0f,0.0f,   // top left
 
-                    q.right, q.bottom, q.color.r, q.color.g, q.color.b, q.color.a, 1.0f,
-                    0.0f,   // bottom right
-                    q.left, q.bottom, q.color.r, q.color.g, q.color.b, q.color.a, 0.0f,
-                    0.0f,   // bottom left
-                    q.left, q.top, q.color.r, q.color.g, q.color.b, q.color.a, 0.0f,
-                    1.0f    // top left
+                    q.right, q.bottom, q.color.r, q.color.g, q.color.b, q.color.a, 1.0f,1.0f,   // bottom right
+                    q.left, q.bottom, q.color.r, q.color.g, q.color.b, q.color.a, 0.0f,1.0f,   // bottom left
+                    q.left, q.top, q.color.r, q.color.g, q.color.b, q.color.a, 0.0f,0.0f    // top left
             };
 
             memcpy(verticesOffset, &verts, byte_size);
             verticesOffset += byte_size;
             assert(verticesOffset - (vertices) > 0);
         }
+
+        memcpy(cmdOffset, &cmd, sizeof(QuadCommand));
+        cmdOffset += sizeof(QuadCommand);
+        assert(cmdOffset - commands > 0);
+    }
+
+    void RenderCmdBuffer::pushTexturedQuad(const Quad& q, u32 texid) {
+        QuadCommand cmd = {
+                .type = CommandType::TexQuad,
+                .offset = 0,
+                .vertexOffset = 0,
+                .vertexCount = 0,
+                .texId = texid,
+                .atlas = nullptr
+        };
+
+        cmd.offset = (size_t) (verticesOffset - vertices);
+        size_t byte_size = VERTS_PER_QUAD * FLOATS_PER_VERTEX * sizeof(float);
+        cmd.vertexOffset = (cmd.offset) / (FLOATS_PER_VERTEX * sizeof(float));
+        cmd.vertexCount = VERTS_PER_QUAD;
+
+
+        float verts[] = {
+                // positions            // colors                     // texture coords
+                q.right, q.top, q.color.r, q.color.g, q.color.b, q.color.a, 1.0f,0.0f,   // top right
+                q.right, q.bottom, q.color.r, q.color.g, q.color.b, q.color.a, 1.0f,1.0f,   // bottom right
+                q.left, q.top, q.color.r, q.color.g, q.color.b, q.color.a, 0.0f,0.0f,   // top left
+
+                q.right, q.bottom, q.color.r, q.color.g, q.color.b, q.color.a, 1.0f,1.0f,   // bottom right
+                q.left, q.bottom, q.color.r, q.color.g, q.color.b, q.color.a, 0.0f,1.0f,   // bottom left
+                q.left, q.top, q.color.r, q.color.g, q.color.b, q.color.a, 0.0f,0.0f    // top left
+        };
+
+        memcpy(verticesOffset, &verts, byte_size);
+        verticesOffset += byte_size;
+        assert(verticesOffset - (vertices) > 0);
+
 
         memcpy(cmdOffset, &cmd, sizeof(QuadCommand));
         cmdOffset += sizeof(QuadCommand);
@@ -416,7 +447,6 @@ namespace Renderer {
         FloatRect uv;
         atlas->setUVRect(atlasId, &uv);
 
-        uv.left += 0.001f;
         float verts[] = {
                 // positions            // colors                                           // texture coords
                 rect[1].x, rect[1].y, color.r, color.g, color.b, color.a, uv.right,uv.top,         // right top
@@ -425,6 +455,40 @@ namespace Renderer {
                 rect[2].x, rect[2].y, color.r, color.g, color.b, color.a, uv.right,uv.bottom,      // right bottom
                 rect[3].x, rect[3].y, color.r, color.g, color.b, color.a, uv.left,uv.bottom,       // left bottom
                 rect[0].x, rect[0].y, color.r, color.g, color.b, color.a, uv.left,uv.top           // left top
+        };
+
+        memcpy(verticesOffset, &verts, byte_size);
+        verticesOffset += byte_size;
+        assert(verticesOffset - vertices > 0);
+
+        memcpy(cmdOffset, &cmd, sizeof(QuadCommand));
+        cmdOffset += sizeof(QuadCommand);
+        assert(cmdOffset - commands > 0);
+    }
+
+    void RenderCmdBuffer::pushQuadMappedImage(const std::vector<Vector2> &rect, u32 textureId, const Color& color) {
+        QuadCommand cmd = {
+                .type = CommandType::TexQuad,
+                .offset = 0,
+                .vertexOffset = 0,
+                .vertexCount = 0,
+                .texId = textureId,
+                .atlas = nullptr
+        };
+        cmd.offset = (size_t) (verticesOffset - vertices);
+        size_t byte_size = VERTS_PER_QUAD * FLOATS_PER_VERTEX * sizeof(float);
+        cmd.vertexOffset = (cmd.offset) / (FLOATS_PER_VERTEX * sizeof(float));
+        cmd.vertexCount = VERTS_PER_QUAD;
+        //cmd.premultipliedAlpha = false;
+
+        float verts[] = {
+                // positions            // colors                                           // texture coords
+                rect[1].x, rect[1].y, color.r, color.g, color.b, color.a, 1.0f, 0.0f,         // right top
+                rect[2].x, rect[2].y, color.r, color.g, color.b, color.a, 1.0f, 1.0f,      // right bottom
+                rect[0].x, rect[0].y, color.r, color.g, color.b, color.a, 0.0f, 0.0f,          // left top
+                rect[2].x, rect[2].y, color.r, color.g, color.b, color.a, 1.0f, 1.0f,      // right bottom
+                rect[3].x, rect[3].y, color.r, color.g, color.b, color.a, 0.0f, 1.0f,       // left bottom
+                rect[0].x, rect[0].y, color.r, color.g, color.b, color.a, 0.0f, 0.0f           // left top
         };
 
         memcpy(verticesOffset, &verts, byte_size);

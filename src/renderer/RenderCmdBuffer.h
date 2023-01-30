@@ -29,6 +29,7 @@ namespace Renderer {
         void pushQuads(const std::vector<Quad>& quads);
         void pushQuad(const Quad& q);
         void pushTexturedQuads(const std::vector<Quad>& quads, u32 texid);
+        void pushTexturedQuad(const Quad& q, u32 texid);
 
         void pushTransform(mat4* matrix);
         void pushText(const std::string& text, Font *font, float x, float y, const Color& color);
@@ -40,11 +41,11 @@ namespace Renderer {
         void pushEnableMatte(const Color& color);
         void pushDisableMatte();
 
-        void pushPolygon(const std::vector<Vector2>& verts, const Color& color);
         void pushTriangles(const std::vector<Vector2> &verts, const Color &color);
         void pushTriangleStripMesh(const std::vector<float> &verts);
 
         void pushQuadMappedImage(const std::vector<Vector2> &verts, TextureAtlas* atlas, u32 atlasId, const Color& color);
+        void pushQuadMappedImage(const std::vector<Vector2> &rect, u32 textureId, const Color& color);
 
 
         u8 *commands;

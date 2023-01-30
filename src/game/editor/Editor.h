@@ -41,12 +41,13 @@ struct EntityMetaData {
 
 class Editor {
 public:
-    explicit Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers renderBuffers, Font &font, Level &level);
+    explicit Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers renderBuffers, Font &font, Level &level);
 
     void update(float deltaTime);
     void reset();
 
 private:
+    IRenderDevice& renderDevice;
     IInputDevice &inputDevice;
     World *world;
     Camera& camera;

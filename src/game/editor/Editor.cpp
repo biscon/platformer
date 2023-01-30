@@ -42,8 +42,8 @@
 #include "ImagePropertyEditor.h"
 
 
-Editor::Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font, Level& level) :
-        inputDevice(inputDevice), world(world), camera(camera), buffers(buffers), font(font), level(level) {
+Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font, Level& level) :
+        renderDevice(renderDevice), inputDevice(inputDevice), world(world), camera(camera), buffers(buffers), font(font), level(level) {
     inputContext = std::make_shared<Input::InputContext>();
     inputDevice.registerContext(inputContext);
     inputContext->registerAction(INPUT_ACTION_LMB_DOWN);
@@ -67,7 +67,7 @@ Editor::Editor(IInputDevice &inputDevice, World* world, Camera& camera, RenderBu
 
     propertyEditorMap[ComponentType::Transform] = std::make_unique<TransformPropertyEditor>();
     propertyEditorMap[ComponentType::Terrain] = std::make_unique<TerrainPropertyEditor>(inputDevice, buffers, font, camera, world);
-    propertyEditorMap[ComponentType::Image] = std::make_unique<ImagePropertyEditor>();
+    propertyEditorMap[ComponentType::Image] = std::make_unique<ImagePropertyEditor>(inputDevice, buffers, font, camera, world);
 }
 
 void Editor::update(float deltaTime) {
@@ -315,6 +315,22 @@ void Editor::fileDialogs() {
         // close
         ImGuiFileDialog::Instance()->Close();
     }
+    if (ImGuiFileDialog::Instance()->Display("ChooseImageComponentKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450))) {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string curPath(getcwd(nullptr,0));
+            filePathName = filePathName.substr(curPath.size()+1);
+            if(!selectedEntity->has<TransformComponent>()) {
+                selectedEntity->assign<TransformComponent>(Vector2(300 + camera.scrollX, 500 + camera.scrollY), 1.0f, 0, 1);
+            }
+            selectedEntity->assign<ImageComponent>(filePathName, renderDevice);
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
 }
 
 void Editor::assignComponentMenu() {
@@ -322,6 +338,9 @@ void Editor::assignComponentMenu() {
         selectedEntity->assign<TransformComponent>(Vector2(0,0), 1.0f, 0, 0);
     }
     if(ImGui::MenuItem("Terrain", nullptr, false, !selectedEntity->has<TerrainComponent>())) {
+        if(!selectedEntity->has<TransformComponent>()) {
+            selectedEntity->assign<TransformComponent>(Vector2(0,0), 1.0f, 0, 1);
+        }
         selectedEntity->assign<TerrainComponent>(std::vector<Vector2> {
             {300 + camera.scrollX,500 + camera.scrollY},{500 + camera.scrollX,500 + camera.scrollY},
             {500 + camera.scrollX,550 + camera.scrollY},{300 + camera.scrollX,550 + camera.scrollY}},true);
@@ -330,21 +349,6 @@ void Editor::assignComponentMenu() {
         ImGuiFileDialog::Instance()->OpenDialog("ChooseImageComponentKey", "Choose Image", ".png",
                                                 ".", 1,
                                                 nullptr, ImGuiFileDialogFlags_Modal);
-    }
-    if (ImGuiFileDialog::Instance()->Display("ChooseImageComponentKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450))) {
-        // action if OK
-        if (ImGuiFileDialog::Instance()->IsOk())
-        {
-            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-            std::string curPath(getcwd(nullptr,0));
-            filePathName = filePathName.substr(curPath.size()+1);
-
-            //selectedEntity->assign<ImageComponent>(filePathName, atlas);
-            //SDL_Log("filePathName: %s, filePath: %s, getCwd: %s", filePathName.c_str(), filePath.c_str(), curPath.c_str());
-        }
-
-        // close
-        ImGuiFileDialog::Instance()->Close();
     }
 }
 
@@ -357,7 +361,7 @@ void Editor::createEntityModal() {
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
     if (ImGui::BeginPopupModal("Create Entity", &showCreateEntityModal, ImGuiWindowFlags_AlwaysAutoResize)) {
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
-        ImGui::Text("Creates a new entity with the given name.\nUse Entity->Assign Component menu to assign components\n\n");
+        ImGui::Text("Creates a new entity with the given name.\nUse Entity->Create Component menu to assign components\n\n");
         ImGui::Spacing();
         if(stealFocusNextFrame) {
             ImGui::SetKeyboardFocusHere();

@@ -7,340 +7,85 @@
     ],
     "entities": [
         {
+            "name": "Ground",
             "terrain": {
+                "color": [
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    1.0
+                ],
+                "light": true,
                 "show": true,
                 "through": false,
                 "vertices": [
                     0.0,
-                    800.0,
-                    300.0,
-                    800.0,
-                    500.0,
                     900.0,
-                    700.0,
-                    900.0,
-                    1000.0,
-                    800.0,
-                    1200.0,
-                    600.0,
-                    1500.0,
-                    600.0,
-                    1500.0,
-                    500.0,
                     1920.0,
-                    500.0,
-                    2500.0,
-                    1000.0,
-                    2500.0,
-                    1050.0,
-                    1500.0,
-                    1050.0,
-                    1500.0,
-                    1300.0,
-                    2500.0,
-                    1300.0,
-                    3840.0,
-                    2000.0,
-                    3840.0,
-                    2160.0,
+                    900.0,
+                    1920.0,
+                    1080.0,
                     0.0,
-                    2160.0
-                ]
-            }
-        },
-        {
-            "terrain": {
-                "show": true,
-                "through": false,
-                "vertices": [
-                    300.0,
-                    500.0,
-                    500.0,
-                    500.0,
-                    500.0,
-                    520.0,
-                    300.0,
-                    520.0
-                ]
-            }
-        },
-        {
-            "terrain": {
-                "show": true,
-                "through": false,
-                "vertices": [
-                    600.0,
-                    500.0,
-                    800.0,
-                    500.0,
-                    800.0,
-                    520.0,
-                    600.0,
-                    520.0
-                ]
-            }
-        },
-        {
-            "ladder": {
-                "rect": [
-                    500.0,
-                    500.0,
-                    600.0,
-                    900.0
-                ]
-            }
-        },
-        {
-            "image": {
-                "alpha": 1.0,
-                "filename": "assets/lights/pendel_4x.png",
-                "height": 189.0,
-                "lightMap": false,
-                "width": 210.0
-            },
-            "transform": {
-                "layer": 1,
-                "pos": [
-                    890.3598022460938,
-                    548.2288818359375
-                ],
-                "rotation": 0.0,
-                "scale": 4.0
-            },
-            "verletMesh": {
-                "attachOffset": [
-                    0.0,
-                    -50.0
-                ],
-                "gravity": 1000.0,
-                "points": [
-                    {
-                        "locked": true,
-                        "position": [
-                            1000.0,
-                            100.0
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            996.0724487304688,
-                            120.76974487304688
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            991.872314453125,
-                            142.5647735595703
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            988.058837890625,
-                            162.19786071777344
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            983.9327392578125,
-                            182.84786987304688
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            979.6129150390625,
-                            203.39627075195313
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            974.5083618164063,
-                            224.42445373535156
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            968.643310546875,
-                            244.2112579345703
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            961.70751953125,
-                            262.9701232910156
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            953.37939453125,
-                            281.85308837890625
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            908.0601196289063,
-                            283.55078125
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            979.6392211914063,
-                            319.2708740234375
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            818.678466796875,
-                            462.7145690917969
-                        ]
-                    },
-                    {
-                        "locked": false,
-                        "position": [
-                            890.3598022460938,
-                            498.2288818359375
-                        ]
-                    }
-                ],
-                "solveIterations": 5,
-                "sticks": [
-                    {
-                        "indexA": 0,
-                        "indexB": 1,
-                        "lockLength": false
-                    },
-                    {
-                        "indexA": 1,
-                        "indexB": 2,
-                        "lockLength": false
-                    },
-                    {
-                        "indexA": 2,
-                        "indexB": 3,
-                        "lockLength": false
-                    },
-                    {
-                        "indexA": 3,
-                        "indexB": 4,
-                        "lockLength": false
-                    },
-                    {
-                        "indexA": 4,
-                        "indexB": 5,
-                        "lockLength": false
-                    },
-                    {
-                        "indexA": 5,
-                        "indexB": 6,
-                        "lockLength": false
-                    },
-                    {
-                        "indexA": 6,
-                        "indexB": 7,
-                        "lockLength": false
-                    },
-                    {
-                        "indexA": 7,
-                        "indexB": 8,
-                        "lockLength": false
-                    },
-                    {
-                        "indexA": 8,
-                        "indexB": 9,
-                        "lockLength": false
-                    },
-                    {
-                        "indexA": 9,
-                        "indexB": 10,
-                        "lockLength": true
-                    },
-                    {
-                        "indexA": 9,
-                        "indexB": 11,
-                        "lockLength": true
-                    },
-                    {
-                        "indexA": 10,
-                        "indexB": 11,
-                        "lockLength": true
-                    },
-                    {
-                        "indexA": 10,
-                        "indexB": 12,
-                        "lockLength": true
-                    },
-                    {
-                        "indexA": 11,
-                        "indexB": 13,
-                        "lockLength": true
-                    },
-                    {
-                        "indexA": 12,
-                        "indexB": 13,
-                        "lockLength": true
-                    },
-                    {
-                        "indexA": 10,
-                        "indexB": 13,
-                        "lockLength": true
-                    }
-                ]
-            }
-        },
-        {
-            "collision": true,
-            "platform": {
-                "easeAmount": 1.0,
-                "size": [
-                    100.0,
-                    50.0
-                ],
-                "speed": 200.0,
-                "waitTime": 1.0
-            },
-            "terrain": {
-                "show": true,
-                "through": false,
-                "vertices": [
-                    100.0,
-                    300.0,
-                    200.0,
-                    300.0,
-                    200.0,
-                    350.0,
-                    100.0,
-                    350.0
+                    1080.0
                 ]
             },
             "transform": {
                 "layer": 0,
                 "pos": [
-                    100.0,
-                    300.0
+                    0.0,
+                    0.0
                 ],
                 "rotation": 0.0,
                 "scale": 1.0
             }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/tree.png",
+                "height": 92.0,
+                "lightMap": false,
+                "width": 88.0
+            },
+            "name": "Tree",
+            "transform": {
+                "layer": -2,
+                "pos": [
+                    520.0,
+                    447.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/trashcan.png",
+                "height": 22.0,
+                "lightMap": false,
+                "width": 27.0
+            },
+            "name": "Trashcan",
+            "transform": {
+                "layer": 1,
+                "pos": [
+                    880.0,
+                    820.0
+                ],
+                "rotation": 0.0,
+                "scale": 4.0
+            }
         }
     ],
-    "height": 2160.0,
+    "height": 1080.0,
     "skyColor": [
         0.12941177189350128,
         0.4274509847164154,
         0.6039215922355652,
         0.0
     ],
+    "spawns": null,
     "title": "temp_level.json",
-    "width": 3840.0
+    "width": 1920.0
 }

@@ -13,14 +13,14 @@ using namespace Renderer;
 class ImageComponent {
 public:
     ImageComponent(const ImageComponent& old);
-    ImageComponent(const std::string& filename, const std::shared_ptr<TextureAtlas>& textureAtlas);
+    ImageComponent(const std::string& filename, IRenderDevice &renderDevice);
     std::string filename;
-    std::shared_ptr<TextureAtlas> textureAtlas;
     float alpha = 1.0f;
     float width = 0;
     float height = 0;
-    u32 atlasId = 0;
+    u32 textureId = 0;
     bool lightMap = false;
+    FloatRect uvCoords;
 
     void save(json& e);
     void load(const json& e);
