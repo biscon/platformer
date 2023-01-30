@@ -172,7 +172,7 @@ void RenderLevelSystem::renderTerrainUnlight(Entity* ent) {
     buffers.light.pushTransform(&trans);
 
     auto terrain = ent->get<TerrainComponent>();
-    buffers.light.pushTriangles(terrain->triangleMesh, config.ambientColor);
+    buffers.light.pushTriangles(terrain->triangleMesh, WHITE);
 
     glm_mat4_identity(trans);
     buffers.light.pushTransform(&trans);

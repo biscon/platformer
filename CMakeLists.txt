@@ -194,16 +194,17 @@ set(GAME_SOURCE_FILES
         src/game/editor/PlatformTool.h
         src/game/editor/PathTool.cpp
         src/game/editor/PathTool.h
-        src/game/editor/ImageTool.cpp
-        src/game/editor/ImageTool.h
-        src/game/editor/LightTool.cpp
-        src/game/editor/LightTool.h
-
         src/game/editor/IComponentPropertyEditor.h
         src/game/editor/TransformPropertyEditor.cpp
         src/game/editor/TransformPropertyEditor.h
         src/game/editor/TerrainPropertyEditor.cpp
-        src/game/editor/TerrainPropertyEditor.h src/game/editor/ImagePropertyEditor.cpp src/game/editor/ImagePropertyEditor.h src/game/editor/shared/RectanglePropertyEditor.cpp src/game/editor/shared/RectanglePropertyEditor.h)
+        src/game/editor/TerrainPropertyEditor.h
+        src/game/editor/ImagePropertyEditor.cpp
+        src/game/editor/ImagePropertyEditor.h
+        src/game/editor/shared/RectanglePropertyEditor.cpp
+        src/game/editor/shared/RectanglePropertyEditor.h
+        src/game/editor/LightPropertyEditor.cpp
+        src/game/editor/LightPropertyEditor.h)
 
 add_executable(game ${GAME_SOURCE_FILES} ${ENGINE_SOURCE_FILES} ${UTIL_SOURCE_FILES} ${IM_GUI_SOURCE_FILES} ${CGLM_SOURCE_FILES})
 

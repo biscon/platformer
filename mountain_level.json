@@ -1,0 +1,108 @@
+{
+    "ambientColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "entities": [
+        {
+            "name": "Ground",
+            "terrain": {
+                "color": [
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    0.12999999523162842,
+                    1.0
+                ],
+                "light": true,
+                "show": false,
+                "through": false,
+                "vertices": [
+                    0.0,
+                    960.0,
+                    3840.0,
+                    960.0,
+                    3840.0,
+                    1080.0,
+                    0.0,
+                    1080.0
+                ]
+            },
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    0.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/trashcan.png",
+                "height": 22.0,
+                "lightMap": false,
+                "width": 27.0
+            },
+            "name": "Trashcan",
+            "transform": {
+                "layer": 1,
+                "pos": [
+                    830.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "scale": 4.0
+            }
+        }
+    ],
+    "height": 1080.0,
+    "scroller": {
+        "layers": [
+            {
+                "filename": "assets/backgrounds/mountains/back.png",
+                "foreground": false,
+                "height": 1080.0,
+                "offsetY": 0.0,
+                "speed": 0.10000000149011612,
+                "width": 1920.0
+            },
+            {
+                "filename": "assets/backgrounds/mountains/shadow.png",
+                "foreground": false,
+                "height": 1080.0,
+                "offsetY": 0.0,
+                "speed": 0.25,
+                "width": 1920.0
+            },
+            {
+                "filename": "assets/backgrounds/mountains/back2.png",
+                "foreground": false,
+                "height": 1080.0,
+                "offsetY": 0.0,
+                "speed": 0.5,
+                "width": 1920.0
+            },
+            {
+                "filename": "assets/backgrounds/mountains/mid.png",
+                "foreground": false,
+                "height": 1080.0,
+                "offsetY": 0.0,
+                "speed": 1.0,
+                "width": 1920.0
+            }
+        ]
+    },
+    "skyColor": [
+        0.12941177189350128,
+        0.4274509847164154,
+        0.6039215922355652,
+        0.0
+    ],
+    "spawns": null,
+    "title": "mountain_level.json",
+    "width": 3840.0
+}

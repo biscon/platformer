@@ -8,7 +8,9 @@
 PointLightComponent::PointLightComponent(float innerRadius, float outerRadius, const Color &innerColor,
                                const Color &middleColor, const Color &outerColor, uint32_t segments)
         : innerRadius(innerRadius), outerRadius(outerRadius), innerColor(innerColor),
-          middleColor(middleColor), outerColor(outerColor), segments(segments) {}
+          middleColor(middleColor), outerColor(outerColor), segments(segments) {
+    rebuildMesh();
+}
 
 PointLightComponent::PointLightComponent(const json &e) {
     innerRadius = e["innerRadius"];

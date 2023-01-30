@@ -20,13 +20,11 @@
 #include "RectangleTool.h"
 #include "LadderTool.h"
 #include "../components/ImageComponent.h"
-#include "ImageTool.h"
 #include "ToolUtil.h"
 #include "PlatformTool.h"
 #include "../components/CollisionComponent.h"
 #include "../Utils.h"
 #include "PathTool.h"
-#include "LightTool.h"
 #include "../components/PointLightComponent.h"
 #include "../components/PlatformComponent.h"
 #include "../components/TransformComponent.h"
@@ -40,6 +38,7 @@
 #include "TerrainPropertyEditor.h"
 #include "../../util/ImGuiFileDialog.h"
 #include "ImagePropertyEditor.h"
+#include "LightPropertyEditor.h"
 
 
 Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font, Level& level) :
@@ -68,6 +67,7 @@ Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* wo
     propertyEditorMap[ComponentType::Transform] = std::make_unique<TransformPropertyEditor>();
     propertyEditorMap[ComponentType::Terrain] = std::make_unique<TerrainPropertyEditor>(inputDevice, buffers, font, camera, world);
     propertyEditorMap[ComponentType::Image] = std::make_unique<ImagePropertyEditor>(inputDevice, buffers, font, camera, world);
+    propertyEditorMap[ComponentType::PointLight] = std::make_unique<LightPropertyEditor>(inputDevice, buffers, font, camera, world);
 }
 
 void Editor::update(float deltaTime) {
@@ -94,13 +94,13 @@ void Editor::update(float deltaTime) {
     float margin = 8.0f;
     FloatRect levelRect(-camera.scrollX, -camera.scrollY, -camera.scrollX + camera.levelWidth, -camera.scrollY + camera.levelHeight);
     buffers.unlit.pushRect(levelRect, RED);
-    buffers.unlit.pushText(string_format("%.2f,%.2f", 0.0f, 0.0f), &font, levelRect.left, levelRect.top - margin, WHITE);
-    std::string text = string_format("%.2f,%.2f", camera.levelWidth, 0.0f);
+    buffers.unlit.pushText(string_format("%.0f,%.0f", 0.0f, 0.0f), &font, levelRect.left, levelRect.top - margin, WHITE);
+    std::string text = string_format("%.0f,%.0f", camera.levelWidth, 0.0f);
     buffers.unlit.pushText(text, &font, levelRect.right - font.measureTextWidth(text), levelRect.top - margin, WHITE);
-    text = string_format("%.2f,%.2f", 0.0f, camera.levelHeight);
+    text = string_format("%.0f,%.0f", 0.0f, camera.levelHeight);
     buffers.unlit.pushText(text, &font, levelRect.left, levelRect.bottom + margin + font.getSize(), WHITE);
 
-    text = string_format("%.2f,%.2f", camera.levelWidth, camera.levelHeight);
+    text = string_format("%.0f,%.0f", camera.levelWidth, camera.levelHeight);
     buffers.unlit.pushText(text, &font, levelRect.right - font.measureTextWidth(text), levelRect.bottom + margin + font.getSize(), WHITE);
 
     text = string_format("GridSize: %d", currentGridSize);
@@ -323,7 +323,7 @@ void Editor::fileDialogs() {
             std::string curPath(getcwd(nullptr,0));
             filePathName = filePathName.substr(curPath.size()+1);
             if(!selectedEntity->has<TransformComponent>()) {
-                selectedEntity->assign<TransformComponent>(Vector2(300 + camera.scrollX, 500 + camera.scrollY), 1.0f, 0, 1);
+                selectedEntity->assign<TransformComponent>(Vector2(300 + camera.scrollX, 500 + camera.scrollY), 1.0f, 0, 0);
             }
             selectedEntity->assign<ImageComponent>(filePathName, renderDevice);
         }
@@ -339,7 +339,7 @@ void Editor::assignComponentMenu() {
     }
     if(ImGui::MenuItem("Terrain", nullptr, false, !selectedEntity->has<TerrainComponent>())) {
         if(!selectedEntity->has<TransformComponent>()) {
-            selectedEntity->assign<TransformComponent>(Vector2(0,0), 1.0f, 0, 1);
+            selectedEntity->assign<TransformComponent>(Vector2(0,0), 1.0f, 0, 0);
         }
         selectedEntity->assign<TerrainComponent>(std::vector<Vector2> {
             {300 + camera.scrollX,500 + camera.scrollY},{500 + camera.scrollX,500 + camera.scrollY},
@@ -349,6 +349,13 @@ void Editor::assignComponentMenu() {
         ImGuiFileDialog::Instance()->OpenDialog("ChooseImageComponentKey", "Choose Image", ".png",
                                                 ".", 1,
                                                 nullptr, ImGuiFileDialogFlags_Modal);
+    }
+    if(ImGui::MenuItem("Light", nullptr, false, !selectedEntity->has<PointLightComponent>())) {
+        if(!selectedEntity->has<TransformComponent>()) {
+            selectedEntity->assign<TransformComponent>(Vector2(300 + camera.scrollX, 500 + camera.scrollY), 1.0f, 0, 0);
+        }
+        selectedEntity->assign<PointLightComponent>();
+        selectedEntity->get<PointLightComponent>()->rebuildMesh();
     }
 }
 

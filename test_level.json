@@ -1,8 +1,8 @@
 {
     "ambientColor": [
-        0.05,
-        0.05,
-        0.05,
+        0.05000000074505806,
+        0.05000000074505806,
+        0.05000000074505806,
         1.0
     ],
     "entities": [
@@ -14,6 +14,7 @@
                 "lightMap": false,
                 "width": 27.0
             },
+            "name": "Entity 1",
             "transform": {
                 "layer": 1,
                 "pos": [
@@ -32,6 +33,7 @@
                 "lightMap": false,
                 "width": 67.0
             },
+            "name": "Entity 2",
             "transform": {
                 "layer": 2,
                 "pos": [
@@ -50,6 +52,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 3",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -61,10 +64,17 @@
             }
         },
         {
+            "name": "Ground left",
             "terrain": {
+                "color": [
+                    0.04313725605607033,
+                    0.04313725605607033,
+                    0.04313725605607033,
+                    1.0
+                ],
+                "light": false,
                 "show": true,
                 "through": false,
-                "light": false,
                 "vertices": [
                     -0.0,
                     760.0,
@@ -95,10 +105,17 @@
             }
         },
         {
+            "name": "Ceiling",
             "terrain": {
+                "color": [
+                    0.04313725605607033,
+                    0.04313725605607033,
+                    0.04313725605607033,
+                    1.0
+                ],
+                "light": false,
                 "show": true,
                 "through": false,
-                "light": false,
                 "vertices": [
                     0.0,
                     -180.0,
@@ -142,11 +159,12 @@
                 "lightMap": true,
                 "width": 210.0
             },
+            "name": "Entity 6",
             "transform": {
                 "layer": 1,
                 "pos": [
-                    890.3598022460938,
-                    548.2288818359375
+                    1098.3197021484375,
+                    553.0308837890625
                 ],
                 "rotation": 0.0,
                 "scale": 4.0
@@ -168,92 +186,92 @@
                     {
                         "locked": false,
                         "position": [
-                            996.0724487304688,
-                            120.76974487304688
+                            1001.3099975585938,
+                            121.79582214355469
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            991.872314453125,
-                            142.5647735595703
+                            1002.7743530273438,
+                            144.6422882080078
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            988.058837890625,
-                            162.19786071777344
+                            1004.2355346679688,
+                            165.79501342773438
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            983.9327392578125,
-                            182.84786987304688
+                            1005.8363037109375,
+                            187.27459716796875
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            979.6129150390625,
-                            203.39627075195313
+                            1007.5211181640625,
+                            208.2044677734375
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            974.5083618164063,
-                            224.42445373535156
+                            1009.4855346679688,
+                            230.62335205078125
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            968.643310546875,
-                            244.2112579345703
+                            1011.4503784179688,
+                            251.1673583984375
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            961.70751953125,
-                            262.9701232910156
+                            1013.6267700195313,
+                            271.7417907714844
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            953.37939453125,
-                            281.85308837890625
+                            1016.1489868164063,
+                            292.4832458496094
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            908.0601196289063,
-                            283.55078125
+                            981.534912109375,
+                            321.9862365722656
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            979.6392211914063,
-                            319.2708740234375
+                            1059.5946044921875,
+                            306.7010803222656
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            818.678466796875,
-                            462.7145690917969
+                            1019.861328125,
+                            518.6392822265625
                         ]
                     },
                     {
                         "locked": false,
                         "position": [
-                            890.3598022460938,
-                            498.2288818359375
+                            1098.3197021484375,
+                            503.0308837890625
                         ]
                     }
                 ],
@@ -344,9 +362,11 @@
         },
         {
             "flickerEffect": {
-                "minDuration": 0.01,
-                "maxDuration": 0.25
+                "maxDuration": 0.25,
+                "minDuration": 0.009999999776482582,
+                "on": false
             },
+            "name": "FlickerLight",
             "pointLight": {
                 "innerColor": [
                     1.0,
@@ -381,10 +401,17 @@
             }
         },
         {
+            "name": "Ground right",
             "terrain": {
+                "color": [
+                    0.04247105121612549,
+                    0.04247105121612549,
+                    0.04247105121612549,
+                    1.0
+                ],
+                "light": false,
                 "show": true,
                 "through": false,
-                "light": false,
                 "vertices": [
                     2230.0,
                     800.0,
@@ -407,6 +434,7 @@
             }
         },
         {
+            "name": "Big Pointlight",
             "pointLight": {
                 "innerColor": [
                     1.0,
@@ -451,6 +479,7 @@
                 "lightMap": false,
                 "width": 67.0
             },
+            "name": "Entity 10",
             "transform": {
                 "layer": -1,
                 "pos": [
@@ -463,6 +492,7 @@
         },
         {
             "collision": true,
+            "name": "Platform",
             "path": {
                 "reverse": true,
                 "waypoints": [
@@ -483,53 +513,58 @@
                 "speed": 200.0,
                 "waitTime": 1.0
             },
+            "pointLight": {
+                "innerColor": [
+                    1.0,
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    1.0
+                ],
+                "innerRadius": 110.0,
+                "middleColor": [
+                    1.0,
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    0.75
+                ],
+                "outerColor": [
+                    1.0,
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    0.0
+                ],
+                "outerRadius": 247.0,
+                "segments": 32
+            },
             "terrain": {
+                "color": [
+                    0.029999999329447746,
+                    0.23000000417232513,
+                    0.12999999523162842,
+                    1.0
+                ],
+                "light": true,
                 "show": true,
                 "through": false,
-                "light": true,
-                "color": [0.03, 0.23, 0.13, 1.0],
                 "vertices": [
-                    1920.0,
-                    564.418212890625,
-                    2220.0,
-                    564.418212890625,
-                    2220.0,
-                    604.418212890625,
-                    1920.0,
-                    604.418212890625
+                    650.61083984375,
+                    540.0,
+                    950.61083984375,
+                    540.0,
+                    950.61083984375,
+                    580.0,
+                    650.61083984375,
+                    580.0
                 ]
             },
             "transform": {
                 "layer": 1,
                 "pos": [
-                    1920.0,
-                    564.418212890625
+                    650.61083984375,
+                    540.0
                 ],
                 "rotation": 0.0,
                 "scale": 1.0
-            },
-            "pointLight": {
-                "innerColor": [
-                    1.0,
-                    0.3,
-                    0.3,
-                    1.0
-                ],
-                "innerRadius": 50.0,
-                "middleColor": [
-                    1.0,
-                    0.3,
-                    0.3,
-                    0.75
-                ],
-                "outerColor": [
-                    1.0,
-                    0.3,
-                    0.3,
-                    0.0
-                ],
-                "outerRadius": 150.0,
-                "segments": 32
             }
         },
         {
@@ -540,6 +575,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 12",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -558,6 +594,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 13",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -576,6 +613,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 14",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -594,6 +632,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 15",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -612,6 +651,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 16",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -630,6 +670,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 17",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -648,6 +689,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 18",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -666,6 +708,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 19",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -684,6 +727,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 20",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -702,6 +746,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 21",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -720,6 +765,7 @@
                 "lightMap": false,
                 "width": 512.0
             },
+            "name": "Entity 22",
             "transform": {
                 "layer": -10,
                 "pos": [
@@ -738,6 +784,7 @@
         0.0,
         0.0
     ],
+    "spawns": null,
     "title": "test_level.json",
     "width": 3840.0
 }
