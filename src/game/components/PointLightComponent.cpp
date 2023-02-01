@@ -22,6 +22,9 @@ PointLightComponent::PointLightComponent(const json &e) {
     color = e["outerColor"];
     outerColor = { color[0], color[1], color[2], color[3] };
     segments = e["segments"];
+    if(e.contains("posOffset")) {
+        posOffset = Vector2(e["posOffset"][0], e["posOffset"][1]);
+    }
     rebuildMesh();
 }
 
@@ -41,6 +44,7 @@ void PointLightComponent::save(json &e) {
     pushColor(j["middleColor"], middleColor);
     pushColor(j["outerColor"], outerColor);
     j["segments"] = segments;
+    pushPos(j["posOffset"], posOffset);
     e["pointLight"] = j;
 }
 

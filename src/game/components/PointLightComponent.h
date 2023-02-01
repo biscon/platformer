@@ -26,6 +26,7 @@ struct PointLightComponent {
     Color middleColor = {0.75f, 0.75f, 0.75f, 0.75f};
     Color outerColor = {0.0f, 0.0f, 0.0f, 0.0f};
     u32 segments = 64;
+    Vector2 posOffset;
     std::vector<float> innerMesh;
     std::vector<float> outerMesh;
 

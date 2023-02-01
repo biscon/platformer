@@ -241,8 +241,8 @@ void RenderLevelSystem::renderImage(Entity* ent, RenderCmdBuffer& buffer) {
 
 void RenderLevelSystem::renderLight(PointLightComponent &light, TransformComponent& transform) {
 
-    float xoff = transform.pos.x;
-    float yoff = transform.pos.y;
+    float xoff = transform.pos.x + light.posOffset.x;
+    float yoff = transform.pos.y + light.posOffset.y;
 
     mat4 trans = {};
     glm_mat4_identity(trans);

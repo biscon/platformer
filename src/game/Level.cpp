@@ -196,7 +196,7 @@ void Level::createPlayer() {
     FloatRect bounds;
     bounds.zero();
     getBounds(player, bounds);
-    camera->focus(bounds, Vector2(1920.0f/6.0f, 1080.0f/2.0f));
+    camera->focus(bounds, Vector2(1920.0f/6.0f, 800.0f));
 }
 
 void Level::update(float deltaTime) {

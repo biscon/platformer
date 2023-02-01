@@ -2,6 +2,7 @@
 // Created by bison on 30-01-23.
 //
 
+#include <imgui.h>
 #include "LightPropertyEditor.h"
 #include "../components/PointLightComponent.h"
 #include "../components/TransformComponent.h"
@@ -9,6 +10,32 @@
 #include "ToolUtil.h"
 
 void LightPropertyEditor::show() {
+
+    auto light = selected->get<PointLightComponent>();
+    ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
+    ImGui::Begin("Light Properties", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
+
+    bool rebuild = false;
+    if(ImGui::InputFloat("InnerRadius", &light->innerRadius, 0, 0, "%.0f")) { rebuild = true; }
+    if(ImGui::InputFloat("OuterRadius", &light->outerRadius, 0, 0, "%.0f")) { rebuild = true; }
+    if(ImGui::ColorEdit4("InnerColor", (float*) &light->innerColor)) { rebuild = true; }
+    if(ImGui::ColorEdit4("MiddleColor", (float*) &light->middleColor)) { rebuild = true; }
+    if(ImGui::ColorEdit4("OuterColor", (float*) &light->outerColor)) { rebuild = true; }
+    u32 min = 3;
+    u32 max = 128;
+    if(ImGui::SliderScalar("Segments", ImGuiDataType_U32, &light->segments, &min, &max, "%d")) { rebuild = true; }
+    //ImGui::InputFloat2("PosOffset", (float*) &light->posOffset, "%.0f");
+    ImGui::DragFloat2("PosOffset", (float*) &light->posOffset, 1.0f, -1000.0f, 1000.0f, "%.0f");
+
+    ImGui::PopStyleVar();
+    ImGui::End();
+
+    if(rebuild) {
+        light->rebuildMesh();
+    }
+
     render();
     if(movingHandle) {
         moveHandle();
@@ -56,7 +83,7 @@ bool LightPropertyEditor::onLeftDown(Vector2 pos) {
     auto transform = selected->get<TransformComponent>();
     auto light = selected->get<PointLightComponent>();
     if(transform.isValid() && light.isValid()) {
-        if (pointInCircle(pos, transform->pos, light->outerRadius)) {
+        if (pointInCircle(pos, transform->pos + light->posOffset, light->outerRadius)) {
             if (!moving) {
                 moving = true;
                 moveStart = pos;
@@ -104,6 +131,8 @@ void LightPropertyEditor::render() {
     auto pos = transform->pos;
     pos.x -= camera.scrollX;
     pos.y -= camera.scrollY;
+    pos += light->posOffset;
+
     buffers.unlit.pushCircle(pos, light->innerRadius, light->segments, WHITE);
     buffers.unlit.pushCircle(pos, light->outerRadius, light->segments, WHITE);
 
@@ -128,8 +157,8 @@ void LightPropertyEditor::setHandles() {
     auto light = selected->get<PointLightComponent>();
     auto transform = selected->get<TransformComponent>();
     handles.clear();
-    handles.emplace_back(Vector2(transform->pos.x + light->innerRadius, transform->pos.y));
-    handles.emplace_back(Vector2(transform->pos.x + light->outerRadius, transform->pos.y));
+    handles.emplace_back(Vector2(transform->pos.x + light->innerRadius + light->posOffset.x, transform->pos.y + light->posOffset.y));
+    handles.emplace_back(Vector2(transform->pos.x + light->outerRadius + light->posOffset.x, transform->pos.y + light->posOffset.y));
 }
 
 void LightPropertyEditor::moveHandle() {

@@ -44,28 +44,32 @@
             "pointLight": {
                 "innerColor": [
                     1.0,
-                    1.0,
-                    1.0,
+                    0.8627451062202454,
+                    0.0,
                     1.0
                 ],
-                "innerRadius": 151.0,
+                "innerRadius": 124.0,
                 "middleColor": [
-                    0.75,
-                    0.75,
-                    0.75,
-                    0.75
+                    0.9845559597015381,
+                    0.631791353225708,
+                    0.19006873667240143,
+                    1.0
                 ],
                 "outerColor": [
-                    0.0,
+                    0.6332046389579773,
                     0.0,
                     0.0,
                     0.0
                 ],
-                "outerRadius": 472.0,
+                "outerRadius": 348.0,
+                "posOffset": [
+                    0.0,
+                    0.0
+                ],
                 "segments": 64
             },
             "transform": {
-                "layer": 0,
+                "layer": 2,
                 "pos": [
                     590.0,
                     670.0
@@ -84,7 +88,7 @@
             },
             "name": "ImageLight",
             "transform": {
-                "layer": 0,
+                "layer": 2,
                 "pos": [
                     1200.0,
                     340.0
