@@ -19,8 +19,7 @@
 using namespace ECS;
 using namespace Renderer;
 
-enum class ComponentType
-{
+enum class ComponentType {
     None,
     Transform,
     Terrain,
@@ -91,6 +90,7 @@ private:
 
     void levelProperties();
     void backgroundProperties();
+    void colorGradingProperties();
 };
 
 std::string getComponentName(ComponentType type);

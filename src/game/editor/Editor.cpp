@@ -481,21 +481,21 @@ void Editor::properties() {
     ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
     ImGui::Begin("Level Properties", &showProperties);
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-    if (ImGui::BeginTabBar("PropertiesTabBar", tab_bar_flags))
-    {
-        if (ImGui::BeginTabItem("Level"))
-        {
+    if (ImGui::BeginTabBar("PropertiesTabBar", tab_bar_flags)) {
+        if (ImGui::BeginTabItem("Level")) {
             levelProperties();
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Background"))
-        {
+        if (ImGui::BeginTabItem("Background")) {
             backgroundProperties();
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Spawnpoints"))
-        {
+        if (ImGui::BeginTabItem("Spawnpoints")) {
             ImGui::Text("spawnpoint editor");
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Color Grading")) {
+            colorGradingProperties();
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
@@ -596,6 +596,77 @@ void Editor::backgroundProperties() {
         }
     }
     ImGui::EndGroup();
+}
+
+void Editor::colorGradingProperties() {
+    auto& config = level.getConfig();
+
+    ImGui::InputText("LUT Texture 1", &config.colorGrading.lut1Filename);
+    ImGui::SameLine();
+    if (ImGui::Button("Browse##1")) {
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseLut1ImageKey", "Choose LUT Image", ".png",
+                                                ".", 1,
+                                                nullptr, ImGuiFileDialogFlags_Modal);
+    }
+    ImGui::InputText("LUT Texture 2", &config.colorGrading.lut2Filename);
+    ImGui::SameLine();
+    if (ImGui::Button("Browse##2")) {
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseLut2ImageKey", "Choose LUT Image", ".png",
+                                                ".", 1,
+                                                nullptr, ImGuiFileDialogFlags_Modal);
+    }
+
+    if(ImGui::SliderFloat("Mix", &config.colorGrading.mix, 0.0f, 1.0f, "%.2f")) {
+        renderDevice.setLutMix(config.colorGrading.mix);
+    }
+    if(ImGui::Checkbox("Apply Background", &config.colorGrading.applyBackground)) {
+        if(config.colorGrading.lut1Texture == 0 || config.colorGrading.lut2Texture == 0) {
+            config.colorGrading.applyBackground = false;
+        }
+        renderDevice.enableLut(config.colorGrading.applyBackground);
+    }
+
+
+    if (ImGuiFileDialog::Instance()->Display("ChooseLut1ImageKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450))) {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string curPath(getcwd(nullptr,0));
+            filePathName = filePathName.substr(curPath.size()+1);
+            config.colorGrading.lut1Filename = filePathName;
+            if(config.colorGrading.lut1Texture > 0) {
+                renderDevice.deleteTexture(&config.colorGrading.lut1Texture);
+                config.colorGrading.lut1Texture = 0;
+            }
+            config.colorGrading.lut1Texture = renderDevice.uploadPNGTexture(config.colorGrading.lut1Filename, true);
+            renderDevice.setLut1Texture(config.colorGrading.lut1Texture);
+            //SDL_Log("filePathName: %s, filePath: %s, getCwd: %s", filePathName.c_str(), filePath.c_str(), curPath.c_str());
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
+
+    if (ImGuiFileDialog::Instance()->Display("ChooseLut2ImageKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450))) {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string curPath(getcwd(nullptr,0));
+            filePathName = filePathName.substr(curPath.size()+1);
+            config.colorGrading.lut2Filename = filePathName;
+            if(config.colorGrading.lut2Texture > 0) {
+                renderDevice.deleteTexture(&config.colorGrading.lut2Texture);
+                config.colorGrading.lut2Texture = 0;
+            }
+            config.colorGrading.lut2Texture = renderDevice.uploadPNGTexture(config.colorGrading.lut2Filename, true);
+            renderDevice.setLut2Texture(config.colorGrading.lut2Texture);
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
 }
 
 void Editor::clearSelection() {

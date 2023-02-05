@@ -64,13 +64,14 @@ Level::Level(IRenderDevice &renderDevice, RenderBuffers renderBuffers, IInputDev
 
     //renderDevice.enableCrtFx(true);
     /*
-    lut1Texture = renderDevice.uploadPNGTexture("assets/lut.png", true);
-    lut2Texture = renderDevice.uploadPNGTexture("assets/lut/Late_Night.png", true);
-    renderDevice.setLut1Texture(lut1Texture);
-    renderDevice.setLut2Texture(lut2Texture);
+    config.colorGrading.lut1Texture = renderDevice.uploadPNGTexture("assets/lut.png", true);
+    config.colorGrading.lut2Texture = renderDevice.uploadPNGTexture("assets/lut/Late_Night.png", true);
+    renderDevice.setLut1Texture(config.colorGrading.lut1Texture);
+    renderDevice.setLut2Texture(config.colorGrading.lut2Texture);
     renderDevice.setLutMix(1.0f);
     renderDevice.enableLut(true);
-     */
+    */
+
 }
 
 Level::~Level() {
@@ -80,13 +81,13 @@ Level::~Level() {
 }
 
 void Level::freeLutTextures() {
-    if(lut1Texture > 0) {
-        renderDevice.deleteTexture(&lut1Texture);
-        lut1Texture = 0;
+    if(config.colorGrading.lut1Texture > 0) {
+        renderDevice.deleteTexture(&config.colorGrading.lut1Texture);
+        config.colorGrading.lut1Texture = 0;
     }
-    if(lut2Texture > 0) {
-        renderDevice.deleteTexture(&lut2Texture);
-        lut2Texture = 0;
+    if(config.colorGrading.lut2Texture > 0) {
+        renderDevice.deleteTexture(&config.colorGrading.lut2Texture);
+        config.colorGrading.lut2Texture = 0;
     }
 }
 
@@ -378,6 +379,15 @@ void Level::save(std::string filename) {
         j["spawns"].push_back(s);
     }
 
+    // color grading
+    j["colorGrading"].clear();
+    json cgJson;
+    cgJson["lut1Filename"] = config.colorGrading.lut1Filename;
+    cgJson["lut2Filename"] = config.colorGrading.lut2Filename;
+    cgJson["mix"] = config.colorGrading.mix;
+    cgJson["applyBackground"] = config.colorGrading.applyBackground;
+    j["colorGrading"] = cgJson;
+
     std::cout << std::setw(4) << j << std::endl;
     std::ofstream file(filename);
     file << std::setw(4) << j << std::endl;
@@ -468,6 +478,20 @@ void Level::load(std::string filename) {
         config.spawns.emplace_back(spawn);
     }
 
+    if(j.contains("colorGrading")) {
+        json cgJson = j["colorGrading"];
+        config.colorGrading.lut1Filename = cgJson["lut1Filename"];
+        config.colorGrading.lut2Filename = cgJson["lut2Filename"];
+        config.colorGrading.mix = cgJson["mix"];
+        config.colorGrading.applyBackground = cgJson["applyBackground"];
+        if(config.colorGrading.applyBackground) {
+            setupColorGrading();
+        }
+    } else {
+        renderDevice.enableLut(false);
+        freeLutTextures();
+    }
+
     levelFile = std::make_unique<LevelFile>(filename);
     SDL_Log("Uploaded %d images", (i32) imagesCache.size());
 
@@ -485,4 +509,14 @@ void Level::transitionToLevel(std::string filename, std::function<void()> callba
     focus -= Vector2(camera->scrollX, camera->scrollY);
     transition->start(TransitionState::Out, focus);
     //transition->start(TransitionState::In, Vector2(1920/2, 1080/2));
+}
+
+void Level::setupColorGrading() {
+    freeLutTextures();
+    config.colorGrading.lut1Texture = renderDevice.uploadPNGTexture(config.colorGrading.lut1Filename, true);
+    renderDevice.setLut1Texture(config.colorGrading.lut1Texture);
+    config.colorGrading.lut2Texture = renderDevice.uploadPNGTexture(config.colorGrading.lut2Filename, true);
+    renderDevice.setLut2Texture(config.colorGrading.lut2Texture);
+    renderDevice.setLutMix(config.colorGrading.mix);
+    renderDevice.enableLut(true);
 }

@@ -79,8 +79,6 @@ private:
     std::unique_ptr<LevelFile> levelFile;
     std::unique_ptr<ParallaxScroller> scroller;
     std::unique_ptr<TransitionEffect> transition;
-    u32 lut1Texture = 0;
-    u32 lut2Texture = 0;
 
     LevelConfig config;
     std::string filenameToLoad;
@@ -91,6 +89,7 @@ private:
 
     void freeLutTextures();
     void createPlayer();
+    void setupColorGrading();
 };
 
 
