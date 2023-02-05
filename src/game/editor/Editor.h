@@ -91,6 +91,7 @@ private:
     void levelProperties();
     void backgroundProperties();
     void colorGradingProperties();
+    void spawnpointProperties();
 };
 
 std::string getComponentName(ComponentType type);

@@ -47,6 +47,7 @@ public:
     Camera& getCamera() { return *camera; }
     ParallaxScroller& getScroller() { return *scroller; }
     World* getWorld() { return world; }
+    Entity* getPlayer() { return player; }
     LevelConfig& getConfig() {
         return config;
     }

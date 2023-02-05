@@ -491,7 +491,7 @@ void Editor::properties() {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Spawnpoints")) {
-            ImGui::Text("spawnpoint editor");
+            spawnpointProperties();
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Color Grading")) {
@@ -667,6 +667,75 @@ void Editor::colorGradingProperties() {
         // close
         ImGuiFileDialog::Instance()->Close();
     }
+}
+
+void Editor::spawnpointProperties() {
+    auto& spawns = level.getConfig().spawns;
+    static u32 selected = 0;
+    ImGui::BeginGroup();
+    ImGui::BeginChild("left pane", ImVec2(120, -ImGui::GetFrameHeightWithSpacing()), true);
+    for (u32 i = 0; i < spawns.size(); i++) {
+        std::string id = spawns[i].id;
+        if(id.empty()) {
+            id = string_format("Spawnpoint %d", i);
+        }
+        if (ImGui::Selectable(id.c_str(), selected == i))
+            selected = i;
+
+    }
+    ImGui::EndChild();
+    if (ImGui::Button("+", ImVec2(25, 0))) {
+        if((selected >= 0 && selected < spawns.size()) || spawns.empty()) {
+            Spawn spawn;
+            spawn.id = "";
+            spawns.insert(spawns.begin() + selected, spawn);
+        }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("-", ImVec2(25, 0))) {
+        if(selected >= 0 && selected < spawns.size()) {
+            spawns.erase(spawns.begin() + selected);
+        }
+    }
+    ImGui::EndGroup();
+
+    ImGui::SameLine();
+    ImGui::BeginGroup();
+    if(!spawns.empty()) {
+        ImGui::BeginChild("item view", ImVec2(0,
+                                              -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+        auto &sp = spawns[selected];
+        ImGui::InputText("id", &sp.id);
+        ImGui::InputFloat2("Position", (float*) &sp.pos);
+
+        if (ImGui::Button("Grab Player Pos")) {
+            auto* player = level.getPlayer();
+            if(player) {
+                auto transform = player->get<TransformComponent>();
+                if(transform.isValid()) {
+                    sp.pos = transform->pos;
+                }
+            }
+        }
+
+        ImGui::Spacing();
+        if (ImGui::Button("Move Up")) {
+            if(selected > 0) {
+                iter_swap(spawns.begin() + selected, spawns.begin() + selected - 1);
+                selected--;
+            }
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Move Down")) {
+            if(selected < spawns.size()-1) {
+                iter_swap(spawns.begin() + selected, spawns.begin() + selected + 1);
+                selected++;
+            }
+        }
+
+        ImGui::EndChild();
+    }
+    ImGui::EndGroup();
 }
 
 void Editor::clearSelection() {

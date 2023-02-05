@@ -5,6 +5,12 @@
         1.0,
         1.0
     ],
+    "colorGrading": {
+        "applyBackground": false,
+        "lut1Filename": "",
+        "lut2Filename": "",
+        "mix": 0.0
+    },
     "entities": [
         {
             "name": "Ground",
@@ -308,7 +314,7 @@
                 "height": 1080.0,
                 "offsetY": 0.0,
                 "speed": 0.0,
-                "width": 1920
+                "width": 1920.0
             },
             {
                 "filename": "assets/backgrounds/desert/back.png",
@@ -316,15 +322,15 @@
                 "height": 1080.0,
                 "offsetY": 50.0,
                 "speed": 0.25,
-                "width": 1920
+                "width": 1920.0
             },
             {
                 "filename": "assets/backgrounds/desert/mid.png",
                 "foreground": false,
                 "height": 1080.0,
                 "offsetY": 0.0,
-                "speed": 0.35,
-                "width": 1920
+                "speed": 0.3499999940395355,
+                "width": 1920.0
             }
         ]
     },
@@ -336,6 +342,13 @@
     ],
     "spawns": [
         {
+            "id": "shop_door",
+            "pos": [
+                2966.0,
+                895.0
+            ]
+        },
+        {
             "id": "start",
             "pos": [
                 159.0,
@@ -343,10 +356,10 @@
             ]
         },
         {
-            "id": "shop_door",
+            "id": "gasroof",
             "pos": [
-                2966.0,
-                895.0
+                1078.6632080078125,
+                440.0
             ]
         }
     ],
