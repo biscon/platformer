@@ -1,9 +1,9 @@
 //
-// Created by bison on 29-01-23.
+// Created by bison on 05-02-23.
 //
 
-#ifndef PLATFORMER_IMAGEPROPERTYEDITOR_H
-#define PLATFORMER_IMAGEPROPERTYEDITOR_H
+#ifndef PLATFORMER_LADDERPROPERTYEDITOR_H
+#define PLATFORMER_LADDERPROPERTYEDITOR_H
 
 #include <RenderBuffers.h>
 #include "../../renderer/RenderCmdBuffer.h"
@@ -15,9 +15,9 @@
 using namespace Input;
 using namespace Renderer;
 
-class ImagePropertyEditor: public RectanglePropertyEditor {
+class LadderPropertyEditor: public RectanglePropertyEditor {
 public:
-    ImagePropertyEditor(IInputDevice &inputDevice, RenderBuffers buffers, Font &font, Camera &camera,
+    LadderPropertyEditor(IInputDevice &inputDevice, RenderBuffers buffers, Font &font, Camera &camera,
             World *world) : RectanglePropertyEditor(inputDevice, buffers.unlit, font, camera, world), buffers(buffers) {}
 
     void show() override;
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif //PLATFORMER_IMAGEPROPERTYEDITOR_H
+#endif //PLATFORMER_LADDERPROPERTYEDITOR_H

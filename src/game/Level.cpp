@@ -174,7 +174,7 @@ void Level::createPlayer() {
     player->assign<PhysicComponent>();
     player->assign<CollisionComponent>();
     player->assign<ActorComponent>("player");
-    player->assign<SpriteComponent>("player");
+    player->assign<SpriteComponent>();
     auto spr1 = player->get<SpriteComponent>();
     auto idleAnim = Animation::createFromPNG("assets/sprites/player_idle.png", 32, 48, 16, 48, 4, atlas, &widthInsets);
     spr1->createAnimation("idle", RepeatType::Restart, idleAnim);

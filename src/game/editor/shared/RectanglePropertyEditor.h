@@ -58,7 +58,7 @@ private:
 
     virtual void onResizeComplete() = 0;
     virtual void onResize() = 0;
-    virtual void onMove(const Vector2& newPos) = 0;
+    virtual void onMove(const Vector2& newPos, const Vector2& delta) = 0;
     virtual void buildRect() = 0;
 };
 

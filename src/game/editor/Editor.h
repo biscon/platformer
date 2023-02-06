@@ -25,6 +25,7 @@ enum class ComponentType {
     Terrain,
     Ladder,
     Image,
+    Sprite,
     Platform,
     Path,
     Collision,

@@ -99,7 +99,7 @@ void RectanglePropertyEditor::move() {
     if(mouseDelta.x != 0 || mouseDelta.y != 0) {
         Vector2 pos = orgPos;
         pos += mouseDelta;
-        onMove(pos);
+        onMove(pos, mouseDelta);
     }
     buffer.pushText(string_format("+ %.2f,%.2f", mouseDelta.x, mouseDelta.y), &font, roundf(mouse.x + 10), roundf(mouse.y), WHITE);
 }

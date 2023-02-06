@@ -1,9 +1,9 @@
 //
-// Created by bison on 29-01-23.
+// Created by bison on 05-02-23.
 //
 
-#ifndef PLATFORMER_IMAGEPROPERTYEDITOR_H
-#define PLATFORMER_IMAGEPROPERTYEDITOR_H
+#ifndef PLATFORMER_SPRITEPROPERTYEDITOR_H
+#define PLATFORMER_SPRITEPROPERTYEDITOR_H
 
 #include <RenderBuffers.h>
 #include "../../renderer/RenderCmdBuffer.h"
@@ -15,20 +15,23 @@
 using namespace Input;
 using namespace Renderer;
 
-class ImagePropertyEditor: public RectanglePropertyEditor {
+class SpritePropertyEditor: public RectanglePropertyEditor {
 public:
-    ImagePropertyEditor(IInputDevice &inputDevice, RenderBuffers buffers, Font &font, Camera &camera,
+    SpritePropertyEditor(IInputDevice &inputDevice, RenderBuffers buffers, Font &font, Camera &camera,
             World *world) : RectanglePropertyEditor(inputDevice, buffers.unlit, font, camera, world), buffers(buffers) {}
 
     void show() override;
 
 private:
     RenderBuffers buffers;
+    bool showAnimations = false;
+
     void onResizeComplete() override;
     void onResize() override;
     void onMove(const Vector2 &newPos, const Vector2& delta) override;
     void buildRect() override;
+    void animationEditor();
 };
 
 
-#endif //PLATFORMER_IMAGEPROPERTYEDITOR_H
+#endif //PLATFORMER_SPRITEPROPERTYEDITOR_H

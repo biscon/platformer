@@ -18,7 +18,6 @@
 #include "MoveTool.h"
 #include "TerrainTool.h"
 #include "RectangleTool.h"
-#include "LadderTool.h"
 #include "../components/ImageComponent.h"
 #include "ToolUtil.h"
 #include "PlatformTool.h"
@@ -39,6 +38,8 @@
 #include "../../util/ImGuiFileDialog.h"
 #include "ImagePropertyEditor.h"
 #include "LightPropertyEditor.h"
+#include "LadderPropertyEditor.h"
+#include "SpritePropertyEditor.h"
 
 
 Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font, Level& level) :
@@ -68,6 +69,8 @@ Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* wo
     propertyEditorMap[ComponentType::Terrain] = std::make_unique<TerrainPropertyEditor>(inputDevice, buffers, font, camera, world);
     propertyEditorMap[ComponentType::Image] = std::make_unique<ImagePropertyEditor>(inputDevice, buffers, font, camera, world);
     propertyEditorMap[ComponentType::PointLight] = std::make_unique<LightPropertyEditor>(inputDevice, buffers, font, camera, world);
+    propertyEditorMap[ComponentType::Ladder] = std::make_unique<LadderPropertyEditor>(inputDevice, buffers, font, camera, world);
+    propertyEditorMap[ComponentType::Sprite] = std::make_unique<SpritePropertyEditor>(inputDevice, buffers, font, camera, world);
 }
 
 void Editor::update(float deltaTime) {
@@ -356,6 +359,9 @@ void Editor::assignComponentMenu() {
         }
         selectedEntity->assign<PointLightComponent>();
         selectedEntity->get<PointLightComponent>()->rebuildMesh();
+    }
+    if(ImGui::MenuItem("Ladder", nullptr, false, !selectedEntity->has<LadderComponent>())) {
+        selectedEntity->assign<LadderComponent>(FloatRect(300 + camera.scrollX, 500 + camera.scrollY, 400 + camera.scrollX, 700 + camera.scrollY));
     }
 }
 
@@ -757,6 +763,7 @@ void Editor::removeComponent(Entity* ent, ComponentType type) {
         case ComponentType::Terrain: ent->remove<TerrainComponent>(); break;
         case ComponentType::Ladder: ent->remove<LadderComponent>(); break;
         case ComponentType::Image: ent->remove<ImageComponent>(); break;
+        case ComponentType::Sprite: ent->remove<SpriteComponent>(); break;
         case ComponentType::Platform: ent->remove<PlatformComponent>(); break;
         case ComponentType::Path: ent->remove<PathComponent>(); break;
         case ComponentType::Collision: ent->remove<CollisionComponent>(); break;
@@ -780,6 +787,7 @@ void Editor::updateMetaData() {
         if(ent->has<TerrainComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Terrain);
         if(ent->has<LadderComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Ladder);
         if(ent->has<ImageComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Image);
+        if(ent->has<SpriteComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Sprite);
         if(ent->has<PlatformComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Platform);
         if(ent->has<PathComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Path);
         if(ent->has<CollisionComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Collision);
@@ -795,6 +803,7 @@ std::string getComponentName(ComponentType type) {
         case ComponentType::Terrain: return "Terrain";
         case ComponentType::Ladder: return "Ladder";
         case ComponentType::Image: return "Image";
+        case ComponentType::Sprite: return "Sprite";
         case ComponentType::Platform: return "Platform";
         case ComponentType::Path: return "Path";
         case ComponentType::Collision: return "Collision";

@@ -15,7 +15,7 @@
 namespace Renderer {
     class SpriteComponent {
     public:
-        explicit SpriteComponent(const std::string &name);
+        SpriteComponent();
         void createAnimation(const std::string& name, RepeatType repeatType, std::shared_ptr<Animation>& anim);
         void pause();
         void resume();
@@ -28,7 +28,11 @@ namespace Renderer {
         void getCombatBox(FloatRect *rect);
         AnimationRenderer* getCurrentAnim();
 
-        std::string name;
+        std::vector<AnimationRenderer>& getAnimations() {
+            return animations;
+        }
+
+
         bool vertFlip;
         bool horizFlip;
         float alpha;

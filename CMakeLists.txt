@@ -188,8 +188,6 @@ set(GAME_SOURCE_FILES
         src/game/editor/ToolUtil.h
         src/game/editor/RectangleTool.cpp
         src/game/editor/RectangleTool.h
-        src/game/editor/LadderTool.cpp
-        src/game/editor/LadderTool.h
         src/game/editor/PlatformTool.cpp
         src/game/editor/PlatformTool.h
         src/game/editor/PathTool.cpp
@@ -204,7 +202,7 @@ set(GAME_SOURCE_FILES
         src/game/editor/shared/RectanglePropertyEditor.cpp
         src/game/editor/shared/RectanglePropertyEditor.h
         src/game/editor/LightPropertyEditor.cpp
-        src/game/editor/LightPropertyEditor.h)
+        src/game/editor/LightPropertyEditor.h src/game/editor/LadderPropertyEditor.cpp src/game/editor/LadderPropertyEditor.h src/game/editor/SpritePropertyEditor.cpp src/game/editor/SpritePropertyEditor.h)
 
 add_executable(game ${GAME_SOURCE_FILES} ${ENGINE_SOURCE_FILES} ${UTIL_SOURCE_FILES} ${IM_GUI_SOURCE_FILES} ${CGLM_SOURCE_FILES})
 

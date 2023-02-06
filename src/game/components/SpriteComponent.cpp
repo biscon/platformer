@@ -7,7 +7,7 @@
 
 namespace Renderer {
 
-    SpriteComponent::SpriteComponent(const std::string &name) : name(name) {
+    SpriteComponent::SpriteComponent() {
         curAnimIndex = -1;
         alpha = 1.0f;
         vertFlip = false;

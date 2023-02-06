@@ -63,7 +63,7 @@ void ImagePropertyEditor::onResize() {
     }
 }
 
-void ImagePropertyEditor::onMove(const Vector2 &newPos) {
+void ImagePropertyEditor::onMove(const Vector2 &newPos, const Vector2& delta) {
     auto transform = selected->get<TransformComponent>();
     if(transform.isValid()) {
         transform->pos = newPos;
