@@ -61,6 +61,7 @@ Level::Level(IRenderDevice &renderDevice, RenderBuffers renderBuffers, IInputDev
     world->registerSystem(renderDebugSystem);
 
 
+    clear();
 
     //renderDevice.enableCrtFx(true);
     /*
@@ -159,7 +160,7 @@ void Level::createPlayer() {
     FloatRect jumpInsets(0.25f, 0.2f, 0.25f, 0);
     //Renderer::FloatRect attackInsets = { .left = 0.3333f, .right = 0.3333f, .top = .0, .bottom = 0 };
 
-    auto atlas = std::make_shared<TextureAtlas>(renderDevice, 1024, 1024, PixelFormat::RGBA);
+    auto atlas = std::make_shared<TextureAtlas>(renderDevice, 512, 512, PixelFormat::RGBA);
     player = world->create();
     player->setName("Player");
     Vector2 pos = Vector2(120.0f, 150.0f);
@@ -176,19 +177,20 @@ void Level::createPlayer() {
     player->assign<ActorComponent>("player");
     player->assign<SpriteComponent>();
     auto spr1 = player->get<SpriteComponent>();
-    auto idleAnim = Animation::createFromPNG("assets/sprites/player_idle.png", 32, 48, 16, 48, 4, atlas, &widthInsets);
-    spr1->createAnimation("idle", RepeatType::Restart, idleAnim);
-    auto walkAnim = Animation::createFromPNG("assets/sprites/player_walk.png", 32, 48, 16, 48, 8, atlas, &widthInsets);
-    spr1->createAnimation("walk", RepeatType::Restart, walkAnim);
+    auto idle = Animation::createFromPNG("assets/sprites/player_idle.png", 32, 48, 16, 48, 4, atlas, &widthInsets);
+    spr1->createAnimation("idle", RepeatType::Restart, idle);
 
-    auto ascendAnim = Animation::createFromPNG("assets/sprites/player_ascend.png", 32, 64, 16, 64, 8, atlas, &jumpInsets);
-    spr1->createAnimation("ascend", RepeatType::Once, ascendAnim);
+    auto walk = Animation::createFromPNG("assets/sprites/player_walk.png", 32, 48, 16, 48, 8, atlas, &widthInsets);
+    spr1->createAnimation("walk", RepeatType::Restart, walk);
 
-    auto descendAnim = Animation::createFromPNG("assets/sprites/player_descend.png", 32, 64, 16, 64, 2, atlas, &jumpInsets);
-    spr1->createAnimation("descend", RepeatType::Once, descendAnim);
+    auto ascend = Animation::createFromPNG("assets/sprites/player_ascend.png", 32, 64, 16, 64, 8, atlas, &jumpInsets);
+    spr1->createAnimation("ascend", RepeatType::Once, ascend);
 
-    auto climbAnim = Animation::createFromPNG("assets/sprites/player_climb.png", 32, 64, 16, 64, 8, atlas, &jumpInsets);
-    spr1->createAnimation("climb", RepeatType::Restart, climbAnim);
+    auto descend = Animation::createFromPNG("assets/sprites/player_descend.png", 32, 64, 16, 64, 2, atlas, &jumpInsets);
+    spr1->createAnimation("descend", RepeatType::Once, descend);
+
+    auto climb = Animation::createFromPNG("assets/sprites/player_climb.png", 32, 64, 16, 64, 8, atlas, &jumpInsets);
+    spr1->createAnimation("climb", RepeatType::Restart, climb);
 
     spr1->setAnim("idle");
 
@@ -279,6 +281,7 @@ void Level::setEditMode(bool editMode) {
 }
 
 void Level::clear() {
+    animationAtlas = std::make_shared<TextureAtlas>(renderDevice, 2048, 2048, PixelFormat::RGBA);
     config.spawns.clear();
     //editor->reset();
     world->reset();
@@ -496,6 +499,9 @@ void Level::load(std::string filename) {
     SDL_Log("Uploaded %d images", (i32) imagesCache.size());
 
     createPlayer();
+    if(animationAtlas->getNoImages() > 0) {
+        animationAtlas->packAndUpload(renderDevice);
+    }
 }
 
 void Level::transitionToLevel(std::string filename, std::function<void()> callback) {

@@ -64,13 +64,13 @@ namespace Renderer {
             return;
         }
         const auto& anim = animations[curAnimIndex];
-        *ox = anim.animation->originX;
-        *oy = anim.animation->originY;
+        *ox = anim.animation->origin.x;
+        *oy = anim.animation->origin.y;
         if(horizFlip) {
-            *ox = anim.animation->frameWidth - anim.animation->originX;
+            *ox = anim.animation->frameWidth - anim.animation->origin.x;
         }
         if(vertFlip) {
-            *oy = anim.animation->frameHeight - anim.animation->originY;
+            *oy = anim.animation->frameHeight - anim.animation->origin.y;
         }
         *ox *= scale;
         *oy *= scale;

@@ -1,5 +1,7 @@
 #include <utility>
 
+#include <utility>
+
 //
 // Created by bison on 24-11-22.
 //
@@ -35,6 +37,16 @@ struct LevelFile {
     std::string filename;
 };
 
+struct AnimationInfo {
+    std::string filename;
+    std::string name;
+    u32 frameWidth = 0;
+    u32 frameHeight = 0;
+    u32 originX = 0;
+    u32 originY = 0;
+    u16 fps = 0;
+};
+
 class Level {
 public:
     Level(IRenderDevice& renderDevice, RenderBuffers renderBuffers, IInputDevice &inputDevice, Font &debugFont);
@@ -51,6 +63,10 @@ public:
     LevelConfig& getConfig() {
         return config;
     }
+    std::unordered_map<std::string, std::shared_ptr<Animation>>& getAnimations() {
+        return animations;
+    }
+
     void translateEditCam(Vector2& offset);
 
     void clear();
@@ -85,8 +101,10 @@ private:
     std::string filenameToLoad;
     bool loading = false;
     Vector2 camTarget;
-
     std::function<void()> onTransitionDone;
+
+    std::unordered_map<std::string, std::shared_ptr<Animation>> animations;
+    std::shared_ptr<TextureAtlas> animationAtlas;
 
     void freeLutTextures();
     void createPlayer();

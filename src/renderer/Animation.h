@@ -26,7 +26,7 @@ namespace Renderer {
 
     struct Animation {
     public:
-        float originX{}, originY{};
+        Vector2 origin;
         u16 fps{};
         u32 frameWidth{};
         u32 frameHeight{};
@@ -36,6 +36,7 @@ namespace Renderer {
 
         std::shared_ptr<TextureAtlas> textureAtlas;
         std::vector<FrameInfo> frameInfos;
+        std::string filename;
 
         static std::shared_ptr<Animation> createFromPNG(const std::string& filename,
                                                         u32 frame_width, u32 frame_height, u32 ox, u32 oy, u16 fps,

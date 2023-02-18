@@ -36,7 +36,7 @@ void SpritePropertyEditor::animationEditor() {
 
     ImGui::SetNextWindowSize(ImVec2(750,450), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
-    ImGui::Begin("Animations", &showAnimations);
+    ImGui::Begin("Animations##SpritePropertyEditor", &showAnimations);
 
     auto& animations = sprite->getAnimations();
     static u32 selected = 0;

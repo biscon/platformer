@@ -26,9 +26,9 @@ namespace Renderer {
         auto anim = std::shared_ptr<Animation>(new Animation());
         anim->frameWidth = frame_width;
         anim->frameHeight = frame_height;
-        anim->originX = ox;
-        anim->originY = oy;
+        anim->origin = Vector2((float) ox, (float) oy);
         anim->fps = fps;
+        anim->filename = filename;
         PixelBuffer sheet_pb(filename, false);
         anim->widthInFrames = sheet_pb.width / frame_width;
         anim->heightInFrames = sheet_pb.height / frame_height;

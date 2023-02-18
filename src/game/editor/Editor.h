@@ -68,6 +68,8 @@ private:
     bool stealFocusNextFrame = false;
     bool showDemo = false;
     bool showProperties = false;
+    bool showAnimations = false;
+    bool showCreateAnimation = false;
 
     void resetEditors();
     void setSelected(Entity* ent);
@@ -93,6 +95,10 @@ private:
     void backgroundProperties();
     void colorGradingProperties();
     void spawnpointProperties();
+
+    void createAnimation();
+    void addNewAnimation(const AnimationInfo& info);
+    void animationEditor();
 };
 
 std::string getComponentName(ComponentType type);

@@ -122,6 +122,9 @@ void Editor::update(float deltaTime) {
     if(showProperties) {
         properties();
     }
+    if(showAnimations) {
+        animationEditor();
+    }
 }
 
 void Editor::reset() {
@@ -231,6 +234,9 @@ void Editor::mainMenu() {
             }
             if (ImGui::MenuItem("Properties")) {
                 showProperties = true;
+            }
+            if (ImGui::MenuItem("Animations")) {
+                showAnimations = true;
             }
             if (ImGui::MenuItem("Exit")) {
                 //stealFocusNextFrame = true;
@@ -742,6 +748,128 @@ void Editor::spawnpointProperties() {
         ImGui::EndChild();
     }
     ImGui::EndGroup();
+}
+
+void Editor::createAnimation() {
+    ImGui::OpenPopup("Create Animation");
+
+    static AnimationInfo info;
+
+
+    ImGui::SetNextWindowSize(ImVec2(0,0), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
+    if (ImGui::BeginPopupModal("Create Animation", &showCreateAnimation, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2,2));
+
+
+
+        ImGui::InputText("Sheet File", &info.filename);
+        ImGui::SameLine();
+        if (ImGui::Button("Browse##1")) {
+            ImGuiFileDialog::Instance()->OpenDialog("ChooseAnimationSheetKey", "Choose Animation Sheet", ".png",
+                                                    ".", 1,
+                                                    nullptr, ImGuiFileDialogFlags_Modal);
+        }
+
+        if (ImGuiFileDialog::Instance()->Display("ChooseAnimationSheetKey", ImGuiWindowFlags_NoCollapse, ImVec2(700, 450))) {
+            // action if OK
+            if (ImGuiFileDialog::Instance()->IsOk())
+            {
+                std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+                std::string curPath(getcwd(nullptr,0));
+                info.filename = filePathName.substr(curPath.size()+1);
+            }
+            // close
+            ImGuiFileDialog::Instance()->Close();
+        }
+
+
+        ImGui::InputText("Name", &info.name);
+        ImGui::InputScalar("Frame Width", ImGuiDataType_U32, &info.frameWidth, nullptr, nullptr, "%d");
+        ImGui::InputScalar("Frame Height", ImGuiDataType_U32, &info.frameHeight, nullptr, nullptr, "%d");
+        ImGui::InputScalar("Origin X", ImGuiDataType_U32, &info.originX, nullptr, nullptr, "%d");
+        ImGui::InputScalar("Origin Y", ImGuiDataType_U32, &info.originY, nullptr, nullptr, "%d");
+        ImGui::InputScalar("FPS", ImGuiDataType_U16, &info.fps, nullptr, nullptr, "%d");
+
+        ImGui::Separator();
+        ImGui::Spacing();
+        if (ImGui::Button("OK", ImVec2(120, 0))) {
+            showCreateAnimation = false;
+            ImGui::CloseCurrentPopup();
+            addNewAnimation(info);
+        }
+        ImGui::SetItemDefaultFocus();
+        ImGui::SameLine();
+        //ImGui::SameLine(ImGui::GetWindowWidth()-130);
+        if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+            showCreateAnimation = false;
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::PopStyleVar();
+        ImGui::EndPopup();
+    }
+}
+
+void Editor::addNewAnimation(const AnimationInfo& info) {
+    
+}
+
+
+void Editor::animationEditor() {
+    ImGui::SetNextWindowSize(ImVec2(750,450), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(), ImGuiCond_FirstUseEver, ImVec2(0.5f, 0.5f));
+    ImGui::Begin("Animations", &showAnimations);
+
+
+    std::unordered_map<std::string, std::shared_ptr<Animation>>& animations = level.getAnimations();
+
+    static std::string selected;
+    ImGui::BeginGroup();
+    ImGui::BeginChild("left pane", ImVec2(120, -ImGui::GetFrameHeightWithSpacing()), true);
+    for(auto& anim : animations) {
+        if (ImGui::Selectable(anim.first.c_str(), selected == anim.first))
+            selected = anim.first;
+    }
+    ImGui::EndChild();
+    if (ImGui::Button("+", ImVec2(25, 0))) {
+        showCreateAnimation = true;
+    }
+    ImGui::EndGroup();
+
+    ImGui::SameLine();
+    ImGui::BeginGroup();
+    if(animations.count(selected) > 0) {
+        auto anim = animations[selected];
+        ImGui::BeginChild("item view", ImVec2(0,
+                                              -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+
+        ImGui::InputFloat2("Origin", (float*) &anim->origin);
+        ImGui::InputScalar("FPS", ImGuiDataType_U16, &anim->fps, nullptr, nullptr, "%d");
+        /*
+        ImGui::Spacing();
+        if (ImGui::Button("Move Up")) {
+            if(selected > 0) {
+                iter_swap(spawns.begin() + selected, spawns.begin() + selected - 1);
+                selected--;
+            }
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Move Down")) {
+            if(selected < spawns.size()-1) {
+                iter_swap(spawns.begin() + selected, spawns.begin() + selected + 1);
+                selected++;
+            }
+        }
+        */
+        ImGui::EndChild();
+    }
+    ImGui::EndGroup();
+
+    ImGui::End();
+
+    if(showCreateAnimation) {
+        createAnimation();
+    }
 }
 
 void Editor::clearSelection() {
