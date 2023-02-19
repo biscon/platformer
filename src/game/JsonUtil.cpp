@@ -23,6 +23,25 @@ void pushPos(json& j, const Vector2& p) {
     j.push_back(p.y);
 }
 
+i32 repeatTypeToIndex(RepeatType rt) {
+    switch(rt) {
+        case RepeatType::Once:return 0;
+        case RepeatType::Restart:return 1;
+        case RepeatType::Reverse:return 2;
+        case RepeatType::ReverseOnce:return 3;
+    }
+}
+
+RepeatType indexToRepeatType(i32 index) {
+    switch(index) {
+        case 0:return RepeatType::Once;
+        case 1:return RepeatType::Restart;
+        case 2:return RepeatType::Reverse;
+        case 3:return RepeatType::ReverseOnce;
+        default: throw std::runtime_error("Invalid RepeatType index");
+    }
+}
+
 
 /*
 void pushPath(json& j, const PathComponent& p) {

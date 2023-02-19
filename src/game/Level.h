@@ -28,6 +28,7 @@
 #include "systems/VerletSystem.h"
 #include "systems/UpdateEffectsSystem.h"
 #include "TransitionEffect.h"
+#include "AnimationManager.h"
 
 using namespace Renderer;
 using namespace Input;
@@ -35,16 +36,6 @@ using namespace Input;
 struct LevelFile {
     LevelFile(std::string filename) : filename(std::move(filename)) {}
     std::string filename;
-};
-
-struct AnimationInfo {
-    std::string filename;
-    std::string name;
-    u32 frameWidth = 0;
-    u32 frameHeight = 0;
-    u32 originX = 0;
-    u32 originY = 0;
-    u16 fps = 0;
 };
 
 class Level {
@@ -63,8 +54,8 @@ public:
     LevelConfig& getConfig() {
         return config;
     }
-    std::unordered_map<std::string, std::shared_ptr<Animation>>& getAnimations() {
-        return animations;
+    AnimationManager& getAnimManager() {
+        return *animManager;
     }
 
     void translateEditCam(Vector2& offset);
@@ -96,6 +87,7 @@ private:
     std::unique_ptr<LevelFile> levelFile;
     std::unique_ptr<ParallaxScroller> scroller;
     std::unique_ptr<TransitionEffect> transition;
+    std::unique_ptr<AnimationManager> animManager;
 
     LevelConfig config;
     std::string filenameToLoad;
@@ -103,8 +95,7 @@ private:
     Vector2 camTarget;
     std::function<void()> onTransitionDone;
 
-    std::unordered_map<std::string, std::shared_ptr<Animation>> animations;
-    std::shared_ptr<TextureAtlas> animationAtlas;
+
 
     void freeLutTextures();
     void createPlayer();

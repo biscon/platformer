@@ -11,16 +11,24 @@
 #include "../../renderer/Types.h"
 #include "../../renderer/TextureAtlas.h"
 #include "../../renderer/Animation.h"
+#include "../JsonUtil.h"
+#include "../AnimationManager.h"
+
+using json = nlohmann::json;
 
 namespace Renderer {
     class SpriteComponent {
     public:
         SpriteComponent();
+        SpriteComponent(const json& e, AnimationManager& animManager);
+        void save(json& e);
+
         void createAnimation(const std::string& name, RepeatType repeatType, std::shared_ptr<Animation>& anim);
         void pause();
         void resume();
         bool hasAnimEnded();
         void setAnim(const std::string& name);
+        void setAnimIndex(i32 i);
         void setAnimIfNotCur(const std::string& name);
         void getOrigin(float* ox, float *oy, float scale);
         const FrameInfo* getFrameInfo();

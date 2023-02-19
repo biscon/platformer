@@ -39,30 +39,22 @@ void SpritePropertyEditor::animationEditor() {
     ImGui::Begin("Animations##SpritePropertyEditor", &showAnimations);
 
     auto& animations = sprite->getAnimations();
-    static u32 selected = 0;
+    static u32 selectedItem = 0;
     ImGui::BeginGroup();
-    ImGui::BeginChild("left pane", ImVec2(120, -ImGui::GetFrameHeightWithSpacing()), true);
+    ImGui::BeginChild("left pane", ImVec2(250, -ImGui::GetFrameHeightWithSpacing()), true);
     for (u32 i = 0; i < animations.size(); i++) {
         std::string id = animations[i].name;
         if(id.empty()) {
             id = string_format("Animation %d", i);
         }
-        if (ImGui::Selectable(id.c_str(), selected == i))
-            selected = i;
+        if (ImGui::Selectable(id.c_str(), selectedItem == i))
+            selectedItem = i;
 
     }
     ImGui::EndChild();
-    if (ImGui::Button("+", ImVec2(25, 0))) {
-        if((selected >= 0 && selected < animations.size()) || animations.empty()) {
-
-
-            //animations.insert(animations.begin() + selected, spawn);
-        }
-    }
-    ImGui::SameLine();
     if (ImGui::Button("-", ImVec2(25, 0))) {
-        if(selected >= 0 && selected < animations.size()) {
-            animations.erase(animations.begin() + selected);
+        if(selectedItem >= 0 && selectedItem < animations.size()) {
+            animations.erase(animations.begin() + selectedItem);
         }
     }
     ImGui::EndGroup();
@@ -72,10 +64,40 @@ void SpritePropertyEditor::animationEditor() {
     if(!animations.empty()) {
         ImGui::BeginChild("item view", ImVec2(0,
                                               -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
-        auto &sp = animations[selected];
+        auto &sp = animations[selectedItem];
         //ImGui::InputText("id", &sp.id);
+        static i32 repeatType = repeatTypeToIndex(sp.repeatType);
+
+        ImGui::SetNextItemWidth(150);
+        if(ImGui::Combo("RepeatType", &repeatType, "Once\0Restart\0Reverse\0ReverseOnce\0\0")) {
+            SDL_Log("Selected %d", repeatType);
+            sp.repeatType = indexToRepeatType(repeatType);
+        };
 
         ImGui::EndChild();
+    }
+
+    static std::string selectedAnim;
+    ImGui::SetNextItemWidth(250);
+    if (ImGui::BeginCombo("##combo animations", selectedAnim.c_str())) {
+        for(auto& entry : animManager.getAnimations()) {
+            auto& info = entry.second;
+            const bool is_selected = (selectedAnim == info.name);
+            if (ImGui::Selectable(info.name.c_str(), is_selected))
+                selectedAnim = info.name;
+
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Add")) {
+        if(animManager.getAnimations().count(selectedAnim) > 0) {
+            sprite->createAnimation(selectedAnim, RepeatType::Restart, animManager.getAnimations().at(selectedAnim).animation);
+            sprite->setAnim(selectedAnim);
+        }
     }
     ImGui::EndGroup();
 

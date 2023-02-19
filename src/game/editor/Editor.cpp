@@ -70,7 +70,7 @@ Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* wo
     propertyEditorMap[ComponentType::Image] = std::make_unique<ImagePropertyEditor>(inputDevice, buffers, font, camera, world);
     propertyEditorMap[ComponentType::PointLight] = std::make_unique<LightPropertyEditor>(inputDevice, buffers, font, camera, world);
     propertyEditorMap[ComponentType::Ladder] = std::make_unique<LadderPropertyEditor>(inputDevice, buffers, font, camera, world);
-    propertyEditorMap[ComponentType::Sprite] = std::make_unique<SpritePropertyEditor>(inputDevice, buffers, font, camera, world);
+    propertyEditorMap[ComponentType::Sprite] = std::make_unique<SpritePropertyEditor>(inputDevice, buffers, font, camera, world, level.getAnimManager());
 }
 
 void Editor::update(float deltaTime) {
@@ -368,6 +368,12 @@ void Editor::assignComponentMenu() {
     }
     if(ImGui::MenuItem("Ladder", nullptr, false, !selectedEntity->has<LadderComponent>())) {
         selectedEntity->assign<LadderComponent>(FloatRect(300 + camera.scrollX, 500 + camera.scrollY, 400 + camera.scrollX, 700 + camera.scrollY));
+    }
+    if(ImGui::MenuItem("Sprite", nullptr, false, !selectedEntity->has<SpriteComponent>())) {
+        if(!selectedEntity->has<TransformComponent>()) {
+            selectedEntity->assign<TransformComponent>(Vector2(300 + camera.scrollX, 500 + camera.scrollY), 1.0f, 0, 0);
+        }
+        selectedEntity->assign<SpriteComponent>();
     }
 }
 
@@ -811,7 +817,9 @@ void Editor::createAnimation() {
 }
 
 void Editor::addNewAnimation(const AnimationInfo& info) {
-    
+    level.getAnimManager().rebuildAtlas();
+    level.getAnimManager().add(info);
+    level.getAnimManager().upload();
 }
 
 
@@ -821,7 +829,8 @@ void Editor::animationEditor() {
     ImGui::Begin("Animations", &showAnimations);
 
 
-    std::unordered_map<std::string, std::shared_ptr<Animation>>& animations = level.getAnimations();
+    auto& animManager = level.getAnimManager();
+    std::unordered_map<std::string, AnimationInfo>& animations = animManager.getAnimations();
 
     static std::string selected;
     ImGui::BeginGroup();
@@ -834,15 +843,19 @@ void Editor::animationEditor() {
     if (ImGui::Button("+", ImVec2(25, 0))) {
         showCreateAnimation = true;
     }
+    ImGui::SameLine();
+    if (ImGui::Button("-", ImVec2(25, 0))) {
+        animations.erase(selected);
+        selected = "";
+    }
     ImGui::EndGroup();
 
     ImGui::SameLine();
     ImGui::BeginGroup();
     if(animations.count(selected) > 0) {
-        auto anim = animations[selected];
-        ImGui::BeginChild("item view", ImVec2(0,
-                                              -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
-
+        auto& info = animations[selected];
+        auto& anim = info.animation;
+        ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
         ImGui::InputFloat2("Origin", (float*) &anim->origin);
         ImGui::InputScalar("FPS", ImGuiDataType_U16, &anim->fps, nullptr, nullptr, "%d");
         /*

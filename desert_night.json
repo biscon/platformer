@@ -1,8 +1,8 @@
 {
     "ambientColor": [
-        1.0,
-        1.0,
-        1.0,
+        0.15686273574829102,
+        0.1812853068113327,
+        0.29411765933036804,
         1.0
     ],
     "animations": [
@@ -17,20 +17,20 @@
         }
     ],
     "colorGrading": {
-        "applyBackground": false,
-        "lut1Filename": "",
-        "lut2Filename": "",
-        "mix": 0.0
+        "applyBackground": true,
+        "lut1Filename": "assets/lut.png",
+        "lut2Filename": "assets/lut/Late_Night.png",
+        "mix": 1.0
     },
     "entities": [
         {
             "name": "Ground",
             "terrain": {
                 "color": [
-                    0.12999999523162842,
-                    0.12999999523162842,
-                    0.12999999523162842,
-                    1.0
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.501960813999176
                 ],
                 "light": true,
                 "show": false,
@@ -316,6 +316,64 @@
             }
         },
         {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/lights/pendel_4x.png",
+                "height": 117.5,
+                "lightMap": true,
+                "width": 140.0
+            },
+            "name": "Gas station light 1",
+            "transform": {
+                "layer": 1,
+                "pos": [
+                    210.0,
+                    470.0
+                ],
+                "rotation": 0.0,
+                "scale": 4.0
+            }
+        },
+        {
+            "name": "shop light 1",
+            "pointLight": {
+                "innerColor": [
+                    1.0,
+                    0.9195897579193115,
+                    0.3281853199005127,
+                    1.0
+                ],
+                "innerRadius": 254.0,
+                "middleColor": [
+                    0.8494208455085754,
+                    0.8329594731330872,
+                    0.5214591026306152,
+                    0.75
+                ],
+                "outerColor": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "outerRadius": 656.0,
+                "posOffset": [
+                    0.0,
+                    0.0
+                ],
+                "segments": 64
+            },
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    3110.0,
+                    760.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
             "name": "Door",
             "sprite": {
                 "alpha": 1.0,
@@ -330,7 +388,7 @@
                 "vertFlip": false
             },
             "transform": {
-                "layer": 0,
+                "layer": -1,
                 "pos": [
                     2900.0,
                     610.0
@@ -370,19 +428,12 @@
         ]
     },
     "skyColor": [
-        0.137253999710083,
-        0.45882299542427063,
-        0.6901959776878357,
+        0.0,
+        0.1592140793800354,
+        0.34875446557998657,
         1.0
     ],
     "spawns": [
-        {
-            "id": "shop_door",
-            "pos": [
-                2966.0,
-                895.0
-            ]
-        },
         {
             "id": "start",
             "pos": [
@@ -391,13 +442,13 @@
             ]
         },
         {
-            "id": "gasroof",
+            "id": "shop_door",
             "pos": [
-                1078.6632080078125,
-                440.0
+                2966.0,
+                895.0
             ]
         }
     ],
-    "title": "desert_level.json",
+    "title": "desert_night.json",
     "width": 5760.0
 }

@@ -64,8 +64,10 @@ void RenderLevelSystem::tick(World *world, float deltaTime) {
                 }
             }
         }
-        if(actor.isValid() && sprite.isValid()) {
-            sprite->horizFlip = actor->direction == ActorDirection::Left;
+        if(sprite.isValid()) {
+            if(actor.isValid()) {
+                sprite->horizFlip = actor->direction == ActorDirection::Left;
+            }
             renderSprite(sprite.get(), transform.get());
         }
         if(light.isValid()) {

@@ -7,6 +7,37 @@
 
 namespace Renderer {
 
+    SpriteComponent::SpriteComponent(const json &e, AnimationManager& animManager) {
+        vertFlip = e["vertFlip"];
+        horizFlip = e["horizFlip"];
+        alpha = e["alpha"];
+        curAnimIndex = e["curAnimIndex"];
+        json jsonAnims = e["animations"];
+        for(auto& jsonAnim : jsonAnims) {
+            RepeatType rt = indexToRepeatType(jsonAnim["repeatType"]);
+            std::string name = jsonAnim["name"];
+            createAnimation(name, rt, animManager.getAnimations().at(name).animation);
+        }
+        setAnimIndex(curAnimIndex);
+    }
+
+    void SpriteComponent::save(json &e) {
+        json j;
+        j["vertFlip"] = vertFlip;
+        j["horizFlip"] = horizFlip;
+        j["alpha"] = alpha;
+        j["curAnimIndex"] = curAnimIndex;
+        json jsonAnims;
+        for(auto& anim : animations) {
+            json jsonAnim;
+            jsonAnim["name"] = anim.name;
+            jsonAnim["repeatType"] = repeatTypeToIndex(anim.repeatType);
+            jsonAnims.push_back(jsonAnim);
+        }
+        j["animations"] = jsonAnims;
+        e["sprite"] = j;
+    }
+
     SpriteComponent::SpriteComponent() {
         curAnimIndex = -1;
         alpha = 1.0f;
@@ -37,6 +68,15 @@ namespace Renderer {
             return animations[curAnimIndex].ended;
         }
         return true;
+    }
+
+    void SpriteComponent::setAnimIndex(i32 i) {
+        if(i != -1) {
+            curAnimIndex = i;
+            animations[i].curFrame = 0;
+            animations[i].ended = false;
+            animations[i].reverse = false;
+        }
     }
 
     void SpriteComponent::setAnim(const std::string &name) {

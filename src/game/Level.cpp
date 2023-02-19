@@ -31,6 +31,8 @@ Level::Level(IRenderDevice &renderDevice, RenderBuffers renderBuffers, IInputDev
                                 inputDevice(inputDevice),
                                 debugFont(debugFont) {
 
+    animManager = std::make_unique<AnimationManager>(renderDevice);
+
     camera = std::make_unique<Camera>(config.width, config.height);
     transition = std::make_unique<TransitionEffect>(renderBuffers, config);
 
@@ -281,7 +283,7 @@ void Level::setEditMode(bool editMode) {
 }
 
 void Level::clear() {
-    animationAtlas = std::make_shared<TextureAtlas>(renderDevice, 2048, 2048, PixelFormat::RGBA);
+    animManager->clear();
     config.spawns.clear();
     //editor->reset();
     world->reset();
@@ -340,6 +342,9 @@ void Level::save(std::string filename) {
         j["scroller"]["layers"] = layers;
     }
 
+    j["animations"].clear();
+    animManager->save(j["animations"]);
+
     j["entities"].clear();
     for (Entity* ent : world->all(false)) {
         if(ent == player) {
@@ -355,6 +360,7 @@ void Level::save(std::string filename) {
         auto path = ent->get<PathComponent>();
         auto collision = ent->get<CollisionComponent>();
         auto light = ent->get<PointLightComponent>();
+        auto sprite = ent->get<SpriteComponent>();
         auto verletMesh = ent->get<VerletMeshComponent>();
         auto flickerEffect = ent->get<FlickerEffectComponent>();
         auto glowEffect = ent->get<GlowEffectComponent>();
@@ -370,6 +376,7 @@ void Level::save(std::string filename) {
         if(verletMesh.isValid()) verletMesh->save(jsonEnt);
         if(flickerEffect.isValid()) flickerEffect->save(jsonEnt);
         if(glowEffect.isValid()) glowEffect->save(jsonEnt);
+        if(sprite.isValid()) sprite->save(jsonEnt);
 
         j["entities"].push_back(jsonEnt);
     }
@@ -424,6 +431,10 @@ void Level::load(std::string filename) {
         config.ambientColor = {.r = j["ambientColor"][0], .g = j["ambientColor"][1], .b = j["ambientColor"][2], .a = j["ambientColor"][3]};
     }
 
+    if(j.contains("animations")) {
+        animManager->load(j["animations"]);
+    }
+
     std::unordered_map<std::string, ImageComponent*> imagesCache;
 
     for(auto& e : j["entities"]) {
@@ -465,6 +476,9 @@ void Level::load(std::string filename) {
         if(e.contains("pointLight")) {
             ent->assign<PointLightComponent>(e["pointLight"]);
         }
+        if(e.contains("sprite")) {
+            ent->assign<SpriteComponent>(e["sprite"], *animManager);
+        }
         if(e.contains("verletMesh")) {
             ent->assign<VerletMeshComponent>(e["verletMesh"]);
         }
@@ -499,9 +513,7 @@ void Level::load(std::string filename) {
     SDL_Log("Uploaded %d images", (i32) imagesCache.size());
 
     createPlayer();
-    if(animationAtlas->getNoImages() > 0) {
-        animationAtlas->packAndUpload(renderDevice);
-    }
+    animManager->upload();
 }
 
 void Level::transitionToLevel(std::string filename, std::function<void()> callback) {

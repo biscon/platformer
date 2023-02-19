@@ -11,6 +11,7 @@
 #include "../../input/Input.h"
 #include "../Camera.h"
 #include "shared/RectanglePropertyEditor.h"
+#include "../AnimationManager.h"
 
 using namespace Input;
 using namespace Renderer;
@@ -18,12 +19,13 @@ using namespace Renderer;
 class SpritePropertyEditor: public RectanglePropertyEditor {
 public:
     SpritePropertyEditor(IInputDevice &inputDevice, RenderBuffers buffers, Font &font, Camera &camera,
-            World *world) : RectanglePropertyEditor(inputDevice, buffers.unlit, font, camera, world), buffers(buffers) {}
+            World *world, AnimationManager& animManager) : RectanglePropertyEditor(inputDevice, buffers.unlit, font, camera, world), buffers(buffers), animManager(animManager) {}
 
     void show() override;
 
 private:
     RenderBuffers buffers;
+    AnimationManager& animManager;
     bool showAnimations = false;
 
     void onResizeComplete() override;
