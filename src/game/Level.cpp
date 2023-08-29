@@ -285,6 +285,7 @@ void Level::setEditMode(bool editMode) {
 void Level::clear() {
     animManager->clear();
     config.spawns.clear();
+    camera->lockYAxis = false;
     //editor->reset();
     world->reset();
 }
@@ -293,6 +294,7 @@ void Level::newLevel() {
     clear();
     config = LevelConfig();
     camera->setLevelDimensions(config.width, config.height);
+    camera->lockYAxis = false;
     scroller->reset();
 
     // build terrain
@@ -316,6 +318,8 @@ void Level::save(std::string filename) {
     j["title"] = filename;
     j["width"] = config.width;
     j["height"] = config.height;
+    j["lockYAxis"] = camera->lockYAxis;
+    j["lockedCamY"] = camera->lockedCamY;
 
     j["skyColor"].clear();
     pushColor(j["skyColor"], config.skyColor);
@@ -413,6 +417,12 @@ void Level::load(std::string filename) {
     config.width = j["width"];
     config.height = j["height"];
     camera->setLevelDimensions(config.width, config.height);
+    if(j.contains("lockYAxis")) {
+        camera->lockYAxis = j["lockYAxis"];
+    }
+    if(j.contains("lockedCamY")) {
+        camera->lockedCamY = j["lockedCamY"];
+    }
 
     scroller->reset();
     if (j.contains("scroller")) {

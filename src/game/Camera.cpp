@@ -74,6 +74,9 @@ void Camera::update(const FloatRect& targetBounds, float deltaTime,  InputCompon
 
     scrollX = roundf(targetX - (0.5f * camWidth));
     scrollY = roundf(targetY - (0.5f * camHeight));
+    if(lockYAxis) {
+        scrollY = lockedCamY;
+    }
 
     if(restrain) {
         scrollX = std::clamp(scrollX, 0.0f, maxScrollX);

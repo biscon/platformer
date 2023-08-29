@@ -26,6 +26,8 @@ public:
     float scrollX = 0;
     float scrollY = 0;
     FocusArea focusArea;
+    bool lockYAxis = false;
+    float lockedCamY = 0;
 
     Camera(float levelWidth, float levelHeight) {
         setLevelDimensions(levelWidth, levelHeight);

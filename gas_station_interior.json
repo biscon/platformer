@@ -1,0 +1,133 @@
+{
+    "ambientColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "animations": null,
+    "colorGrading": {
+        "applyBackground": false,
+        "lut1Filename": "",
+        "lut2Filename": "",
+        "mix": 0.0
+    },
+    "entities": [
+        {
+            "name": "Ground",
+            "terrain": {
+                "color": [
+                    0.5096524953842163,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "light": false,
+                "show": false,
+                "through": false,
+                "vertices": [
+                    10.0,
+                    840.0,
+                    10.0,
+                    330.0,
+                    50.0,
+                    330.0,
+                    50.0,
+                    800.0,
+                    1870.0,
+                    800.0,
+                    1870.0,
+                    250.0,
+                    1910.0,
+                    250.0,
+                    1910.0,
+                    840.0
+                ]
+            },
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    0.0,
+                    0.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/backgrounds/gas_station_interior.png",
+                "height": 128.0,
+                "lightMap": false,
+                "width": 384.0
+            },
+            "name": "Background",
+            "transform": {
+                "layer": -1,
+                "pos": [
+                    0.0,
+                    210.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/store_counter.png",
+                "height": 43.0,
+                "lightMap": false,
+                "width": 157.0
+            },
+            "name": "Counter",
+            "transform": {
+                "layer": 1,
+                "pos": [
+                    400.0,
+                    585.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/store_shelves.png",
+                "height": 64.0,
+                "lightMap": false,
+                "width": 146.0
+            },
+            "name": "Shelves",
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    430.0,
+                    420.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            }
+        }
+    ],
+    "height": 1080.0,
+    "skyColor": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "spawns": [
+        {
+            "id": "enter",
+            "pos": [
+                1770.0,
+                800.0
+            ]
+        }
+    ],
+    "title": "gas_station_interior.json",
+    "width": 1920.0
+}

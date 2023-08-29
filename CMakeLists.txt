@@ -23,6 +23,7 @@ endif()
 
 if(UNIX AND NOT APPLE)
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+    set(CMAKE_EXE_LINKER_FLAGS "-Wl,--copy-dt-needed-entries")
 endif()
 #if(WIN32)
 #endif()

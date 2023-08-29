@@ -33,7 +33,7 @@
 #endif
 
 typedef float                   vec2[2];
-typedef CGLM_ALIGN_IF(8)  float vec3[3];
+typedef float vec3[3];
 typedef int                    ivec3[3];
 typedef CGLM_ALIGN_IF(16) float vec4[4];
 
@@ -41,7 +41,7 @@ typedef CGLM_ALIGN_IF(16) float vec4[4];
 typedef CGLM_ALIGN_IF(32) vec3  mat3[3];
 typedef CGLM_ALIGN_IF(32) vec4  mat4[4];
 #else
-typedef                   vec3  mat3[3];
+typedef vec3 mat3[3];
 typedef CGLM_ALIGN_IF(16) vec4  mat4[4];
 #endif
 

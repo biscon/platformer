@@ -5,6 +5,7 @@
 #include "OGLRenderDevice.h"
 #include <cglm/cam.h>
 #include <SDL_log.h>
+#include <stdexcept>
 
 namespace Renderer {
 
