@@ -101,6 +101,14 @@ namespace Renderer {
         float engineTime = 0;
 
         GLint uniformUseWind = 0;
+        GLint uniformWindSpeed;
+        GLint uniformWindMinStrength;
+        GLint uniformWindMaxStrength;
+        GLint uniformWindStrengthScale;
+        GLint uniformWindInterval;
+        GLint uniformWindDetail;
+        GLint uniformWindDistortion;
+        GLint uniformWindHeightOffset;
     };
     
 }

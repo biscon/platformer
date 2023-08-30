@@ -35,7 +35,7 @@ Game::Game(Input::IInputDevice& inputDevice, IRenderDevice& renderDevice, Render
 
     level->newLevel();
 
-    renderDevice.enableCrtFx(true);
+    //renderDevice.enableCrtFx(true);
 
     //level->setDebug(true);
 }

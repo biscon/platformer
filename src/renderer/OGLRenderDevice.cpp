@@ -271,7 +271,14 @@ namespace Renderer {
                     EnableWindCommand *cmd = (EnableWindCommand*) cur_ptr;
                     cur_ptr += sizeof(EnableWindCommand);
                     glUniform1i(uniformUseWind, 1);
-
+                    glUniform1f(uniformWindSpeed, cmd->speed);
+                    glUniform1f(uniformWindMinStrength, cmd->minStrength);
+                    glUniform1f(uniformWindMaxStrength, cmd->maxStrength);
+                    glUniform1f(uniformWindStrengthScale, cmd->strengthScale);
+                    glUniform1f(uniformWindInterval, cmd->interval);
+                    glUniform1f(uniformWindDetail, cmd->detail);
+                    glUniform1f(uniformWindDistortion, cmd->distortion);
+                    glUniform1f(uniformWindHeightOffset, cmd->heightOffset);
                     break;
                 }
                 case CommandType::DisableWind: {
@@ -730,6 +737,14 @@ namespace Renderer {
         uniformMatteColor = glGetUniformLocation(texQuadProgramID, "matteColor");
         uniformEngineTime = glGetUniformLocation(texQuadProgramID, "engineTime");
         uniformUseWind = glGetUniformLocation(texQuadProgramID, "useWind");
+        uniformWindSpeed = glGetUniformLocation(texQuadProgramID, "windSpeed");
+        uniformWindMinStrength = glGetUniformLocation(texQuadProgramID, "windMinStrength");
+        uniformWindMaxStrength = glGetUniformLocation(texQuadProgramID, "windMaxStrength");
+        uniformWindStrengthScale = glGetUniformLocation(texQuadProgramID, "windStrengthScale");
+        uniformWindInterval = glGetUniformLocation(texQuadProgramID, "windInterval");
+        uniformWindDetail = glGetUniformLocation(texQuadProgramID, "windDetail");
+        uniformWindDistortion = glGetUniformLocation(texQuadProgramID, "windDistortion");
+        uniformWindHeightOffset = glGetUniformLocation(texQuadProgramID, "windHeightOffset");
     }
 
     void OGLRenderDevice::enableAdditiveAlpha() {

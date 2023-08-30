@@ -10,9 +10,8 @@ uniform sampler2D lightTexture;
 uniform int useCrt;
 uniform int useLight;
 
-
-
-vec2 screenResolution = vec2(1920, 1080);
+//vec2 screenResolution = vec2(1920, 1080);
+//vec2 screenResolution = vec2(2560, 1440);
 vec3 brightness = vec3(1.15, 1.15, 1.15);
 
 // the blur kernel
@@ -95,7 +94,7 @@ void main(void)
         }
 
         //vec4 baseColor = sampleBlurred(screenTexture, remappedUV);
-
+        vec2 screenResolution = vec2(textureSize(screenTexture, 0));
         baseColor *= scanLineIntensity(remappedUV.x, screenResolution.y, 0.01);
         baseColor *= scanLineIntensity(remappedUV.y, screenResolution.x, 0.05);
         baseColor *= vec4(vec3(brightness), 1.0);

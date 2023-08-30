@@ -40,6 +40,7 @@
 #include "LightPropertyEditor.h"
 #include "LadderPropertyEditor.h"
 #include "SpritePropertyEditor.h"
+#include "WindEffectPropertyEditor.h"
 
 
 Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font, Level& level) :
@@ -71,6 +72,7 @@ Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* wo
     propertyEditorMap[ComponentType::PointLight] = std::make_unique<LightPropertyEditor>(inputDevice, buffers, font, camera, world);
     propertyEditorMap[ComponentType::Ladder] = std::make_unique<LadderPropertyEditor>(inputDevice, buffers, font, camera, world);
     propertyEditorMap[ComponentType::Sprite] = std::make_unique<SpritePropertyEditor>(inputDevice, buffers, font, camera, world, level.getAnimManager());
+    propertyEditorMap[ComponentType::WindEffect] = std::make_unique<WindEffectPropertyEditor>();
 }
 
 void Editor::update(float deltaTime) {
@@ -374,6 +376,9 @@ void Editor::assignComponentMenu() {
             selectedEntity->assign<TransformComponent>(Vector2(300 + camera.scrollX, 500 + camera.scrollY), 1.0f, 0, 0);
         }
         selectedEntity->assign<SpriteComponent>();
+    }
+    if(ImGui::MenuItem("Wind", nullptr, false, !selectedEntity->has<WindEffectComponent>())) {
+        selectedEntity->assign<WindEffectComponent>();
     }
 }
 
@@ -911,6 +916,7 @@ void Editor::removeComponent(Entity* ent, ComponentType type) {
         case ComponentType::PointLight: ent->remove<PointLightComponent>(); break;
         case ComponentType::FlickerEffect: ent->remove<FlickerEffectComponent>(); break;
         case ComponentType::GlowEffect: ent->remove<GlowEffectComponent>(); break;
+        case ComponentType::WindEffect: ent->remove<WindEffectComponent>(); break;
     }
 }
 
@@ -935,6 +941,7 @@ void Editor::updateMetaData() {
         if(ent->has<PointLightComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::PointLight);
         if(ent->has<FlickerEffectComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::FlickerEffect);
         if(ent->has<GlowEffectComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::GlowEffect);
+        if(ent->has<WindEffectComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::WindEffect);
     }
 }
 
@@ -951,6 +958,7 @@ std::string getComponentName(ComponentType type) {
         case ComponentType::PointLight: return "PointLight";
         case ComponentType::FlickerEffect: return "FlickerEffect";
         case ComponentType::GlowEffect: return "GlowEffect";
+        case ComponentType::WindEffect: return "WindEffect";
     }
     return "Unknown";
 }

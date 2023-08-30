@@ -1,8 +1,8 @@
 {
     "ambientColor": [
-        0.19217079877853394,
-        0.19217079877853394,
-        0.19217079877853394,
+        0.3665480613708496,
+        0.3665480613708496,
+        0.3665480613708496,
         1.0
     ],
     "animations": null,
@@ -93,16 +93,6 @@
             }
         },
         {
-            "windEffect": {
-                "speed": 1.0,
-                "minStrength": 0.5,
-                "maxStrength": 0.5,
-                "strengthScale": 100.0,
-                "interval": 3.5,
-                "detail": 1.0,
-                "distortion": 0.0,
-                "heightOffset": 0.0
-            },
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/objects/store_shelves.png",
@@ -122,11 +112,6 @@
             }
         },
         {
-            "flickerEffect": {
-                "maxDuration": 1.25,
-                "minDuration": 0.009999999776482582,
-                "on": true
-            },
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/lights/pendel_4x.png",
@@ -143,19 +128,19 @@
                 ],
                 "rotation": 0.0,
                 "scale": 1.0
+            },
+            "windEffect": {
+                "detail": 3.0,
+                "distortion": 0.6000000238418579,
+                "heightOffset": 0.0,
+                "interval": 3.5,
+                "maxStrength": 0.10000000149011612,
+                "minStrength": 0.019999999552965164,
+                "speed": 1.0,
+                "strengthScale": 100.0
             }
         },
         {
-            "windEffect": {
-                "speed": 1.0,
-                "minStrength": 0.5,
-                "maxStrength": 0.5,
-                "strengthScale": 100.0,
-                "interval": 3.5,
-                "detail": 1.0,
-                "distortion": 0.0,
-                "heightOffset": 0.0
-            },
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/lights/pendel_4x.png",
@@ -172,25 +157,183 @@
                 ],
                 "rotation": 0.0,
                 "scale": 1.0
+            },
+            "windEffect": {
+                "detail": 2.0,
+                "distortion": 0.5299999713897705,
+                "heightOffset": 0.0,
+                "interval": 1.5,
+                "maxStrength": 0.10000000149011612,
+                "minStrength": 0.05000000074505806,
+                "speed": 1.0,
+                "strengthScale": 100.0
             }
         },
         {
             "image": {
                 "alpha": 1.0,
-                "filename": "assets/lights/pendel.png",
-                "height": 600.0,
+                "filename": "assets/lights/pendel_4x.png",
+                "height": 292.5,
                 "lightMap": true,
-                "width": 660.0
+                "width": 192.5
             },
             "name": "Light 3",
             "transform": {
                 "layer": 0,
                 "pos": [
-                    1320.0,
-                    320.0
+                    1460.0,
+                    300.0
+                ],
+                "rotation": 0.0,
+                "scale": 2.0
+            },
+            "windEffect": {
+                "detail": 1.340000033378601,
+                "distortion": 0.7300000190734863,
+                "heightOffset": 0.0,
+                "interval": 1.2200000286102295,
+                "maxStrength": 0.09000000357627869,
+                "minStrength": 0.029999999329447746,
+                "speed": 0.5,
+                "strengthScale": 50.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/arcade.png",
+                "height": 50.0,
+                "lightMap": false,
+                "width": 34.0
+            },
+            "name": "Arcade",
+            "transform": {
+                "layer": -2,
+                "pos": [
+                    170.0,
+                    470.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 0.38999998569488525,
+                "filename": "assets/objects/arcade_lightmap.png",
+                "height": 41.89493942260742,
+                "lightMap": true,
+                "width": 31.152647018432617
+            },
+            "name": "Arcade Lightmap",
+            "transform": {
+                "layer": -1,
+                "pos": [
+                    110.0,
+                    380.0
+                ],
+                "rotation": 0.0,
+                "scale": 9.309000015258789
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/red_fridge.png",
+                "height": 55.0,
+                "lightMap": false,
+                "width": 32.0
+            },
+            "name": "Red Fridge",
+            "transform": {
+                "layer": -2,
+                "pos": [
+                    1250.0,
+                    420.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/green_fridge.png",
+                "height": 55.0,
+                "lightMap": false,
+                "width": 32.0
+            },
+            "name": "Green Fridge",
+            "transform": {
+                "layer": -2,
+                "pos": [
+                    1420.0,
+                    420.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            }
+        },
+        {
+            "flickerEffect": {
+                "maxDuration": 1.25,
+                "minDuration": 0.009999999776482582,
+                "on": true
+            },
+            "image": {
+                "alpha": 0.800000011920929,
+                "filename": "assets/lights/fridge_lightmap.png",
+                "height": 390.0,
+                "lightMap": true,
+                "width": 260.0
+            },
+            "name": "Red Fridge Lightmap",
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    1200.0,
+                    360.0
                 ],
                 "rotation": 0.0,
                 "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 0.800000011920929,
+                "filename": "assets/lights/fridge_lightmap.png",
+                "height": 380.0,
+                "lightMap": true,
+                "width": 260.0
+            },
+            "name": "Green Fridge Lightmap",
+            "transform": {
+                "layer": 0,
+                "pos": [
+                    1370.0,
+                    365.0
+                ],
+                "rotation": 0.0,
+                "scale": 1.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/metal_trashcan.png",
+                "height": 25.0,
+                "lightMap": false,
+                "width": 16.0
+            },
+            "name": "Trashcan",
+            "transform": {
+                "layer": -2,
+                "pos": [
+                    1625.0,
+                    590.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
             }
         }
     ],

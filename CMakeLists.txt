@@ -211,7 +211,10 @@ set(GAME_SOURCE_FILES
         src/game/editor/LadderPropertyEditor.cpp
         src/game/editor/LadderPropertyEditor.h
         src/game/editor/SpritePropertyEditor.cpp
-        src/game/editor/SpritePropertyEditor.h)
+        src/game/editor/SpritePropertyEditor.h
+        src/game/editor/WindEffectPropertyEditor.cpp
+        src/game/editor/WindEffectPropertyEditor.h
+)
 
 add_executable(game ${GAME_SOURCE_FILES} ${ENGINE_SOURCE_FILES} ${UTIL_SOURCE_FILES} ${IM_GUI_SOURCE_FILES} ${CGLM_SOURCE_FILES})
 
