@@ -31,6 +31,8 @@ namespace Renderer {
             Triangles,
             EnableMatte,
             DisableMatte,
+            EnableWind,
+            DisableWind,
         };
 
         struct Command {
@@ -71,6 +73,22 @@ namespace Renderer {
             size_t offset;
             size_t vertexOffset;
             size_t vertexCount;
+        };
+
+        struct EnableWindCommand {
+            CommandType type = CommandType::EnableWind;
+            float speed = 1.0f;
+            float minStrength = 0.1f;
+            float maxStrength = 0.5f;
+            float strengthScale = 100.0;
+            float interval = 3.5;
+            float detail = 1.0;
+            float distortion = 0; // hint_range(0.0, 1.0);
+            float heightOffset = 0.0;
+        };
+
+        struct DisableWindCommand {
+            CommandType type;
         };
     }
 }

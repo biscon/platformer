@@ -17,6 +17,7 @@
 #include "components/PathComponent.h"
 #include "components/FlickerEffectComponent.h"
 #include "components/GlowEffectComponent.h"
+#include "components/WindEffectComponent.h"
 
 #include <json.hpp>
 #include <iostream>
@@ -368,6 +369,7 @@ void Level::save(std::string filename) {
         auto verletMesh = ent->get<VerletMeshComponent>();
         auto flickerEffect = ent->get<FlickerEffectComponent>();
         auto glowEffect = ent->get<GlowEffectComponent>();
+        auto windEffect = ent->get<WindEffectComponent>();
 
         if(transform.isValid()) transform->save(jsonEnt);
         if(terrain.isValid()) terrain->save(jsonEnt);
@@ -381,6 +383,7 @@ void Level::save(std::string filename) {
         if(flickerEffect.isValid()) flickerEffect->save(jsonEnt);
         if(glowEffect.isValid()) glowEffect->save(jsonEnt);
         if(sprite.isValid()) sprite->save(jsonEnt);
+        if(windEffect.isValid()) windEffect->save(jsonEnt);
 
         j["entities"].push_back(jsonEnt);
     }
@@ -497,6 +500,9 @@ void Level::load(std::string filename) {
         }
         if(e.contains("glowEffect")) {
             ent->assign<GlowEffectComponent>(e["glowEffect"]);
+        }
+        if(e.contains("windEffect")) {
+            ent->assign<WindEffectComponent>(e["windEffect"]);
         }
     }
 

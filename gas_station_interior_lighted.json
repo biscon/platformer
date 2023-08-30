@@ -93,6 +93,16 @@
             }
         },
         {
+            "windEffect": {
+                "speed": 1.0,
+                "minStrength": 0.5,
+                "maxStrength": 0.5,
+                "strengthScale": 100.0,
+                "interval": 3.5,
+                "detail": 1.0,
+                "distortion": 0.0,
+                "heightOffset": 0.0
+            },
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/objects/store_shelves.png",
@@ -136,6 +146,16 @@
             }
         },
         {
+            "windEffect": {
+                "speed": 1.0,
+                "minStrength": 0.5,
+                "maxStrength": 0.5,
+                "strengthScale": 100.0,
+                "interval": 3.5,
+                "detail": 1.0,
+                "distortion": 0.0,
+                "heightOffset": 0.0
+            },
             "image": {
                 "alpha": 1.0,
                 "filename": "assets/lights/pendel_4x.png",

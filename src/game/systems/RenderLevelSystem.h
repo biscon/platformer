@@ -15,6 +15,7 @@
 #include "../components/PointLightComponent.h"
 #include "../components/VerletMeshComponent.h"
 #include "../components/TransformComponent.h"
+#include "../components/WindEffectComponent.h"
 
 extern "C" {
     #include <cglm/call/vec4.h>
@@ -44,6 +45,7 @@ private:
     void renderLight(PointLightComponent &light, TransformComponent& transform);
     void renderVerletMesh(VerletMeshComponent& verlet);
     void renderVerletImage(Entity* ent, RenderCmdBuffer& buffer);
+    void renderWindEffect(WindEffectComponent& wind);
 };
 
 

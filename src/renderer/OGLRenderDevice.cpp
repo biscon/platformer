@@ -267,6 +267,18 @@ namespace Renderer {
                     glDrawArrays(GL_TRIANGLES, (GLsizei) cmd->vertexOffset, (GLsizei) cmd->vertexCount);
                     break;
                 }
+                case CommandType::EnableWind: {
+                    EnableWindCommand *cmd = (EnableWindCommand*) cur_ptr;
+                    cur_ptr += sizeof(EnableWindCommand);
+                    glUniform1i(uniformUseWind, 1);
+
+                    break;
+                }
+                case CommandType::DisableWind: {
+                    cur_ptr += sizeof(DisableWindCommand);
+                    glUniform1i(uniformUseWind, 0);
+                    break;
+                }
                 default: {
                     break;
                 }
@@ -356,6 +368,7 @@ namespace Renderer {
             glActiveTexture(GL_TEXTURE0);
         }
 
+        glUniform1f(uniformEngineTime, engineTime);
 
         // bind vao
         glBindVertexArray(texQuadVAO);
@@ -715,6 +728,8 @@ namespace Renderer {
         uniformUseLut = glGetUniformLocation(texQuadProgramID, "useLut");
         uniformMatte = glGetUniformLocation(texQuadProgramID, "matte");
         uniformMatteColor = glGetUniformLocation(texQuadProgramID, "matteColor");
+        uniformEngineTime = glGetUniformLocation(texQuadProgramID, "engineTime");
+        uniformUseWind = glGetUniformLocation(texQuadProgramID, "useWind");
     }
 
     void OGLRenderDevice::enableAdditiveAlpha() {
@@ -729,5 +744,9 @@ namespace Renderer {
     void OGLRenderDevice::enablePremultipliedAlpha() {
         // premultiplied alpha
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    void OGLRenderDevice::setEngineTime(float time) {
+        engineTime = time;
     }
 }

@@ -39,6 +39,7 @@ namespace Renderer {
         void renderBackgroundBuffer(RenderCmdBuffer &buf);
         void renderLightBuffer(RenderCmdBuffer &buf);
         void renderScreen();
+        void setEngineTime(float time);
 
     private:
         void renderBuffer(RenderCmdBuffer &buf, GLuint fbo, bool useLut);
@@ -95,6 +96,11 @@ namespace Renderer {
         bool lutActive = false;
         GLint uniformMatte;
         GLint uniformMatteColor;
+
+        GLint uniformEngineTime = 0;
+        float engineTime = 0;
+
+        GLint uniformUseWind = 0;
     };
     
 }

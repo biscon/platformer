@@ -181,7 +181,7 @@ INTERNAL bool InitVideo()
         SDL_Log("Could not create SDLWindow\n");
         return false;
     }
-    SDL_SetWindowFullscreen(SDLWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    //SDL_SetWindowFullscreen(SDLWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     Context = SDL_GL_CreateContext(SDLWindow);
     if(Context == nullptr)
@@ -371,6 +371,7 @@ int main()
     };
 
     auto game = std::make_unique<Game>(*inputDevice, *renderDevice, renderBuffers);
+    float engineTimer = 0;
 
     while(!ShouldQuit)
     {
@@ -392,6 +393,10 @@ int main()
             secondsElapsedForFrame = targetSecondsPerFrame;
             SDL_Log("Correcting crazy framerate");
         }
+
+        engineTimer += (float) secondsElapsedForFrame;
+        //SDL_Log("engineTimer: %f", engineTimer);
+        renderDevice->setEngineTime(engineTimer);
 
         renderBuffers.background.clear();
         renderBuffers.lit.clear();

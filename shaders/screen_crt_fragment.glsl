@@ -10,6 +10,8 @@ uniform sampler2D lightTexture;
 uniform int useCrt;
 uniform int useLight;
 
+
+
 vec2 screenResolution = vec2(1920, 1080);
 vec3 brightness = vec3(1.15, 1.15, 1.15);
 

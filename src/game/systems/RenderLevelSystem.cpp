@@ -6,8 +6,6 @@
 #include "RenderLevelSystem.h"
 #include "../components/ActorComponent.h"
 #include "../components/TerrainComponent.h"
-#include "../components/PointLightComponent.h"
-#include "../components/VerletMeshComponent.h"
 #include "../PolyUtil.h"
 #include "../components/LadderComponent.h"
 #include "../components/FlickerEffectComponent.h"
@@ -46,6 +44,12 @@ void RenderLevelSystem::tick(World *world, float deltaTime) {
         auto light = ent->get<PointLightComponent>();
         auto verlet = ent->get<VerletMeshComponent>();
         auto flicker = ent->get<FlickerEffectComponent>();
+        auto wind = ent->get<WindEffectComponent>();
+
+        if(wind.isValid()) {
+            renderWindEffect(wind.get());
+        }
+
         bool on = true;
         if(flicker.isValid()) {
             on = flicker->on;
@@ -77,6 +81,11 @@ void RenderLevelSystem::tick(World *world, float deltaTime) {
         }
         if(verlet.isValid()) {
             renderVerletMesh(verlet.get());
+        }
+        if(wind.isValid()) {
+            buffers.unlit.pushDisableWind();
+            buffers.lit.pushDisableWind();
+            buffers.light.pushDisableWind();
         }
     }
 
@@ -360,4 +369,20 @@ void RenderLevelSystem::renderVerletImage(Entity *ent, RenderCmdBuffer& buffer) 
     glm_mat4_identity(trans);
     buffer.pushTransform(&trans);
     buffers.unlit.pushTransform(&trans);
+}
+
+void RenderLevelSystem::renderWindEffect(WindEffectComponent &wind) {
+    auto params = WindEffectParameters {
+            .speed = wind.speed,
+            .minStrength = wind.minStrength,
+            .maxStrength = wind.maxStrength,
+            .strengthScale = wind.strengthScale,
+            .interval = wind.interval,
+            .detail = wind.detail,
+            .distortion = wind.distortion,
+            .heightOffset = wind.heightOffset
+    };
+    buffers.unlit.pushEnableWind(params);
+    buffers.lit.pushEnableWind(params);
+    buffers.light.pushEnableWind(params);
 }

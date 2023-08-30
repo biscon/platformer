@@ -499,4 +499,18 @@ namespace Renderer {
         cmdOffset += sizeof(QuadCommand);
         assert(cmdOffset - commands > 0);
     }
+
+    void RenderCmdBuffer::pushEnableWind(const WindEffectParameters &params) {
+        EnableWindCommand cmd = {.type = CommandType::EnableWind, .speed = params.speed, .minStrength = params.minStrength, .maxStrength = params.maxStrength, .strengthScale = params.strengthScale, .interval = params.interval, .detail = params.detail, .distortion = params.distortion, .heightOffset = params.heightOffset};
+        memcpy(cmdOffset, &cmd, sizeof(EnableWindCommand));
+        cmdOffset += sizeof(EnableWindCommand);
+        assert(cmdOffset - commands > 0);
+    }
+
+    void RenderCmdBuffer::pushDisableWind() {
+        DisableWindCommand cmd = {.type = CommandType::DisableWind};
+        memcpy(cmdOffset, &cmd, sizeof(DisableWindCommand));
+        cmdOffset += sizeof(DisableWindCommand);
+        assert(cmdOffset - commands > 0);
+    }
 }

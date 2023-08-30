@@ -86,6 +86,7 @@ set(ENGINE_SOURCE_FILES
         src/include/defs.h
         src/main.cpp
         src/glad/glad.c
+        src/renderer/WindEffectParameters.h
         src/renderer/RenderCmdBuffer.cpp
         src/renderer/RenderCmdBuffer.h
         src/renderer/Commands.cpp
@@ -179,6 +180,7 @@ set(GAME_SOURCE_FILES
         src/game/components/VerletMeshComponent.h
         src/game/components/FlickerEffectComponent.h
         src/game/components/GlowEffectComponent.h
+        src/game/components/WindEffectComponent.h
 
         src/game/editor/Editor.cpp
         src/game/editor/Editor.h

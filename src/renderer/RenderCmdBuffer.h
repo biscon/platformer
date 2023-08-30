@@ -11,6 +11,7 @@
 #include "Commands.h"
 #include "Types.h"
 #include "Font.h"
+#include "WindEffectParameters.h"
 
 namespace Renderer {
     const size_t FLOATS_PER_VERTEX = 8;
@@ -46,6 +47,9 @@ namespace Renderer {
 
         void pushQuadMappedImage(const std::vector<Vector2> &verts, TextureAtlas* atlas, u32 atlasId, const Color& color);
         void pushQuadMappedImage(const std::vector<Vector2> &rect, u32 textureId, const Color& color);
+
+        void pushEnableWind(const WindEffectParameters &params);
+        void pushDisableWind();
 
 
         u8 *commands;
