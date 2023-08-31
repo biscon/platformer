@@ -316,6 +316,16 @@
             }
         },
         {
+            "door": {
+                "levelFileName": "gas_station_interior_lighted.json",
+                "rect": [
+                    2900.0,
+                    880.0,
+                    3040.0,
+                    920.0
+                ],
+                "spawnId": "main"
+            },
             "name": "Door",
             "sprite": {
                 "alpha": 1.0,
@@ -325,6 +335,7 @@
                         "repeatType": 2
                     }
                 ],
+                "autoPlay": false,
                 "curAnimIndex": 0,
                 "horizFlip": false,
                 "vertFlip": false
@@ -338,9 +349,69 @@
                 "rotation": 0.0,
                 "scale": 5.0
             }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/grass_with_flower_03.png",
+                "height": 6.0,
+                "lightMap": false,
+                "width": 12.0
+            },
+            "name": "Grass Yellow Flower 1",
+            "transform": {
+                "layer": -1,
+                "pos": [
+                    1355.0,
+                    900.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            },
+            "windEffect": {
+                "detail": 1.0,
+                "distortion": 0.0,
+                "heightOffset": 0.20000000298023224,
+                "interval": 3.5,
+                "maxStrength": 0.23000000417232513,
+                "minStrength": 0.05000000074505806,
+                "speed": 1.0,
+                "strengthScale": 10.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/tree.png",
+                "height": 67.0,
+                "lightMap": false,
+                "width": 67.0
+            },
+            "name": "Tree",
+            "transform": {
+                "layer": -1,
+                "pos": [
+                    4440.0,
+                    590.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            },
+            "windEffect": {
+                "detail": 1.0,
+                "distortion": 0.10999999940395355,
+                "heightOffset": 0.8999999761581421,
+                "interval": 2.3399999141693115,
+                "maxStrength": 0.30000001192092896,
+                "minStrength": 0.10000000149011612,
+                "speed": 1.0,
+                "strengthScale": 100.0
+            }
         }
     ],
     "height": 1080.0,
+    "lockYAxis": false,
+    "lockedCamY": 0.0,
     "scroller": {
         "layers": [
             {
@@ -377,17 +448,17 @@
     ],
     "spawns": [
         {
-            "id": "shop_door",
-            "pos": [
-                2966.0,
-                895.0
-            ]
-        },
-        {
             "id": "start",
             "pos": [
                 159.0,
                 940.0
+            ]
+        },
+        {
+            "id": "shop_door",
+            "pos": [
+                2966.0,
+                895.0
             ]
         },
         {

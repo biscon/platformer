@@ -29,6 +29,7 @@
 #include "systems/UpdateEffectsSystem.h"
 #include "TransitionEffect.h"
 #include "AnimationManager.h"
+#include "systems/DoorSystem.h"
 
 using namespace Renderer;
 using namespace Input;
@@ -40,7 +41,7 @@ struct LevelFile {
 
 class Level {
 public:
-    Level(IRenderDevice& renderDevice, RenderBuffers renderBuffers, IInputDevice &inputDevice, Font &debugFont);
+    Level(IRenderDevice& renderDevice, RenderBuffers renderBuffers, IInputDevice &inputDevice, Font &debugFont, std::function<void()> levelChangeCallback);
     virtual ~Level();
     void createTestLevel();
 
@@ -65,7 +66,7 @@ public:
     void load(std::string filename);
     void newLevel();
 
-    void transitionToLevel(std::string filename, std::function<void()> callback);
+    void transitionToLevel(std::string filename, std::string spawnId, std::function<void()> callback);
 
 private:
     IRenderDevice& renderDevice;
@@ -79,6 +80,7 @@ private:
     std::unique_ptr<Camera> camera;
     RenderDebugSystem* renderDebugSystem = nullptr;
     RenderLevelSystem* renderLevelSystem = nullptr;
+    DoorSystem* doorSystem = nullptr;
     ActorSystem* actorSystem = nullptr;
     CollisionSystem* collisionSystem = nullptr;
     PlatformSystem* movingPlatformSystem = nullptr;
@@ -91,9 +93,11 @@ private:
 
     LevelConfig config;
     std::string filenameToLoad;
+    std::string spawnIdToLoad;
     bool loading = false;
     Vector2 camTarget;
     std::function<void()> onTransitionDone;
+    std::function<void()> levelChangeCallback;
 
 
 

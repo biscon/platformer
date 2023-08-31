@@ -155,6 +155,8 @@ set(GAME_SOURCE_FILES
         src/game/systems/VerletSystem.h
         src/game/systems/UpdateEffectsSystem.cpp
         src/game/systems/UpdateEffectsSystem.h
+        src/game/systems/DoorSystem.cpp
+        src/game/systems/DoorSystem.h
 
         src/game/components/SpriteComponent.cpp
         src/game/components/SpriteComponent.h
@@ -181,6 +183,7 @@ set(GAME_SOURCE_FILES
         src/game/components/FlickerEffectComponent.h
         src/game/components/GlowEffectComponent.h
         src/game/components/WindEffectComponent.h
+        src/game/components/DoorComponent.h
 
         src/game/editor/Editor.cpp
         src/game/editor/Editor.h
@@ -214,6 +217,8 @@ set(GAME_SOURCE_FILES
         src/game/editor/SpritePropertyEditor.h
         src/game/editor/WindEffectPropertyEditor.cpp
         src/game/editor/WindEffectPropertyEditor.h
+        src/game/editor/DoorPropertyEditor.cpp
+        src/game/editor/DoorPropertyEditor.h
 )
 
 add_executable(game ${GAME_SOURCE_FILES} ${ENGINE_SOURCE_FILES} ${UTIL_SOURCE_FILES} ${IM_GUI_SOURCE_FILES} ${CGLM_SOURCE_FILES})

@@ -32,7 +32,8 @@ enum class ComponentType {
     PointLight,
     FlickerEffect,
     GlowEffect,
-    WindEffect
+    WindEffect,
+    Door
 };
 
 struct EntityMetaData {

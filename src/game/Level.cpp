@@ -18,6 +18,7 @@
 #include "components/FlickerEffectComponent.h"
 #include "components/GlowEffectComponent.h"
 #include "components/WindEffectComponent.h"
+#include "components/DoorComponent.h"
 
 #include <json.hpp>
 #include <iostream>
@@ -28,9 +29,9 @@ using json = nlohmann::json;
 
 
 Level::Level(IRenderDevice &renderDevice, RenderBuffers renderBuffers, IInputDevice &inputDevice,
-             Font &debugFont) : renderDevice(renderDevice), renderBuffers(renderBuffers),
+             Font &debugFont, std::function<void()> levelChangeCallback) : renderDevice(renderDevice), renderBuffers(renderBuffers),
                                 inputDevice(inputDevice),
-                                debugFont(debugFont) {
+                                debugFont(debugFont), levelChangeCallback(std::move(levelChangeCallback)) {
 
     animManager = std::make_unique<AnimationManager>(renderDevice);
 
@@ -43,6 +44,15 @@ Level::Level(IRenderDevice &renderDevice, RenderBuffers renderBuffers, IInputDev
     world->registerSystem(new InputSystem(inputDevice));
     actorSystem = new ActorSystem();
     world->registerSystem(actorSystem);
+
+    doorSystem = new DoorSystem([this](std::string filename, std::string spawnId) {
+        if(!loading) {
+            transitionToLevel(std::move(filename), std::move(spawnId), []() {
+                SDL_Log("transition done");
+            });
+        }
+    });
+    world->registerSystem(doorSystem);
 
     verletSystem = new VerletSystem();
     world->registerSystem(verletSystem);
@@ -168,8 +178,17 @@ void Level::createPlayer() {
     player->setName("Player");
     Vector2 pos = Vector2(120.0f, 150.0f);
 
-    if(!config.spawns.empty()) {
-        pos = config.spawns[0].pos;
+    if(spawnIdToLoad.empty()) {
+        if (!config.spawns.empty()) {
+            pos = config.spawns[0].pos;
+        }
+    } else {
+        for(auto& spawn : config.spawns) {
+            if(spawn.id == spawnIdToLoad) {
+                pos = spawn.pos;
+                break;
+            }
+        }
     }
 
     player->assign<TransformComponent>(pos, 5.0f, 0, 0);
@@ -273,13 +292,15 @@ void Level::setEditMode(bool editMode) {
         world->disableSystem(collisionSystem);
         world->disableSystem(movingPlatformSystem);
         world->disableSystem(verletSystem);
-        world->disableSystem(updateEffectsSystem);
+        //world->disableSystem(updateEffectsSystem);
+        world->disableSystem(doorSystem);
     } else {
         world->enableSystem(actorSystem);
         world->enableSystem(collisionSystem);
         world->enableSystem(movingPlatformSystem);
         world->enableSystem(verletSystem);
-        world->enableSystem(updateEffectsSystem);
+        //world->enableSystem(updateEffectsSystem);
+        world->enableSystem(doorSystem);
     }
 }
 
@@ -370,6 +391,7 @@ void Level::save(std::string filename) {
         auto flickerEffect = ent->get<FlickerEffectComponent>();
         auto glowEffect = ent->get<GlowEffectComponent>();
         auto windEffect = ent->get<WindEffectComponent>();
+        auto door = ent->get<DoorComponent>();
 
         if(transform.isValid()) transform->save(jsonEnt);
         if(terrain.isValid()) terrain->save(jsonEnt);
@@ -384,6 +406,7 @@ void Level::save(std::string filename) {
         if(glowEffect.isValid()) glowEffect->save(jsonEnt);
         if(sprite.isValid()) sprite->save(jsonEnt);
         if(windEffect.isValid()) windEffect->save(jsonEnt);
+        if(door.isValid()) door->save(jsonEnt);
 
         j["entities"].push_back(jsonEnt);
     }
@@ -504,6 +527,9 @@ void Level::load(std::string filename) {
         if(e.contains("windEffect")) {
             ent->assign<WindEffectComponent>(e["windEffect"]);
         }
+        if(e.contains("door")) {
+            ent->assign<DoorComponent>(e["door"]);
+        }
     }
 
     for(auto& e : j["spawns"]) {
@@ -532,9 +558,10 @@ void Level::load(std::string filename) {
     animManager->upload();
 }
 
-void Level::transitionToLevel(std::string filename, std::function<void()> callback) {
+void Level::transitionToLevel(std::string filename, std::string spawnId, std::function<void()> callback) {
     onTransitionDone = std::move(callback);
     filenameToLoad = std::move(filename);
+    spawnIdToLoad = spawnId;
     loading = true;
     FloatRect bounds;
     bounds.zero();

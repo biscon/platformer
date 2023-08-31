@@ -29,7 +29,9 @@ Game::Game(Input::IInputDevice& inputDevice, IRenderDevice& renderDevice, Render
     inputContext->registerState(INPUT_STATE_LEFT);
     inputContext->registerState(INPUT_STATE_RIGHT);
 
-    level = std::make_shared<Level>(renderDevice, renderBuffers, inputDevice, *debugFont);
+    level = std::make_shared<Level>(renderDevice, renderBuffers, inputDevice, *debugFont, [this](){
+        editor->reset();
+    });
 
     editor = std::make_unique<Editor>(renderDevice, inputDevice, level->getWorld(), level->getCamera(), renderBuffers, *font, *level);
 
@@ -67,7 +69,7 @@ bool Game::update(double frameDelta) {
         }
 
         if(action.id == INPUT_ACTION_LOAD) {
-            level->transitionToLevel("desert_level.json", [this](){
+            level->transitionToLevel("desert_level.json", "", [this](){
                 editor->reset();
             });
         }

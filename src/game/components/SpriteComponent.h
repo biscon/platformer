@@ -40,10 +40,10 @@ namespace Renderer {
             return animations;
         }
 
-
         bool vertFlip;
         bool horizFlip;
         float alpha;
+        bool autoPlay;
 
     private:
         i32 curAnimIndex;

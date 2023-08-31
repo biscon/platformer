@@ -12,6 +12,12 @@ namespace Renderer {
         horizFlip = e["horizFlip"];
         alpha = e["alpha"];
         curAnimIndex = e["curAnimIndex"];
+        if(e.contains("autoPlay")) {
+            autoPlay = e["autoPlay"];
+        }
+        else {
+            autoPlay = true;
+        }
         json jsonAnims = e["animations"];
         for(auto& jsonAnim : jsonAnims) {
             RepeatType rt = indexToRepeatType(jsonAnim["repeatType"]);
@@ -19,6 +25,9 @@ namespace Renderer {
             createAnimation(name, rt, animManager.getAnimations().at(name).animation);
         }
         setAnimIndex(curAnimIndex);
+        if(!autoPlay) {
+            pause();
+        }
     }
 
     void SpriteComponent::save(json &e) {
@@ -27,6 +36,7 @@ namespace Renderer {
         j["horizFlip"] = horizFlip;
         j["alpha"] = alpha;
         j["curAnimIndex"] = curAnimIndex;
+        j["autoPlay"] = autoPlay;
         json jsonAnims;
         for(auto& anim : animations) {
             json jsonAnim;
@@ -43,6 +53,7 @@ namespace Renderer {
         alpha = 1.0f;
         vertFlip = false;
         horizFlip = false;
+        autoPlay = true;
     }
 
     void SpriteComponent::createAnimation(const std::string &name, RepeatType repeatType,

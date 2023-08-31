@@ -142,6 +142,8 @@ void RenderDebugSystem::tick(World *world, float deltaTime) {
                                 box.top + (fontSize * 11), Renderer::WHITE);
                 buffer.pushText(string_format("slidingDown %s", colInfo->cur().slidingDownMaxSlope ? "true" : "false"), &font, box.left + leftStart,
                                 box.top + (fontSize * 12), Renderer::WHITE);
+                buffer.pushText(string_format("onDoor:     %s", colInfo->cur().onDoor ? "true" : "false"), &font, box.left + leftStart,
+                                box.top + (fontSize * 13), Renderer::WHITE);
 
             }
         }

@@ -14,6 +14,7 @@
 #include "../components/PhysicComponent.h"
 #include "../components/LadderComponent.h"
 #include "../AABB.h"
+#include "../components/DoorComponent.h"
 
 CollisionSystem::CollisionSystem(RenderCmdBuffer &buffer): buffer(buffer) {
 }
@@ -403,3 +404,5 @@ void CollisionSystem::movePassengers(PlatformComponent& movingPlatform, bool mov
         }
     }
 }
+
+

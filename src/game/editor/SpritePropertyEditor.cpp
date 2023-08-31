@@ -19,6 +19,13 @@ void SpritePropertyEditor::show() {
     ImGui::SliderFloat("Alpha", &sprite->alpha, 0.0, 1.0f, "%.2f");
     ImGui::Checkbox("HorizFlip", &sprite->horizFlip);
     ImGui::Checkbox("VertFlip", &sprite->vertFlip);
+    if(ImGui::Checkbox("AutoPlay", &sprite->autoPlay)) {
+        if(sprite->autoPlay) {
+            sprite->resume();
+        } else {
+            sprite->pause();
+        }
+    }
     if(ImGui::Button("Animations")) {
         showAnimations = true;
     }

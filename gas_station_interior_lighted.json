@@ -335,6 +335,19 @@
                 "rotation": 0.0,
                 "scale": 5.0
             }
+        },
+        {
+            "door": {
+                "levelFileName": "desert_level.json",
+                "rect": [
+                    1660.0,
+                    750.0,
+                    1860.0,
+                    830.0
+                ],
+                "spawnId": "shop_door"
+            },
+            "name": "Exit"
         }
     ],
     "height": 1080.0,
@@ -348,7 +361,7 @@
     ],
     "spawns": [
         {
-            "id": "enter",
+            "id": "main",
             "pos": [
                 1770.0,
                 800.0

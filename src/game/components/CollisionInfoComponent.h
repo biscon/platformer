@@ -19,6 +19,7 @@ struct CollisionInfo {
     bool ascending = false;
     bool onLadder = false;
     bool onTopLadder = false;
+    bool onDoor = false;
     float slopeAngle = 0;
     Vector2 velocity;
     float distanceGround = 0;
@@ -35,6 +36,7 @@ struct CollisionInfo {
         slidingDownMaxSlope = false;
         ascending = false;
         onLadder = false;
+        onDoor = false;
         onTopLadder = false;
         slopeAngle = 0;
         distanceGround = 0;

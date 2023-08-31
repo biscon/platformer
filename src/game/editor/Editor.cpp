@@ -41,6 +41,8 @@
 #include "LadderPropertyEditor.h"
 #include "SpritePropertyEditor.h"
 #include "WindEffectPropertyEditor.h"
+#include "../components/DoorComponent.h"
+#include "DoorPropertyEditor.h"
 
 
 Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* world, Camera& camera, RenderBuffers buffers, Font &font, Level& level) :
@@ -73,6 +75,7 @@ Editor::Editor(IRenderDevice& renderDevice, IInputDevice &inputDevice, World* wo
     propertyEditorMap[ComponentType::Ladder] = std::make_unique<LadderPropertyEditor>(inputDevice, buffers, font, camera, world);
     propertyEditorMap[ComponentType::Sprite] = std::make_unique<SpritePropertyEditor>(inputDevice, buffers, font, camera, world, level.getAnimManager());
     propertyEditorMap[ComponentType::WindEffect] = std::make_unique<WindEffectPropertyEditor>();
+    propertyEditorMap[ComponentType::Door] = std::make_unique<DoorPropertyEditor>(inputDevice, buffers, font, camera, world);
 }
 
 void Editor::update(float deltaTime) {
@@ -303,7 +306,7 @@ void Editor::fileDialogs() {
             std::string curPath(getcwd(nullptr,0));
             filePathName = filePathName.substr(curPath.size()+1);
             //SDL_Log("filePathName: %s, filePath: %s, getCwd: %s", filePathName.c_str(), filePath.c_str(), curPath.c_str());
-            level.transitionToLevel(filePathName, [this](){
+            level.transitionToLevel(filePathName, "", [this](){
                 reset();
             });
         }
@@ -379,6 +382,9 @@ void Editor::assignComponentMenu() {
     }
     if(ImGui::MenuItem("Wind", nullptr, false, !selectedEntity->has<WindEffectComponent>())) {
         selectedEntity->assign<WindEffectComponent>();
+    }
+    if(ImGui::MenuItem("Door", nullptr, false, !selectedEntity->has<DoorComponent>())) {
+        selectedEntity->assign<DoorComponent>(FloatRect(300 + camera.scrollX, 500 + camera.scrollY, 400 + camera.scrollX, 700 + camera.scrollY), "", "");
     }
 }
 
@@ -917,6 +923,7 @@ void Editor::removeComponent(Entity* ent, ComponentType type) {
         case ComponentType::FlickerEffect: ent->remove<FlickerEffectComponent>(); break;
         case ComponentType::GlowEffect: ent->remove<GlowEffectComponent>(); break;
         case ComponentType::WindEffect: ent->remove<WindEffectComponent>(); break;
+        case ComponentType::Door: ent->remove<DoorComponent>(); break;
     }
 }
 
@@ -942,6 +949,7 @@ void Editor::updateMetaData() {
         if(ent->has<FlickerEffectComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::FlickerEffect);
         if(ent->has<GlowEffectComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::GlowEffect);
         if(ent->has<WindEffectComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::WindEffect);
+        if(ent->has<DoorComponent>()) insertComponentIfNotExist(entityMetaData.componentTypes, ComponentType::Door);
     }
 }
 
@@ -959,6 +967,7 @@ std::string getComponentName(ComponentType type) {
         case ComponentType::FlickerEffect: return "FlickerEffect";
         case ComponentType::GlowEffect: return "GlowEffect";
         case ComponentType::WindEffect: return "WindEffect";
+        case ComponentType::Door: return "Door";
     }
     return "Unknown";
 }

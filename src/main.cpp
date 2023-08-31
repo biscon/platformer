@@ -181,7 +181,7 @@ INTERNAL bool InitVideo()
         SDL_Log("Could not create SDLWindow\n");
         return false;
     }
-    //SDL_SetWindowFullscreen(SDLWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    SDL_SetWindowFullscreen(SDLWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     Context = SDL_GL_CreateContext(SDLWindow);
     if(Context == nullptr)
