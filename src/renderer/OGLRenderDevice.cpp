@@ -124,6 +124,8 @@ namespace Renderer {
         glEnableVertexAttribArray(2);
     }
 
+
+
     OGLRenderDevice::~OGLRenderDevice() {
         glDeleteBuffers(1, &texQuadVBO);
         glDeleteVertexArrays(1, &texQuadVAO);
@@ -303,7 +305,7 @@ namespace Renderer {
 
         // bind vao
         glBindVertexArray(texQuadVAO);
-        // upload vertex data
+        // updata vertex data
         glBindBuffer(GL_ARRAY_BUFFER, texQuadVBO);
         glBufferData(GL_ARRAY_BUFFER, (buf.verticesOffset - buf.vertices), buf.vertices, GL_DYNAMIC_DRAW);
 
@@ -379,7 +381,7 @@ namespace Renderer {
 
         // bind vao
         glBindVertexArray(texQuadVAO);
-        // upload vertex data
+        // updata vertex data
         glBindBuffer(GL_ARRAY_BUFFER, texQuadVBO);
         glBufferData(GL_ARRAY_BUFFER, (buf.verticesOffset - buf.vertices), buf.vertices, GL_DYNAMIC_DRAW);
 
@@ -495,7 +497,7 @@ namespace Renderer {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, tex);
 
-        // upload pixel data to gpu mem
+        // updata pixel data to gpu mem
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, pb->width, pb->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pb->pixels);
 
         // set wrap clamp
@@ -537,7 +539,7 @@ namespace Renderer {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, tex);
 
-        // upload pixel data to gpu mem
+        // updata pixel data to gpu mem
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, pb->width, pb->height, 0, GL_RED, GL_UNSIGNED_BYTE, pb->pixels);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

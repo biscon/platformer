@@ -80,7 +80,8 @@ set(UTIL_SOURCE_FILES
         src/util/math_util.c
         src/util/math_util.h
         src/util/ImGuiFileDialog.h
-        src/util/ImGuiFileDialog.cpp)
+        src/util/ImGuiFileDialog.cpp
+        src/util/ComponentVector.h)
 
 set(ENGINE_SOURCE_FILES
         src/include/defs.h
@@ -109,7 +110,18 @@ set(ENGINE_SOURCE_FILES
         src/renderer/Animation.cpp
         src/renderer/Animation.h
         src/renderer/Gui.cpp
-        src/renderer/Gui.h)
+        src/renderer/Gui.h
+        src/renderer2/Renderer.cpp
+        src/renderer2/Renderer.h
+        src/renderer2/ShaderProgram.cpp
+        src/renderer2/ShaderProgram.h
+        src/renderer2/VertexBuffer.cpp
+        src/renderer2/VertexBuffer.h
+        src/renderer2/FrameBuffer.cpp
+        src/renderer2/FrameBuffer.h
+        src/renderer2/Texture.cpp
+        src/renderer2/Texture.h
+)
 
 set(GAME_SOURCE_FILES
         src/include/ECS.h

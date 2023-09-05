@@ -341,7 +341,7 @@
                 "vertFlip": false
             },
             "transform": {
-                "layer": 0,
+                "layer": -1,
                 "pos": [
                     2900.0,
                     610.0
@@ -382,30 +382,59 @@
         {
             "image": {
                 "alpha": 1.0,
-                "filename": "assets/objects/tree.png",
-                "height": 67.0,
+                "filename": "assets/objects/bush.png",
+                "height": 39.0,
                 "lightMap": false,
-                "width": 67.0
+                "width": 72.0
             },
-            "name": "Tree",
+            "name": "Bush",
             "transform": {
-                "layer": -1,
+                "layer": 2,
                 "pos": [
-                    4440.0,
-                    590.0
+                    4610.0,
+                    770.0
                 ],
                 "rotation": 0.0,
                 "scale": 5.0
             },
             "windEffect": {
                 "detail": 1.0,
-                "distortion": 0.10999999940395355,
-                "heightOffset": 0.8999999761581421,
-                "interval": 2.3399999141693115,
-                "maxStrength": 0.30000001192092896,
+                "distortion": 0.07999999821186066,
+                "heightOffset": 0.6299999952316284,
+                "interval": 1.253999948501587,
+                "maxStrength": 0.28999999165534973,
                 "minStrength": 0.10000000149011612,
-                "speed": 1.0,
-                "strengthScale": 100.0
+                "speed": 0.5,
+                "strengthScale": 50.0
+            }
+        },
+        {
+            "image": {
+                "alpha": 1.0,
+                "filename": "assets/objects/bush.png",
+                "height": 39.0,
+                "lightMap": false,
+                "width": 72.0
+            },
+            "name": "Bush 2",
+            "transform": {
+                "layer": -1,
+                "pos": [
+                    4355.0,
+                    745.0
+                ],
+                "rotation": 0.0,
+                "scale": 5.0
+            },
+            "windEffect": {
+                "detail": 1.440000057220459,
+                "distortion": 0.3700000047683716,
+                "heightOffset": 0.44999998807907104,
+                "interval": 1.5,
+                "maxStrength": 0.2199999988079071,
+                "minStrength": 0.10000000149011612,
+                "speed": 0.5,
+                "strengthScale": 50.0
             }
         }
     ],

@@ -29,7 +29,6 @@ void InputSystem::tick(World *world, float deltaTime) {
     */
     for (Entity* ent : world->all(false)) {
         auto input = ent->get<InputComponent>();
-        // only process entities with transform and sprite components
         if(!input.isValid()) {
             continue;
         }

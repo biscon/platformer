@@ -17,12 +17,12 @@ struct PhysicComponent {
     }
 
     float gravity;
-    float moveSpeed = 600;
+    float moveSpeed = 450;
     float ladderVertSpeed = 300;
     float ladderHorizSpeed = 200;
-    float maxJumpHeight = 300;
+    float maxJumpHeight = 175;
     float minJumpHeight = maxJumpHeight / 4.0f;
-    float timeToJumpApex = .4f;
+    float timeToJumpApex = .30f;
     float maxJumpVelocity;
     float minJumpVelocity;
     float accTimeAirborne = .2f;

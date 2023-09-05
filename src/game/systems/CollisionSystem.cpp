@@ -117,7 +117,7 @@ void CollisionSystem::horizontalCollisions(World* world, CollisionComponent& ray
 
     for(i32 i = 0; i < raycast.horizontalRayCount; i++) {
         Vector2 rayOrigin = (directionX == -1) ? raycast.raycastOrigins.bottomLeft : raycast.raycastOrigins.bottomRight;
-        rayOrigin.y -= raycast.horizontalRaySpacing * i;
+        rayOrigin.y -= raycast.horizontalRaySpacing * (float) i;
         Vector2 rayEnd(rayOrigin.x + rayLength, rayOrigin.y);
         //buffer.pushLine(rayOrigin, rayEnd, Renderer::RED);
 

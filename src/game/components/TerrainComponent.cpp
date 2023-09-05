@@ -46,7 +46,7 @@ void TerrainComponent::rebuildMesh() {
     poly.push_back(points);
 
     std::vector<N> indices = mapbox::earcut<N>(poly);
-    //SDL_Log("indices: %d", (int) indices.size());
+    //SDL_Log("ids: %d", (int) ids.size());
     for(auto& index : indices) {
         Point& p = poly.at(0).at(index);
         //SDL_Log("index: %d point: %.02f, %.02f", index, p[0], p[1]);
